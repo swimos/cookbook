@@ -4,7 +4,7 @@
 
 This demo requires running the `BasicPlane` Java class.
 
-## Running a Java Class
+### Option 1: Build And Run With IDE
 
 Simply navigate to the `BasicPlane` class, and run it through your IDE.
 
