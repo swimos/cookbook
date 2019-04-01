@@ -1,5 +1,7 @@
 # Timers
 
+Code corresponding to the [timers cookbook](https://swim.dev/tutorials/timers/).
+
 ## Running A Java Class
 
 This demo requires running the `BasicPlane` and `CustomClient` Java classes.

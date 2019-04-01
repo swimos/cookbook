@@ -1,5 +1,7 @@
 # Web Agents
 
+Code corresponding to the [web agents cookbook](https://swim.dev/tutorials/web-agents/).
+
 ## Run
 
 This demo requires running the `BasicPlane` Java class.

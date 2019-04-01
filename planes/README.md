@@ -1,5 +1,7 @@
 # Planes
 
+Code corresponding to the [planes cookbook](https://swim.dev/tutorials/planes/).
+
 ## Run
 
 This demo requires running the `BasicPlane` Java class.

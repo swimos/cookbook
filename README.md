@@ -1,3 +1,3 @@
-# Cookbook Code
+# Cookbook
 
-All [cookbook](https://github.com/swimit/cookbook) code snippets, gathered into runnable Gradle projects.
+All [cookbook](https://swim.dev/tutorials/) code snippets, gathered into runnable Gradle projects.
