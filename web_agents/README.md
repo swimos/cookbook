@@ -10,7 +10,7 @@ Simply navigate to the `BasicPlane` class, and run it through your IDE.
 
 ### Option 2: Build And Run With Gradle
 
-1. In a shell, navigate to this directory (`/some/path/cookbook-code/web_agents/`)
+1. In a shell, navigate to this directory (`/some/path/cookbook/web_agents/`)
 
 2. Run one of the following:
 
@@ -22,7 +22,7 @@ Simply navigate to the `BasicPlane` class, and run it through your IDE.
 
 ### Option 3: Build With Gradle, Run With Java
 
-1. In a shell, navigate to this directory (`/some/path/cookbook-code/web_agents/`)
+1. In a shell, navigate to this directory (`/some/path/cookbook/web_agents/`)
 
 2. Run one of the following:
 

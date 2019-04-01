@@ -12,7 +12,7 @@ Simply navigate to your class, and run it through your IDE.
 
 0. Ensure that the `mainClassName` variable in your `build.gradle` file is correct.
 
-1. In a shell, navigate to this directory (`/some/path/cookbook-code/value_lanes/`)
+1. In a shell, navigate to this directory (`/some/path/cookbook/value_lanes/`)
 
 2. Run one of the following:
 
@@ -26,7 +26,7 @@ Simply navigate to your class, and run it through your IDE.
 
 0. Ensure that the `mainClassName` variable in your `build.gradle` file is correct.
 
-1. In a shell, navigate to this directory (`/some/path/cookbook-code/value_lanes/`)
+1. In a shell, navigate to this directory (`/some/path/cookbook/value_lanes/`)
 
 2. Run one of the following:
 
