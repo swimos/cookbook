@@ -1,6 +1,6 @@
-# Map Lanes
+# Downlinks
 
-Code corresponding to the [map lanes cookbook](https://swim.dev/tutorials/map-lanes/).
+Code corresponding to the [downlinks cookbook](https://swim.dev/tutorials/downlinks/).
 
 ## Running A Java Class
 
@@ -14,7 +14,7 @@ Simply navigate to your class, and run it through your IDE.
 
 0. Ensure that the `mainClassName` variable in your `build.gradle` file is correct.
 
-1. In a shell, navigate to this directory (`/some/path/cookbook/map_lanes/`)
+1. In a shell, navigate to this directory (`/some/path/cookbook/downlinks/`)
 
 2. Run one of the following:
 
@@ -28,7 +28,7 @@ Simply navigate to your class, and run it through your IDE.
 
 0. Ensure that the `mainClassName` variable in your `build.gradle` file is correct.
 
-1. In a shell, navigate to this directory (`/some/path/cookbook/map_lanes/`)
+1. In a shell, navigate to this directory (`/some/path/cookbook/downlinks/`)
 
 2. Run one of the following:
 
@@ -40,7 +40,7 @@ Simply navigate to your class, and run it through your IDE.
 
 3. Unfoo the newly-created `build/distributions/map-lanes-3.9.2.foo`, where "foo" is either "tar" or "zip".
 
-4. Run the `bin/map-lanes` script (`bin\map-lanes.bat` on Windows).
+4. Run the `bin/downlinks` script (`bin\downlinks.bat` on Windows).
 
 ## Running This Demo
 
