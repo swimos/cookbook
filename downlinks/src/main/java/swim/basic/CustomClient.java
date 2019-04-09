@@ -25,7 +25,7 @@ class CustomClient {
     link.put("FromClientLink", 25);
 
     Thread.sleep(1000);
-    // Henceforth, we will strictly use commands; let's close our link
+    // Hereafter we will strictly use commands, so link is safe to close
     link.close();
 
     final String[] items = {"bat", "cat", "rat"};
