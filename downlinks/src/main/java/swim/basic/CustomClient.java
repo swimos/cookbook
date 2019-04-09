@@ -16,17 +16,17 @@ class CustomClient {
     final String hostUri = "warp://localhost:9001";
     final String nodeUriPrefix = "/unit/";
 
+    // Write-only downlink; note keepLinked is false
     final MapDownlink<String, Integer> link = swimClient.downlinkMap()
         .keyForm(Form.forString()).valueForm(Form.forInteger())
         .hostUri(hostUri).nodeUri(nodeUriPrefix+"0").laneUri("shoppingCart")
+        .keepLinked(false)
         .open();
-
-    // Each `shoppingCart` can be populated either via proxy command lane (see UnitAgent)...
-    swimClient.command(hostUri, nodeUriPrefix+"0", "addItem", Text.from("FromClientCommand"));
-    // ...or a direct downlink put().
     link.put("FromClientLink", 25);
 
-    Thread.sleep(2000);
+    Thread.sleep(1000);
+    // Henceforth, we will strictly use commands; let's close our link
+    link.close();
 
     final String[] items = {"bat", "cat", "rat"};
     for (int i = 0; i < 50; i++) {

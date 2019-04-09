@@ -31,7 +31,7 @@ public class BasicPlane extends AbstractPlane {
     final PlaneContext plane = server.getPlane("basic").planeContext();
     server.run();
 
-    // Demonstrate event downlink
+    // Event downlink issued against plane context
     plane.downlink()
         .nodeUri("/unit/0")
         .laneUri("addItem")
