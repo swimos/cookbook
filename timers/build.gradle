@@ -17,7 +17,7 @@ apply plugin: 'idea'
 idea.module.outputDir file("out/production/classes")
 
 group = 'ai.swim'
-description = 'Code corresponding to the Value Lanes cookbook'
+description = 'Code corresponding to the Timers cookbook'
 ext.moduleName = 'swim.basic'
 sourceCompatibility = 1.9
 version = project.property('application.version')
