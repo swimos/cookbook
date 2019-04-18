@@ -1,0 +1,12 @@
+@server {
+  @plane("basic") {
+    class: "swim.basic.BasicPlane"
+  }
+  @http(port: 9001) {
+    plane: "basic"
+    @websocket {
+      serverCompressionLevel: 0
+      clientCompressionLevel: 0
+    }
+  }
+}

@@ -1,0 +1,12 @@
+@server {
+  @plane("source") {
+    class: "swim.basic.warp.SourcePlane"
+  }
+  @http(port: 9002) {
+    plane: "source"
+    @websocket {
+      serverCompressionLevel: 0
+      clientCompressionLevel: 0
+    }
+  }
+}
