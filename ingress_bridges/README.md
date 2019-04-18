@@ -91,5 +91,3 @@ Simply navigate to your class, and run it through your IDE.
 3. Unfoo the newly-created `build/distributions/map-lanes-3.9.2.foo`, where "foo" is either "tar" or "zip".
 
 4. Run the `bin/ingress-bridges` script (`bin\ingress-bridges.bat` on Windows).
-
-Follow the "Running A Java Class" instructions twice: once with `mainClassName=BasicPlane`, and once with `mainClassName=CustomClient`.
