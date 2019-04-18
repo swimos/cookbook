@@ -40,6 +40,8 @@ This demo corresponds to Design 4, and the relevant source can be found in the `
 
 In order to demonstrate MQTT integration, our data must be stored in an MQTT server. To obviate manually standing up an MQTT server, the code currently uses one of the [publicly available MQTT brokers](https://github.com/mqtt/mqtt.github.io/wiki/public_brokers); feel free to replace this with your own broker.
 
+We use the [Eclipse Paho Java Client](https://github.com/eclipse/paho.mqtt.java) for MQTT client operations; note the corresponding dependency in `build.gradle`.
+
 `swim.basic.mqtt.DataSourcePopulator` sends strings of the form `@msg{id:%d,val:%s}` over MQTT to the aforementioned broker under  the topic `swimSensors/all`.
 
 `swim.basic.mqtt.IngressBridge` listens to this topic, then relays any arriving messages to the right destinations after some minor transformations using a Swim command. Equivalently, we can send a properly-structured websocket message instead; this is also our only option in a language outside Java and Javascript.
