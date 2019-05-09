@@ -1,0 +1,12 @@
+@server {
+  @plane("grade") {
+    class: "swim.grade.GradePlane"
+  }
+  @http(port: 9001) {
+    plane: "grade"
+    @websocket {
+      serverCompressionLevel: 0
+      clientCompressionLevel: 0
+    }
+  }
+}
