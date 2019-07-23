@@ -18,7 +18,6 @@ import swim.api.downlink.MapDownlink;
 import swim.client.ClientRuntime;
 import swim.structure.Form;
 import swim.structure.Text;
-import swim.structure.Value;
 
 class CustomClient {
 

@@ -21,6 +21,7 @@ public class UnitAgent extends AbstractAgent {
   @Override
   public void didStart() {
     logMessage("didStart");
+    close();
   }
 
   @Override

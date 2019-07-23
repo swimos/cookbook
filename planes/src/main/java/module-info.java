@@ -13,10 +13,8 @@
 // limitations under the License.
 
 open module swim.basic {
-  requires transitive swim.loader;
-  requires transitive swim.client;
+  requires transitive swim.api;
+  requires swim.server;
 
   exports swim.basic;
-
-  provides swim.api.plane.Plane with swim.basic.BasicPlane;
 }

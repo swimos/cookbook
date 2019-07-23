@@ -16,21 +16,21 @@ package swim.basic;
 
 import java.io.IOException;
 import swim.api.SwimRoute;
-import swim.api.agent.AgentType;
+import swim.api.agent.AgentRoute;
 import swim.api.plane.AbstractPlane;
-import swim.api.plane.PlaneContext;
-import swim.api.server.ServerContext;
-import swim.loader.ServerLoader;
+import swim.fabric.Fabric;
+import swim.kernel.Kernel;
 import swim.recon.Recon;
+import swim.server.ServerLoader;
 import swim.structure.Value;
 
 public class BasicPlane extends AbstractPlane {
 
   @SwimRoute("/listener")
-  final AgentType<ListenerAgent> listenerAgentType = agentClass(ListenerAgent.class);
+  AgentRoute<ListenerAgent> listenerAgentType;
 
   @SwimRoute("/unit/:id")
-  final AgentType<UnitAgent> unitAgentType = agentClass(UnitAgent.class);
+  AgentRoute<UnitAgent> unitAgentType;
 
   @Override
   public void didStart() {
@@ -40,13 +40,15 @@ public class BasicPlane extends AbstractPlane {
   }
 
   public static void main(String[] args) throws IOException, InterruptedException {
-    final ServerContext server = ServerLoader.load(BasicPlane.class.getModule()).serverContext();
-    server.start();
-    final PlaneContext plane = server.getPlane("basic").planeContext();
-    server.run();
+    final Kernel kernel = ServerLoader.loadServer();
+    final Fabric fabric = (Fabric) kernel.getSpace("basic");
+
+    kernel.start();
+    System.out.println("Running Basic server...");
+    kernel.run();
 
     // Event downlink issued against plane context
-    plane.downlink()
+    fabric.downlink()
         .nodeUri("/unit/0")
         .laneUri("addItem")
         .onEvent(v -> {

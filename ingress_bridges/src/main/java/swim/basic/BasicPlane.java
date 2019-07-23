@@ -16,29 +16,31 @@ package swim.basic;
 
 import java.io.IOException;
 import swim.api.SwimRoute;
-import swim.api.agent.AgentType;
+import swim.api.agent.AgentRoute;
 import swim.api.plane.AbstractPlane;
-import swim.api.plane.PlaneContext;
-import swim.api.server.ServerContext;
-import swim.loader.ServerLoader;
+import swim.fabric.Fabric;
+import swim.kernel.Kernel;
+import swim.server.ServerLoader;
 import swim.structure.Value;
 
 public class BasicPlane extends AbstractPlane {
 
   @SwimRoute("/unit/:id")
-  final AgentType<UnitAgent> unitAgentType = agentClass(UnitAgent.class);
+  AgentRoute<UnitAgent> unitAgentType;
 
   public static void main(String[] args) throws IOException {
-    final ServerContext server = ServerLoader.load(BasicPlane.class.getModule()).serverContext();
-    server.start();
-    final PlaneContext plane = server.getPlane("basic").planeContext();
-    server.run();
+    final Kernel kernel = ServerLoader.loadServer();
+    final Fabric fabric = (Fabric) kernel.getSpace("basic");
+
+    kernel.start();
+    System.out.println("Running Basic server...");
+    kernel.run();
 
     // A Web Agent won't run unless its URI is invoked for the first time.
     // In the MQTT demo, an external process does this, so the upcoming command
     // is unnecessary. In the WARP demo, the data flow from `SourcePlane` to
     // `BasicPlane` is strictly pull-based, and it happens in a Web Agent; we
     // solve this chicken-and-egg problem by jump-starting one `UnitAgent`.
-    plane.command("/unit/0", "wakeup", Value.absent());
+    fabric.command("/unit/0", "wakeup", Value.absent());
   }
 }

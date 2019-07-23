@@ -1,15 +1,12 @@
-@server {
-  @plane("basic") {
-    class: "swim.basic.BasicPlane"
-  }
-  @store {
-    path: "/tmp/swim"
-  }
-  @http(port: 9001) {
-    plane: "basic"
-    @websocket {
-      serverCompressionLevel: 0
-      clientCompressionLevel: 0
-    }
+basic: @fabric {
+  @plane(class: "swim.basic.BasicPlane")
+}
+
+@web(port: 9001) {
+  space: "basic"
+  documentRoot: "./ui/"
+  @websocket {
+    serverCompressionLevel: 0# -1 = default; 0 = off; 1-9 = deflate level
+    clientCompressionLevel: 0# -1 = default; 0 = off; 1-9 = deflate level
   }
 }

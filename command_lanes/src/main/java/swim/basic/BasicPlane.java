@@ -14,26 +14,27 @@
 
 package swim.basic;
 
-import java.io.IOException;
 import swim.api.SwimRoute;
-import swim.api.agent.AgentType;
+import swim.api.agent.AgentRoute;
 import swim.api.plane.AbstractPlane;
-import swim.api.plane.PlaneContext;
-import swim.api.server.ServerContext;
-import swim.loader.ServerLoader;
+import swim.fabric.Fabric;
+import swim.kernel.Kernel;
+import swim.server.ServerLoader;
 import swim.structure.Value;
 
 public class BasicPlane extends AbstractPlane {
 
   @SwimRoute("/unit/:id")
-  final AgentType<UnitAgent> unitAgentType = agentClass(UnitAgent.class);
+  AgentRoute<UnitAgent> unitAgentType;
 
-  public static void main(String[] args) throws IOException, InterruptedException {
-    final ServerContext server = ServerLoader.load(BasicPlane.class.getModule()).serverContext();
-    server.start();
-    final PlaneContext plane = server.getPlane("basic").planeContext();
-    server.run();
-    
-    plane.command("/unit/foo", "wakeup", Value.absent());
+  public static void main(String[] args) {
+    final Kernel kernel = ServerLoader.loadServer();
+    final Fabric fabric = (Fabric) kernel.getSpace("basic");
+
+    kernel.start();
+    System.out.println("Running Basic server...");
+    kernel.run();
+
+    fabric.command("/unit/foo", "wakeup", Value.absent());
   }
 }

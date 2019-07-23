@@ -18,33 +18,35 @@ import java.io.IOException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 import swim.api.SwimRoute;
-import swim.api.agent.AgentType;
+import swim.api.agent.AgentRoute;
 import swim.api.plane.AbstractPlane;
-import swim.api.plane.PlaneContext;
-import swim.api.server.ServerContext;
-import swim.loader.ServerLoader;
+import swim.fabric.Fabric;
+import swim.kernel.Kernel;
+import swim.server.ServerLoader;
 import swim.structure.Value;
 
 public class GradePlane extends AbstractPlane {
 
   @SwimRoute("/student/:id")
-  final AgentType<StudentAgent> unitAgentType = agentClass(StudentAgent.class);
+  AgentRoute<StudentAgent> unitAgentType;
 
   @SwimRoute("/egress")
-  final AgentType<EgressAgent> egressAgentType = agentClass(EgressAgent.class);
+  AgentRoute<EgressAgent> egressAgentType;
 
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args) {
 
     // Attempt to start CustomDriver
     CustomDriver.start("tcp://localhost:9002", "~/test", "sa", "");
 
-    final ServerContext server = ServerLoader.load(GradePlane.class.getModule()).serverContext();
-    server.start();
-    final PlaneContext plane = server.getPlane("grade").planeContext();
-    server.run();
+    final Kernel kernel = ServerLoader.loadServer();
+    final Fabric fabric = (Fabric) kernel.getSpace("grade");
+
+    kernel.start();
+    System.out.println("Running Basic server...");
+    kernel.run();
 
     // Immediately wake up EgressAgent
-    plane.command("/egress", "wakeup", Value.absent());
+    fabric.command("/egress", "wakeup", Value.absent());
 
     Runtime.getRuntime().addShutdownHook(
         new Thread(() -> {
