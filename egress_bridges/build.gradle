@@ -1,98 +1,33 @@
-import java.util.regex.Matcher
+apply from: '../project.gradle'
 
-buildscript {
-  repositories {
-    maven { url 'https://plugins.gradle.org/m2/' }
-  }
-}
-
-apply plugin: 'java'
-apply plugin: 'java-library'
-apply plugin: 'application'
-apply plugin: 'idea'
-idea.module.outputDir file("out/production/classes")
-
-group = 'ai.swim'
 description = 'Code corresponding to the Egress Bridges cookbook'
 ext.moduleName = 'swim.grade'
-sourceCompatibility = 1.9
-version = project.property('application.version')
-// mainClassName = 'swim.grade.db.Database'
-mainClassName = 'swim.grade.GradePlane'
-// mainClassName = 'swim.grade.Sim'
+mainClassName='swim.grade.GradePlane'
 
 repositories {
-  jcenter()
   maven { url "https://repo.eclipse.org/content/repositories/paho-snapshots/" }
   maven { url "https://dl.bintray.com/pull-vert/adba/"}
 }
 
 dependencies {
-  api group: 'ai.swim', name: 'swim-loader', version: version
+  api group: 'ai.swim', name: 'swim-api', version: version
   api group: 'ai.swim', name: 'swim-server', version: version
   api group: 'ai.swim', name: 'swim-client', version: version
   api group: 'com.h2database', name: 'h2', version: '1.4.199'
   api group: 'jdk.incubator', name: 'adba', version: '0.07'
-  testCompile 'junit:junit:4.12'
+  testCompile 'junit:junit:4.12'  
 }
 
-afterEvaluate {
-  compileJava {
-    doFirst {
-      options.compilerArgs += [
-        '--module-path', classpath.asPath,
-      ]
-      classpath = files()
-    }
-    options.compilerArgs += ['-Xlint:all,-requires-automatic']
-    options.encoding = 'UTF-8'
-  }
+test { // FIXME
+  exclude '**/*'
+}
 
-  jar {
-    inputs.property('moduleName', moduleName)
-    manifest {
-      attributes(
-        'Implementation-Title': moduleName,
-        'Implementation-Version': version,
-        'Main-Class': mainClassName)
-    }
-  }
+task runSim(type: JavaExec) {
+  classpath sourceSets.main.runtimeClasspath
+  main = "swim.grade.Sim"
+}
 
-  tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
-  }
-
-  run {
-    dependsOn jar
-    doFirst {
-      jvmArgs += [
-        '--module-path', files(configurations.runtimeClasspath, jar.archivePath).asPath,
-        '--module', "${moduleName}/${mainClassName}"
-      ]
-      classpath = files()
-    }
-  }
-
-  startScripts {
-    inputs.property("moduleName", moduleName)
-    doFirst {
-      classpath = files()
-      defaultJvmOpts = [
-        '-Dswim.config=/etc/swim-grade/server.recon',
-        '-Xms3g',
-        '-Xmx3g',
-        '--module-path', 'APP_HOME_LIBS',
-        '--module', "${moduleName}/${mainClassName}"
-      ]
-    }
-    doLast {
-      def bashFile = new File(outputDir, applicationName)
-      String bashContent = bashFile.text
-      bashFile.text = bashContent.replaceFirst('APP_HOME_LIBS', Matcher.quoteReplacement('$APP_HOME/lib'))
-
-      def batFile = new File(outputDir, applicationName + ".bat")
-      String batContent = batFile.text
-      batFile.text = batContent.replaceFirst('APP_HOME_LIBS', Matcher.quoteReplacement('%APP_HOME%\\lib'))
-    }
-  }
+task runDb(type: JavaExec) {
+  classpath sourceSets.main.runtimeClasspath
+  main = "swim.grade.db.Database"
 }

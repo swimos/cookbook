@@ -1,0 +1,28 @@
+rootProject.name = 'cookbook'
+
+include 'command-lanes'
+project(':command-lanes').projectDir = file('command_lanes')
+
+include 'downlinks'
+project(':downlinks').projectDir = file('downlinks')
+
+include 'egress-bridges'
+project(':egress-bridges').projectDir = file('egress_bridges')
+
+include 'ingress-bridges'
+project(':ingress-bridges').projectDir = file('ingress_bridges')
+
+include 'map-lanes'
+project(':map-lanes').projectDir = file('map_lanes')
+
+include 'planes'
+project(':planes').projectDir = file('planes')
+
+include 'timers'
+project(':timers').projectDir = file('timers')
+
+include 'value-lanes'
+project(':value-lanes').projectDir = file('value_lanes')
+
+include 'web-agents'
+project(':web-agents').projectDir = file('web_agents')

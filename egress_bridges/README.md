@@ -14,54 +14,10 @@ Our sink in this example is a relational H2 database. Oracle has an [Asynchronou
 
 We scrape together the working pieces to create our non-blocking `CustomDriver`. In order to keep the implementation simple, `CustomDriver` is not thread-safe. We therefore only demonstrate Option 2 in this example.
 
-## Run
+## Running This Demo
 
-1. Run `swim.grade.db.Database` to start an H2 database.
+This demo requires running the `swim.grade.db.Database`, `swim.grade.GradePlane`, and `swim.grade.Sim` classes in that order. Review [`README.md` from the parent directory](../README.md) for instructions on how to do this. For those who pick Option 2, the `gradle` task corresponding to `swim.grade.db.Database` is called `runDb`, and the one corresponding to `swim.grade.Sim` is called `runSim`.
 
-2. Run `swim.grade.GradePlane` to run the Swim server and the non-blocking connector to the database.
+## Stopping This Demo
 
-3. Run `swim.grade.Sim` to simulate data being sent to the Swim server.
-
-## Stop
-
-Close aforementioned three processes in the opposite order to which they were run. Immediately before `GradePlane` exits, the process issues a read of each student in the Database; you should confirm that these match the final log for each `StudentAgent`.
-
-## Running A Java Class
-
-This demo requires running multiple Java classes.
-
-### Option 1: Build And Run With IDE
-
-Simply navigate to your class, and run it through your IDE.
-
-### Option 2: Build And Run With Gradle
-
-0. Ensure that the `mainClassName` variable in your `build.gradle` file is correct.
-
-1. In a shell, navigate to this directory (`/some/path/cookbook/egress_bridges/`)
-
-2. Run one of the following:
-
-  - `./gradlew run`, on most non-Windows machines
-  
-  - `.\gradlew.bat run`, on Windows machines
-
-  - `gradle run` (regardless of machine) if you have a local Gradle distribution and prefer to use that; note that we do not support anything prior to 5.2.
-
-### Option 3: Build With Gradle, Run With Java
-
-0. Ensure that the `mainClassName` variable in your `build.gradle` file is correct.
-
-1. In a shell, navigate to this directory (`/some/path/cookbook/egress_bridges/`)
-
-2. Run one of the following:
-
-  - `./gradlew build`, on most non-Windows machines
-  
-  - `.\gradlew.bat build`, on Windows machines
-
-  - `gradle build` (regardless of machine) if you have a local Gradle distribution and prefer to use that; note that we do not support anything prior to 5.2.
-
-3. Unfoo the newly-created `build/distributions/egress-bridges-3.9.2.foo`, where "foo" is either "tar" or "zip".
-
-4. Run the `bin/egress-bridges` script (`bin\egress-bridges.bat` on Windows).
+Close aforementioned three processes in the opposite order to which they were run. Immediately before `GradePlane` exits, the process issues a read of each student in the database; you should confirm that these match the final log for each `StudentAgent`.

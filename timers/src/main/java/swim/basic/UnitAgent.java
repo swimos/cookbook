@@ -28,7 +28,7 @@ public class UnitAgent extends AbstractAgent {
   @SwimLane("minutesSincePublish")
   ValueLane<Integer> minutes = this.<Integer>valueLane()
       .didSet((n, o) -> {
-        System.out.println((n * 10) + " seconds since last event");
+        System.out.println((n * 1) + " seconds since last event");
       });
 
   @SwimLane("publish")
@@ -50,9 +50,9 @@ public class UnitAgent extends AbstractAgent {
 
   private void resetTimer() {
     cancelTimer();
-    this.timer = setTimer(10000, () -> {
+    this.timer = setTimer(1000, () -> {
         this.minutes.set(this.minutes.get() + 1);
-        this.timer.reschedule(10000);
+        this.timer.reschedule(1000);
       });
   }
 
@@ -60,5 +60,6 @@ public class UnitAgent extends AbstractAgent {
     if (this.timer != null) {
       this.timer.cancel();
     }
+    this.timer = null;
   }
 }

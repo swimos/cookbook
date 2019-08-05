@@ -1,6 +1,6 @@
 # Ingress Bridges
 
-Code corresponding to the [ingress bridges cookbook](https://swim.dev/tutorials/ingress-bridges/).
+Code corresponding to the [Ingress Bridges cookbook](https://swim.dev/tutorials/ingress-bridges/).
 
 ## Demo Motivation
 
@@ -26,13 +26,11 @@ This demo corresponds to Design 3, and the relevant source can mostly be found i
 
 `swim.basic.UnitAgents` must be aware of how data is stored in the `SourcePlane`, and each `UnitAgent` creates its downlink accordingly.
 
-To run this demo:
+### Running This Demo
 
-1. Run `swim.basic.warp.SourcePlane`
+This demo requires running the `swim.basic.warp.SourcePlane` class and the `swim.basic.BasicPlane` class in that order. Review [`README.md` from the parent directory](../README.md) for instructions on how to do this. For those who pick Option 2, the `gradle` task corresponding to `swim.basic.warp.SourcePlane` is called `runWarp`.
 
-2. Run `swim.basic.BasicPlane`
-
-You can even choose to run these processes on multiple machines; as long as you change the `UnitAgent` downlink logic accordingly (just the `hostUri`) accordingly and the machines can see each other over a network, everything will work.
+Note that you can even choose to run these processes on multiple machines; as long as you change the `UnitAgent` downlink logic accordingly (just the `hostUri`) accordingly and the machines can see each other over a network, everything will work.
 
 ## MQTT Ingress Bridge
 
@@ -46,50 +44,6 @@ We use the [Eclipse Paho Java Client](https://github.com/eclipse/paho.mqtt.java)
 
 `swim.basic.mqtt.IngressBridge` listens to this topic, then relays any arriving messages to the right destinations after some minor transformations using a Swim command. Equivalently, we can send a properly-structured websocket message instead; this is also our only option in a language outside Java and Javascript.
 
-To run this demo:
+### Running This Demo
 
-1. Run `swim.basic.BasicPlane`
-
-2. Run `swim.basic.mqtt.DataSourcePopulator`
-
-3. Run `swim.basic.mqtt.IngressBridge`
-
-## Running A Java Class
-
-This demo requires running multiple Java classes.
-
-### Option 1: Build And Run With IDE
-
-Simply navigate to your class, and run it through your IDE.
-
-### Option 2: Build And Run With Gradle
-
-0. Ensure that the `mainClassName` variable in your `build.gradle` file is correct.
-
-1. In a shell, navigate to this directory (`/some/path/cookbook/ingress_bridges/`)
-
-2. Run one of the following:
-
-  - `./gradlew run`, on most non-Windows machines
-  
-  - `.\gradlew.bat run`, on Windows machines
-
-  - `gradle run` (regardless of machine) if you have a local Gradle distribution and prefer to use that; note that we do not support anything prior to 5.2.
-
-### Option 3: Build With Gradle, Run With Java
-
-0. Ensure that the `mainClassName` variable in your `build.gradle` file is correct.
-
-1. In a shell, navigate to this directory (`/some/path/cookbook/ingress_bridges/`)
-
-2. Run one of the following:
-
-  - `./gradlew build`, on most non-Windows machines
-  
-  - `.\gradlew.bat build`, on Windows machines
-
-  - `gradle build` (regardless of machine) if you have a local Gradle distribution and prefer to use that; note that we do not support anything prior to 5.2.
-
-3. Unfoo the newly-created `build/distributions/map-lanes-3.9.2.foo`, where "foo" is either "tar" or "zip".
-
-4. Run the `bin/ingress-bridges` script (`bin\ingress-bridges.bat` on Windows).
+This demo requires running the `swim.basic.warp.SourcePlane`, `swim.basic.mqtt.DataSourcePopulator`, and `swim.basic.mqtt.IngressBridge` classes in that order. Review [`README.md` from the parent directory](../README.md) for instructions on how to do this. For those who pick Option 2, the `gradle` task corresponding to `swim.basic.mqtt.DataSourcePopulator` is called `runMqtt`, and the one corresponding to `swim.basic.mqtt.IngressBridge` is called `runBridge`.

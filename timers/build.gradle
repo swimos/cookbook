@@ -1,28 +1,8 @@
-import java.util.regex.Matcher
+apply from: '../project.gradle'
 
-buildscript {
-  repositories {
-    maven { url 'https://plugins.gradle.org/m2/' }
-  }
-}
-
-apply plugin: 'java'
-apply plugin: 'java-library'
-apply plugin: 'application'
-apply plugin: 'idea'
-idea.module.outputDir file("out/production/classes")
-
-group = 'ai.swim'
 description = 'Code corresponding to the Timers cookbook'
 ext.moduleName = 'swim.basic'
-sourceCompatibility = 1.9
-version = project.property('application.version')
-mainClassName = 'swim.basic.BasicPlane'
-// mainClassName = 'swim.basic.CustomClient'
-
-repositories {
-  jcenter()
-}
+mainClassName='swim.basic.BasicPlane'
 
 dependencies {
   api group: 'ai.swim', name: 'swim-api', version: version
@@ -30,63 +10,7 @@ dependencies {
   api group: 'ai.swim', name: 'swim-client', version: version
 }
 
-afterEvaluate {
-  compileJava {
-    doFirst {
-      options.compilerArgs += [
-        '--module-path', classpath.asPath,
-      ]
-      classpath = files()
-    }
-    options.compilerArgs += ['-Xlint']
-    options.encoding = 'UTF-8'
-  }
-
-  jar {
-    inputs.property('moduleName', moduleName)
-    manifest {
-      attributes(
-        'Implementation-Title': moduleName,
-        'Implementation-Version': version,
-        'Main-Class': mainClassName)
-    }
-  }
-
-  tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
-  }
-
-  run {
-    dependsOn jar
-    doFirst {
-      jvmArgs += [
-        '--module-path', files(configurations.runtimeClasspath, jar.archivePath).asPath,
-        '--module', "${moduleName}/${mainClassName}"
-      ]
-      classpath = files()
-    }
-  }
-
-  startScripts {
-    inputs.property("moduleName", moduleName)
-    doFirst {
-      classpath = files()
-      defaultJvmOpts = [
-        '-Dswim.config=/etc/swim-basic/server.recon',
-        '-Xms3g',
-        '-Xmx3g',
-        '--module-path', 'APP_HOME_LIBS',
-        '--module', "${moduleName}/${mainClassName}"
-      ]
-    }
-    doLast {
-      def bashFile = new File(outputDir, applicationName)
-      String bashContent = bashFile.text
-      bashFile.text = bashContent.replaceFirst('APP_HOME_LIBS', Matcher.quoteReplacement('$APP_HOME/lib'))
-
-      def batFile = new File(outputDir, applicationName + ".bat")
-      String batContent = batFile.text
-      batFile.text = batContent.replaceFirst('APP_HOME_LIBS', Matcher.quoteReplacement('%APP_HOME%\\lib'))
-    }
-  }
+task runClient(type: JavaExec) {
+  classpath sourceSets.main.runtimeClasspath
+  main = "swim.basic.CustomClient"
 }
