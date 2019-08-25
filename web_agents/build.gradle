@@ -5,7 +5,7 @@ ext.moduleName = 'swim.basic'
 mainClassName='swim.basic.BasicPlane'
 
 dependencies {
-  api group: 'ai.swim', name: 'swim-api', version: version
-  api group: 'ai.swim', name: 'swim-server', version: version
-  api group: 'ai.swim', name: 'swim-client', version: version
+  api group: 'org.swimos', name: 'swim-api', version: version
+  api group: 'org.swimos', name: 'swim-server', version: version
+  api group: 'org.swimos', name: 'swim-client', version: version
 }

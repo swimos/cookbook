@@ -2,7 +2,7 @@ apply plugin: 'java-library'
 apply plugin: 'application'
 apply plugin: 'idea'
 
-group = 'ai.swim'
+group = 'org.swimos'
 idea.module.outputDir file("out/production/classes")
 version = project.property('swim.version')
 
