@@ -15,7 +15,7 @@
 package swim.basic;
 
 import swim.client.ClientRuntime;
-import swim.structure.*;
+import swim.structure.Value;
 
 class CustomClient {
 
