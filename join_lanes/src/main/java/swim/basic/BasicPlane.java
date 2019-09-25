@@ -24,9 +24,20 @@ import swim.structure.Value;
 
 public class BasicPlane extends AbstractPlane {
 
-  @SwimRoute("/unit/:id")
-  AgentRoute<UnitAgent> unitAgentType;
-
+  @SwimRoute("/building/:name")
+  AgentRoute<BuildingAgent> buildingAgentType;
+  
+  @SwimRoute("/:building/:room")
+  AgentRoute<RoomAgent> roomAgentType;
+  
+  
+  @Override
+  public void didStart() {
+    super.didStart();
+    // Immediately wake up BuildingAgent upon plane load
+    context.command("/building/swim", "wakeup", Value.absent());
+  }
+  
   public static void main(String[] args) {
     final Kernel kernel = ServerLoader.loadServer();
     final Fabric fabric = (Fabric) kernel.getSpace("basic");
@@ -35,7 +46,10 @@ public class BasicPlane extends AbstractPlane {
     System.out.println("Running Basic server...");
     kernel.run();
 
-    fabric.command("/unit/foo", "wakeup", Value.absent());
-    fabric.command("/unit/bar", "wakeup", Value.absent());
+    fabric.command("/building/swim", "wakeup", Value.absent());
+    
+    fabric.command("/swim/1", "wakeup", Value.absent());
+    fabric.command("/swim/2", "wakeup", Value.absent());
+    fabric.command("/swim/3", "wakeup", Value.absent());
   }
 }

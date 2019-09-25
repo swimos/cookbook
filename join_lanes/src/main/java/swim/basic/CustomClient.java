@@ -14,49 +14,30 @@
 
 package swim.basic;
 
-import swim.api.downlink.ValueDownlink;
 import swim.client.ClientRuntime;
 import swim.structure.*;
 
 class CustomClient {
 
-  public static void main(String[] args) throws InterruptedException {
+  public static void main(String[] args) throws InterruptedException
+  {
     
     
     ClientRuntime swimClient = new ClientRuntime();
     swimClient.start();
     final String hostUri = "warp://localhost:9001";
-    final String fooNodeUri = "/unit/foo";
-    final String barNodeUri = "/unit/bar";
-    
-    swimClient.command(hostUri, fooNodeUri, "WAKEUP", Value.absent());
-    swimClient.command(hostUri, barNodeUri, "WAKEUP", Value.absent());
   
-    
-    final ValueDownlink<Value> fooCountLink = swimClient.downlinkValue()
-                                                .hostUri(hostUri)
-                                                .nodeUri(fooNodeUri)
-                                                .laneUri("count")
-                                                .open();
-    
-    fooCountLink.set(Num.from(13));
+    final String firstRoomUri = "/swim/1";
+    final String secondRoomUri = "/swim/2";
+    final String thirdRoomUri = "/swim/3";
   
   
-    final ValueDownlink<Value> barCountLink = swimClient.downlinkValue()
-                                                        .hostUri(hostUri)
-                                                        .nodeUri(barNodeUri)
-                                                        .laneUri("count")
-                                                        .open();
-    
-    barCountLink.set(Num.from(56));
-  
-    
-    swimClient.command(hostUri, barNodeUri, "syncCounts", Text.from("/unit/foo"));
-    swimClient.command(hostUri, fooNodeUri, "syncCounts", Text.from("/unit/bar"));
-  
-    swimClient.command(hostUri, fooNodeUri, "displayStatus", Text.from("Foo"));
-    Thread.sleep(2000);
-    swimClient.command(hostUri, barNodeUri, "displayStatus", Text.from("Bar"));
+    swimClient.command(hostUri, firstRoomUri, "toggleLights", Value.absent());
+    swimClient.command(hostUri, secondRoomUri, "toggleLights", Value.absent());
+    swimClient.command(hostUri, thirdRoomUri, "toggleLights", Value.absent());
+    swimClient.command(hostUri, secondRoomUri, "toggleLights", Value.absent());
+    swimClient.command(hostUri, secondRoomUri, "toggleLights", Value.absent());
+    swimClient.command(hostUri, thirdRoomUri, "toggleLights", Value.absent());
     
     System.out.println("Will shut down client in 2 seconds");
     Thread.sleep(2000);
