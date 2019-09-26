@@ -1,6 +1,6 @@
 apply from: '../project.gradle'
 
-description = 'Code corresponding to the Join Lanes cookbook'
+description = 'Code corresponding to the Join Value Lanes cookbook'
 ext.moduleName = 'swim.basic'
 mainClassName='swim.basic.BasicPlane'
 
