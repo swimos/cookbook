@@ -11,6 +11,7 @@ dependencies {
 }
 
 task runClient(type: JavaExec) {
+  group = "application"
   classpath sourceSets.main.runtimeClasspath
   main = "swim.basic.CustomClient"
 }

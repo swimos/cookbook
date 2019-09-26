@@ -16,16 +16,19 @@ dependencies {
 }
 
 task runMqtt(type: JavaExec) {
+  group = "application"
   classpath sourceSets.main.runtimeClasspath
   main = "swim.basic.mqtt.DataSourcePopulator"
 }
 
 task runBridge(type: JavaExec) {
+  group = "application"
   classpath sourceSets.main.runtimeClasspath
   main = "swim.basic.mqtt.IngressBridge"
 }
 
 task runWarp(type: JavaExec) {
+  group = "application"
   classpath sourceSets.main.runtimeClasspath
   main = "swim.basic.warp.SourcePlane"
 }

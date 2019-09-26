@@ -23,11 +23,13 @@ test { // FIXME
 }
 
 task runSim(type: JavaExec) {
+  group = "application"
   classpath sourceSets.main.runtimeClasspath
   main = "swim.grade.Sim"
 }
 
 task runDb(type: JavaExec) {
+  group = "application"
   classpath sourceSets.main.runtimeClasspath
   main = "swim.grade.db.Database"
 }
