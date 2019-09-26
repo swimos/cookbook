@@ -20,8 +20,7 @@ import swim.api.lane.CommandLane;
 import swim.api.lane.JoinValueLane;
 import swim.structure.Value;
 
-public class BuildingAgent extends AbstractAgent
-{
+public class BuildingAgent extends AbstractAgent {
   @SwimLane ("lights")
   JoinValueLane<String, Boolean> lights = this.<String, Boolean>joinValueLane().didUpdate((String key, Boolean newValue, Boolean oldValue) -> {
     System.out.println("The lights in room " + key + " are " + (newValue ? "off." : "on."));

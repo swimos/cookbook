@@ -19,9 +19,7 @@ import swim.structure.Value;
 
 class CustomClient {
 
-  public static void main(String[] args) throws InterruptedException
-  {
-    
+  public static void main(String[] args) throws InterruptedException {
     
     ClientRuntime swimClient = new ClientRuntime();
     swimClient.start();
