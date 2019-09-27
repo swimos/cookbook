@@ -14,7 +14,9 @@
 
 package swim.basic;
 
+import swim.api.downlink.MapDownlink;
 import swim.client.ClientRuntime;
+import swim.structure.Form;
 import swim.structure.Value;
 
 class CustomClient {
@@ -24,6 +26,8 @@ class CustomClient {
     ClientRuntime swimClient = new ClientRuntime();
     swimClient.start();
     final String hostUri = "warp://localhost:9001";
+    
+    final String buildingUri = "/building/swim";
   
     final String firstRoomUri = "/swim/1";
     final String secondRoomUri = "/swim/2";
@@ -36,7 +40,17 @@ class CustomClient {
     swimClient.command(hostUri, secondRoomUri, "toggleLights", Value.absent());
     swimClient.command(hostUri, secondRoomUri, "toggleLights", Value.absent());
     swimClient.command(hostUri, thirdRoomUri, "toggleLights", Value.absent());
+  
+    final MapDownlink<Integer, Boolean> link = swimClient.downlinkMap()
+                                                        .keyForm(Form.forInteger()).valueForm(Form.forBoolean())
+                                                        .hostUri(hostUri).nodeUri(buildingUri).laneUri("lights")
+                                                        .open();
     
+    Thread.sleep(2000);
+    System.out.println("Join value lane");
+    link.get().forEach((key, value) -> System.out.println(key + ":" + value));
+  
+  
     System.out.println("Will shut down client in 2 seconds");
     Thread.sleep(2000);
     
