@@ -34,6 +34,16 @@ class CustomClient {
     final String thirdRoomUri = "/swim/3";
   
   
+    final MapDownlink<Integer, Boolean> link = swimClient.downlinkMap()
+                                                         .keyForm(Form.forInteger()).valueForm(Form.forBoolean())
+                                                         .hostUri(hostUri).nodeUri(buildingUri).laneUri("lights")
+                                                         .didUpdate((key, newValue, oldValue) -> {
+                                                                    System.out.println("The lights in room " + key + " are " + (newValue ? "on" : "off"));
+                                                                    })
+                                                         .open();
+  
+    Thread.sleep(2000);
+    
     swimClient.command(hostUri, firstRoomUri, "toggleLights", Value.absent());
     swimClient.command(hostUri, secondRoomUri, "toggleLights", Value.absent());
     swimClient.command(hostUri, thirdRoomUri, "toggleLights", Value.absent());
@@ -41,16 +51,7 @@ class CustomClient {
     swimClient.command(hostUri, secondRoomUri, "toggleLights", Value.absent());
     swimClient.command(hostUri, thirdRoomUri, "toggleLights", Value.absent());
   
-    final MapDownlink<Integer, Boolean> link = swimClient.downlinkMap()
-                                                        .keyForm(Form.forInteger()).valueForm(Form.forBoolean())
-                                                        .hostUri(hostUri).nodeUri(buildingUri).laneUri("lights")
-                                                        .open();
-    
     Thread.sleep(2000);
-    System.out.println("Join value lane");
-    link.get().forEach((key, value) -> System.out.println(key + ":" + value));
-  
-  
     System.out.println("Will shut down client in 2 seconds");
     Thread.sleep(2000);
     

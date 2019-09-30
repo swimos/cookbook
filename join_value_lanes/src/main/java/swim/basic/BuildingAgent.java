@@ -23,7 +23,7 @@ import swim.structure.Value;
 public class BuildingAgent extends AbstractAgent {
   @SwimLane ("lights")
   JoinValueLane<String, Boolean> lights = this.<String, Boolean>joinValueLane().didUpdate((String key, Boolean newValue, Boolean oldValue) -> {
-    System.out.println("The lights in room " + key + " are " + (newValue ? "off." : "on."));
+    System.out.println("The lights in room " + key + " are " + (newValue ? "on." : "off."));
   });
   
   @SwimLane ("registerRoom")
