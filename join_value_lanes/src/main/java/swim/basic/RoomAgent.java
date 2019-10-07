@@ -31,10 +31,7 @@ public class RoomAgent extends AbstractAgent {
   
   @SwimLane ("toggleLights")
   CommandLane<String> toggleLights = this.<String>commandLane().onCommand(msg -> {
-    synchronized (this)
-    {
       this.lights.set(!lights.get());
-    }
   });
   
   private void register() {
