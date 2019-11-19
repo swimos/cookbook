@@ -1,54 +1,103 @@
-// Copyright 2015-2019 SWIM.AI inc.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 package swim.basic;
 
+import swim.api.SwimLane;
 import swim.api.SwimRoute;
+import swim.api.agent.AbstractAgent;
 import swim.api.agent.AgentRoute;
-import swim.fabric.Fabric;
-import swim.kernel.Kernel;
+import swim.api.downlink.MapDownlink;
+import swim.api.lane.JoinMapLane;
+import swim.api.lane.MapLane;
 import swim.api.plane.AbstractPlane;
+import swim.fabric.FabricDef;
+import swim.kernel.Kernel;
 import swim.server.ServerLoader;
-import swim.structure.Value;
+import swim.service.web.WebServiceDef;
 
-public class BasicPlane extends AbstractPlane {
+public class BasicPlane {
 
-    @SwimRoute("/building/:name")
-    AgentRoute<BuildingAgent> buildingAgentType;
+    private static final String HOST_URI = "warp://localhost:53556";
+    private static final int THRESHOLD = 1000;
 
-    @SwimRoute("/:building/:room")
-    AgentRoute<RoomAgent> roomAgentType;
-
-    @Override
-    public void didStart() {
-        // Immediately wake up BuildingAgent upon plane load
-        context.command("/building/swim", "wakeup", Value.absent());
+    static class StateMapLaneAgent extends AbstractAgent {
+        @SwimLane("state")
+        MapLane<String, String> stateMap = this.mapLane();
     }
 
-    public static void main(String[] args) {
-        final Kernel kernel = ServerLoader.loadServer();
-        final Fabric fabric = (Fabric) kernel.getSpace("basic");
+    static class StateJoinMapLaneAgent extends AbstractAgent {
+        @SwimLane("join")
+        JoinMapLane<String, String, String> stateJoinMap = this.joinMapLane();
 
-        kernel.start();
-        System.out.println("Running " + fabric.spaceName() + " server...");
-        kernel.run();
+        @Override
+        public void didStart() {
+            stateJoinMap.downlink("california").hostUri(HOST_URI).nodeUri("/state/california").laneUri("state").open();
+            stateJoinMap.downlink("texas").hostUri(HOST_URI).nodeUri("/state/texas").laneUri("state").open();
+            stateJoinMap.downlink("florida").hostUri(HOST_URI).nodeUri("/state/florida").laneUri("state").open();
+        }
+    }
 
-        fabric.command("/building/swim", "wakeup", Value.absent());
+    static class StateJoinMapPlane extends AbstractPlane {
+        @SwimRoute("/state/:name")
+        AgentRoute<StateMapLaneAgent> mapRoute;
 
-        fabric.command("/swim/1", "wakeup", Value.absent());
-        fabric.command("/swim/2", "wakeup", Value.absent());
-        fabric.command("/swim/3", "wakeup", Value.absent());
+        @SwimRoute("/join/state/:name")
+        AgentRoute<StateJoinMapLaneAgent> joinMapRoute;
+    }
+
+    private static MapDownlink<String, Integer> initDownlink(StateJoinMapPlane plane, String uri) {
+        return plane.downlinkMap()
+                .keyClass(String.class)
+                .valueClass(Integer.class)
+                .hostUri(HOST_URI)
+                .nodeUri(uri)
+                .laneUri("state")
+                .open();
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        final Kernel kernel = ServerLoader.loadServerStack();
+        final StateJoinMapPlane plane = kernel.openSpace(FabricDef.fromName("test"))
+                .openPlane("test", StateJoinMapPlane.class);
+
+        try {
+            kernel.openService(WebServiceDef.standard().port(53556).spaceName("test"));
+            kernel.start();
+
+            final MapDownlink<String, Integer> californiaDownlink = initDownlink(plane, "/state/california");
+            final MapDownlink<String, Integer> texasDownlink = initDownlink(plane, "/state/texas");
+            final MapDownlink<String, Integer> floridaDownlink = initDownlink(plane, "/state/florida");
+
+            final MapDownlink<String, Integer> joinDownlink = plane.downlinkMap()
+                    .keyClass(String.class)
+                    .valueClass(Integer.class)
+                    .hostUri(HOST_URI)
+                    .nodeUri("/join/state/all")
+                    .laneUri("join")
+                    .didUpdate((key, newValue, oldValue) -> {
+                        if (newValue > THRESHOLD) {
+                            logStreet(key, newValue);
+                        }
+                    })
+                    .open();
+
+            // A preferred approach is to use countdown latches but for brevity a sleep suffices
+            Thread.sleep(1000);
+
+            californiaDownlink.put("cal_st_george", 500);
+            californiaDownlink.put("cal_centre_st", 1000);
+            texasDownlink.put("tx_crockett", 100);
+            texasDownlink.put("tx_houston", 200);
+            floridaDownlink.put("fl_nene", 3000);
+            floridaDownlink.put("fl_worth", 4000);
+
+            Thread.sleep(1000);
+        } finally {
+            kernel.stop();
+        }
+    }
+
+    private static void logStreet(String streetName, Integer population) {
+        System.out.println(streetName + " has " + population + " residents");
     }
 
 }
+
