@@ -17,28 +17,26 @@ package swim.basic;
 import swim.api.SwimLane;
 import swim.api.agent.AbstractAgent;
 import swim.api.lane.CommandLane;
-import swim.api.lane.ValueLane;
+import swim.api.lane.JoinMapLane;
 import swim.structure.Value;
 
-public class RoomAgent extends AbstractAgent {
+public class BuildingAgent extends AbstractAgent {
 
     @SwimLane("lights")
-    ValueLane<Boolean> lights = this.valueLane();
-
-    @Override
-    public void didStart() {
-        register();
-    }
-
-    @SwimLane("toggleLights")
-    CommandLane<String> toggleLights = this.<String>commandLane().onCommand(msg -> {
-        this.lights.set(!lights.get());
+    JoinMapLane<String, String, Boolean> lights = this.<String, String, Boolean>joinMapLane().didUpdate((String key, Boolean newValue, Boolean oldValue) -> {
+        System.out.println("The lights in room " + key + " are " + (newValue ? "on." : "off."));
     });
 
-    private void register() {
-        String buildingUri = "/building/" + this.getProp("building").stringValue();
-        Value roomId = this.getProp("room");
-        command(buildingUri, "registerRoom", roomId);
-    }
+    @SwimLane("registerRoom")
+    CommandLane<String> registerRoom = this.<String>commandLane().onCommand(room -> {
+        String roomUri = "/" + this.getProp("name").stringValue() + "/" + room;
+
+        this.lights.downlink(room)
+                .nodeUri(roomUri)
+                .laneUri("lights")
+                .open();
+
+        System.out.println("Building agent registered. Using nodeUri: " + roomUri);
+    });
 
 }

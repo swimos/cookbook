@@ -32,7 +32,6 @@ public class BasicPlane extends AbstractPlane {
 
     @Override
     public void didStart() {
-        super.didStart();
         // Immediately wake up BuildingAgent upon plane load
         context.command("/building/swim", "wakeup", Value.absent());
     }
@@ -42,7 +41,7 @@ public class BasicPlane extends AbstractPlane {
         final Fabric fabric = (Fabric) kernel.getSpace("basic");
 
         kernel.start();
-        System.out.println("Running Basic server...");
+        System.out.println("Running " + fabric.spaceName() + " server...");
         kernel.run();
 
         fabric.command("/building/swim", "wakeup", Value.absent());
@@ -51,5 +50,5 @@ public class BasicPlane extends AbstractPlane {
         fabric.command("/swim/2", "wakeup", Value.absent());
         fabric.command("/swim/3", "wakeup", Value.absent());
     }
-}
 
+}

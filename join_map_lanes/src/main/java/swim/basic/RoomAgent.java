@@ -17,13 +17,13 @@ package swim.basic;
 import swim.api.SwimLane;
 import swim.api.agent.AbstractAgent;
 import swim.api.lane.CommandLane;
-import swim.api.lane.ValueLane;
+import swim.api.lane.MapLane;
 import swim.structure.Value;
 
 public class RoomAgent extends AbstractAgent {
 
     @SwimLane("lights")
-    ValueLane<Boolean> lights = this.valueLane();
+    MapLane<String, Boolean> lights = this.mapLane();
 
     @Override
     public void didStart() {
@@ -31,13 +31,16 @@ public class RoomAgent extends AbstractAgent {
     }
 
     @SwimLane("toggleLights")
-    CommandLane<String> toggleLights = this.<String>commandLane().onCommand(msg -> {
-        this.lights.set(!lights.get());
+    CommandLane<String> toggleLights = this.<String>commandLane().onCommand(key -> {
+        boolean value = !this.lights.get(key);
+        this.lights.put(key, value);
+        System.out.println(this.getProp("room") + " set " + key + " to " + value);
     });
 
     private void register() {
         String buildingUri = "/building/" + this.getProp("building").stringValue();
         Value roomId = this.getProp("room");
+
         command(buildingUri, "registerRoom", roomId);
     }
 

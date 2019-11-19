@@ -21,14 +21,16 @@ import swim.api.lane.JoinValueLane;
 import swim.structure.Value;
 
 public class BuildingAgent extends AbstractAgent {
-  @SwimLane ("lights")
-  JoinValueLane<String, Boolean> lights = this.<String, Boolean>joinValueLane().didUpdate((String key, Boolean newValue, Boolean oldValue) -> {
-    System.out.println("The lights in room " + key + " are " + (newValue ? "on." : "off."));
-  });
-  
-  @SwimLane ("registerRoom")
-  CommandLane<Value> registerRoom = this.<Value>commandLane().onCommand(room -> {
-    String roomUri = "/" + this.getProp("name").stringValue() + "/" + room.stringValue();
-    this.lights.downlink(room.stringValue()).nodeUri(roomUri).laneUri("lights").open();
-  });
+
+    @SwimLane("lights")
+    JoinValueLane<String, Boolean> lights = this.<String, Boolean>joinValueLane().didUpdate((String key, Boolean newValue, Boolean oldValue) -> {
+        System.out.println("The lights in room " + key + " are " + (newValue ? "on." : "off."));
+    });
+
+    @SwimLane("registerRoom")
+    CommandLane<Value> registerRoom = this.<Value>commandLane().onCommand(room -> {
+        String roomUri = "/" + this.getProp("name").stringValue() + "/" + room.stringValue();
+        this.lights.downlink(room.stringValue()).nodeUri(roomUri).laneUri("lights").open();
+    });
+
 }

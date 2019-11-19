@@ -26,23 +26,23 @@ import swim.uri.Uri;
 
 public class UnitAgent extends AbstractAgent {
 
-  @SwimLane("shoppingCart")
-  MapLane<String, Integer> shoppingCart = this.<String, Integer>mapLane()
-      .didUpdate((key, newValue, oldValue) -> {
-        logMessage(key + " count changed to " + newValue + " from " + oldValue);
-      })
-      .didRemove((key, oldValue) -> {
-        logMessage("removed <" + key  + "," + oldValue + ">");
-      });
+    @SwimLane("shoppingCart")
+    MapLane<String, Integer> shoppingCart = this.<String, Integer>mapLane()
+            .didUpdate((key, newValue, oldValue) -> {
+                logMessage(key + " count changed to " + newValue + " from " + oldValue);
+            })
+            .didRemove((key, oldValue) -> {
+                logMessage("removed <" + key + "," + oldValue + ">");
+            });
 
-  @SwimLane("addItem")
-  CommandLane<String> publish = this.<String>commandLane()
-      .onCommand(msg -> {
-        final int n = this.shoppingCart.getOrDefault(msg, 0) + 1;
-        this.shoppingCart.put(msg, n);
-      });
+    @SwimLane("addItem")
+    CommandLane<String> publish = this.<String>commandLane()
+            .onCommand(msg -> {
+                final int n = this.shoppingCart.getOrDefault(msg, 0) + 1;
+                this.shoppingCart.put(msg, n);
+            });
 
-  private void logMessage(Object msg) {
-    System.out.println(nodeUri() + ": " + msg);
-  }
+    private void logMessage(Object msg) {
+        System.out.println(nodeUri() + ": " + msg);
+    }
 }
