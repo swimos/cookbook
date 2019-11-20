@@ -13,36 +13,53 @@ import swim.kernel.Kernel;
 import swim.server.ServerLoader;
 import swim.service.web.WebServiceDef;
 
+/**
+ * The complimentary code as part of the <a href="https://swim.dev/tutorials/join-map-lanes/">Join Map Lane</a> cookbook.
+ * <p>
+ * In this cookbook, three map lanes are created to hold information pertaining to state statistics and is aggregated
+ * into a Join Map Lane. This join map lane checks entries that are added to see if they exceed a threshold. If it is,
+ * then the data is logged.
+ */
 public class BasicPlane {
 
     private static final String HOST_URI = "warp://localhost:53556";
     private static final int THRESHOLD = 1000;
 
-    static class StateMapLaneAgent extends AbstractAgent {
+    static class StreetStatisticsAgent extends AbstractAgent {
+        /*
+            - Key: Street name
+            - Value: Street population
+         */
         @SwimLane("state")
-        MapLane<String, String> stateMap = this.mapLane();
+        MapLane<String, Integer> streetStatistics = this.mapLane();
     }
 
-    static class StateJoinMapLaneAgent extends AbstractAgent {
+    static class AggregatedStatisticsAgent extends AbstractAgent {
+
+        // Aggregated statistics of US states
         @SwimLane("join")
-        JoinMapLane<String, String, String> stateJoinMap = this.joinMapLane();
+        JoinMapLane<String, String, Integer> stateStreetStats = this.joinMapLane();
 
         @Override
         public void didStart() {
-            stateJoinMap.downlink("california").hostUri(HOST_URI).nodeUri("/state/california").laneUri("state").open();
-            stateJoinMap.downlink("texas").hostUri(HOST_URI).nodeUri("/state/texas").laneUri("state").open();
-            stateJoinMap.downlink("florida").hostUri(HOST_URI).nodeUri("/state/florida").laneUri("state").open();
+            stateStreetStats.downlink("california").hostUri(HOST_URI).nodeUri("/state/california").laneUri("state").open();
+            stateStreetStats.downlink("texas").hostUri(HOST_URI).nodeUri("/state/texas").laneUri("state").open();
+            stateStreetStats.downlink("florida").hostUri(HOST_URI).nodeUri("/state/florida").laneUri("state").open();
         }
+
     }
 
     static class StateJoinMapPlane extends AbstractPlane {
         @SwimRoute("/state/:name")
-        AgentRoute<StateMapLaneAgent> mapRoute;
+        AgentRoute<StreetStatisticsAgent> mapRoute;
 
         @SwimRoute("/join/state/:name")
-        AgentRoute<StateJoinMapLaneAgent> joinMapRoute;
+        AgentRoute<AggregatedStatisticsAgent> joinMapRoute;
     }
 
+    /**
+     * Returns a downlink map for a given plane and node URI using the 'state' lane URI
+     */
     private static MapDownlink<String, Integer> initDownlink(StateJoinMapPlane plane, String uri) {
         return plane.downlinkMap()
                 .keyClass(String.class)
@@ -55,6 +72,7 @@ public class BasicPlane {
 
     public static void main(String[] args) throws InterruptedException {
         final Kernel kernel = ServerLoader.loadServerStack();
+        // Open a space to work with. This is instead of defining a server.recon file. Which one could also do
         final StateJoinMapPlane plane = kernel.openSpace(FabricDef.fromName("test"))
                 .openPlane("test", StateJoinMapPlane.class);
 
