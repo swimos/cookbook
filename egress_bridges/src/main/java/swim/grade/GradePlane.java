@@ -14,16 +14,15 @@
 
 package swim.grade;
 
-import java.io.IOException;
-import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.TimeUnit;
+import swim.actor.ActorSpace;
 import swim.api.SwimRoute;
 import swim.api.agent.AgentRoute;
 import swim.api.plane.AbstractPlane;
-import swim.fabric.Fabric;
 import swim.kernel.Kernel;
 import swim.server.ServerLoader;
 import swim.structure.Value;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.TimeUnit;
 
 public class GradePlane extends AbstractPlane {
 
@@ -39,14 +38,13 @@ public class GradePlane extends AbstractPlane {
     CustomDriver.start("tcp://localhost:9002", "~/test", "sa", "");
 
     final Kernel kernel = ServerLoader.loadServer();
-    final Fabric fabric = (Fabric) kernel.getSpace("grade");
-
+    final ActorSpace space = (ActorSpace) kernel.getSpace("basic");
     kernel.start();
     System.out.println("Running Basic server...");
     kernel.run();
 
     // Immediately wake up EgressAgent
-    fabric.command("/egress", "wakeup", Value.absent());
+    space.command("/egress", "wakeup", Value.absent());
 
     Runtime.getRuntime().addShutdownHook(
         new Thread(() -> {
@@ -59,6 +57,6 @@ public class GradePlane extends AbstractPlane {
           ForkJoinPool.commonPool().awaitQuiescence(1, TimeUnit.MINUTES);
         })
 
-      );
+    );
   }
 }

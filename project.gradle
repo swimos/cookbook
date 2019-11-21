@@ -7,7 +7,15 @@ idea.module.outputDir file("out/production/classes")
 version = project.property('swim.version')
 
 repositories {
-  jcenter()
+  mavenCentral()
+  maven { url 'https://swimos.bintray.com/maven/' }
+  maven { url 'http://packages.confluent.io/maven/' }
+}
+
+dependencies {
+  api group: 'org.swimos', name: 'swim-api', version: version
+  api group: 'org.swimos', name: 'swim-server', version: version
+  api group: 'org.swimos', name: 'swim-client', version: version
 }
 
 afterEvaluate {

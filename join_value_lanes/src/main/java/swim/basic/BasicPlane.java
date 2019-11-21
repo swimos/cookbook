@@ -14,42 +14,42 @@
 
 package swim.basic;
 
+import swim.actor.ActorSpace;
 import swim.api.SwimRoute;
 import swim.api.agent.AgentRoute;
-import swim.fabric.Fabric;
-import swim.kernel.Kernel;
 import swim.api.plane.AbstractPlane;
+import swim.kernel.Kernel;
 import swim.server.ServerLoader;
 import swim.structure.Value;
 
 public class BasicPlane extends AbstractPlane {
 
-    @SwimRoute("/building/:name")
-    AgentRoute<BuildingAgent> buildingAgentType;
+  @SwimRoute("/building/:name")
+  AgentRoute<BuildingAgent> buildingAgentType;
 
-    @SwimRoute("/:building/:room")
-    AgentRoute<RoomAgent> roomAgentType;
+  @SwimRoute("/:building/:room")
+  AgentRoute<RoomAgent> roomAgentType;
 
-    @Override
-    public void didStart() {
-        super.didStart();
-        // Immediately wake up BuildingAgent upon plane load
-        context.command("/building/swim", "wakeup", Value.absent());
-    }
+  @Override
+  public void didStart() {
+    super.didStart();
+    // Immediately wake up BuildingAgent upon plane load
+    context.command("/building/swim", "wakeup", Value.absent());
+  }
 
-    public static void main(String[] args) {
-        final Kernel kernel = ServerLoader.loadServer();
-        final Fabric fabric = (Fabric) kernel.getSpace("basic");
+  public static void main(String[] args) {
+    final Kernel kernel = ServerLoader.loadServer();
+    final ActorSpace space = (ActorSpace) kernel.getSpace("basic");
 
-        kernel.start();
-        System.out.println("Running Basic server...");
-        kernel.run();
+    kernel.start();
+    System.out.println("Running Basic server...");
+    kernel.run();
 
-        fabric.command("/building/swim", "wakeup", Value.absent());
+    space.command("/building/swim", "wakeup", Value.absent());
 
-        fabric.command("/swim/1", "wakeup", Value.absent());
-        fabric.command("/swim/2", "wakeup", Value.absent());
-        fabric.command("/swim/3", "wakeup", Value.absent());
-    }
+    space.command("/swim/1", "wakeup", Value.absent());
+    space.command("/swim/2", "wakeup", Value.absent());
+    space.command("/swim/3", "wakeup", Value.absent());
+  }
 }
 

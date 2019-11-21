@@ -10,9 +10,6 @@ repositories {
 }
 
 dependencies {
-  api group: 'org.swimos', name: 'swim-api', version: version
-  api group: 'org.swimos', name: 'swim-server', version: version
-  api group: 'org.swimos', name: 'swim-client', version: version
   api group: 'com.h2database', name: 'h2', version: '1.4.199'
   api group: 'jdk.incubator', name: 'adba', version: '0.07'
   testCompile 'junit:junit:4.12'  

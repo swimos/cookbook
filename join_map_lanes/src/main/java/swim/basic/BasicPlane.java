@@ -1,7 +1,7 @@
 package swim.basic;
 
+import swim.actor.ActorSpaceDef;
 import swim.api.downlink.MapDownlink;
-import swim.fabric.FabricDef;
 import swim.kernel.Kernel;
 import swim.server.ServerLoader;
 import swim.service.web.WebServiceDef;
@@ -35,7 +35,7 @@ public class BasicPlane {
   public static void main(String[] args) throws InterruptedException {
     final Kernel kernel = ServerLoader.loadServerStack();
     // Open a space to work with. This is instead of defining a server.recon file. Which one could also do
-    final StateJoinMapPlane plane = kernel.openSpace(FabricDef.fromName("test"))
+    final StateJoinMapPlane plane = kernel.openSpace(ActorSpaceDef.fromName("test"))
         .openPlane("test", StateJoinMapPlane.class);
 
     kernel.openService(WebServiceDef.standard().port(53556).spaceName("test"));

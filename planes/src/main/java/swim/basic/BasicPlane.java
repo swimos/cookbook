@@ -14,19 +14,19 @@
 
 package swim.basic;
 
-import java.io.IOException;
+import swim.actor.ActorSpace;
 import swim.api.SwimRoute;
 import swim.api.agent.AgentRoute;
 import swim.api.auth.Identity;
 import swim.api.plane.AbstractPlane;
 import swim.api.policy.AbstractPolicy;
 import swim.api.policy.PolicyDirective;
-import swim.fabric.Fabric;
 import swim.kernel.Kernel;
 import swim.server.ServerLoader;
 import swim.structure.Text;
 import swim.structure.Value;
 import swim.warp.Envelope;
+import java.io.IOException;
 
 public class BasicPlane extends AbstractPlane {
   // Define policy; doesn't have to be an inner class
@@ -64,25 +64,26 @@ public class BasicPlane extends AbstractPlane {
 
   public static void main(String[] args) throws IOException {
     final Kernel kernel = ServerLoader.loadServer();
-    final Fabric fabric = (Fabric) kernel.getSpace("basic");
+    final ActorSpace space = (ActorSpace) kernel.getSpace("basic");
 
     kernel.start();
     System.out.println("Running Basic server...");
     kernel.run();
 
     // observe the effects of our commands
-    fabric.downlinkValue()
-      .nodeUri("/unit/master")
-      .laneUri("info")
-      .didSet((newValue, oldValue) -> {
-        System.out.println("observed info change to " + newValue + " from " + oldValue);
-      })
-      .open();
+    space.downlinkValue()
+        .nodeUri("/unit/master")
+        .laneUri("info")
+        .didSet((newValue, oldValue) -> {
+          System.out.println("observed info change to " + newValue + " from " + oldValue);
+        })
+        .open();
+
     // Swim handles don't reject their own messages, regardless of policy
-    fabric.command("/unit/master", "publishInfo", Text.from("Without network"));
+    space.command("/unit/master", "publishInfo", Text.from("Without network"));
     // Network events without tokens get rejected
-    fabric.command("warp://localhost:9001", "/unit/master", "publishInfo", Text.from("With network, no token"));
+    space.command("warp://localhost:9001", "/unit/master", "publishInfo", Text.from("With network, no token"));
     // Network events with the right token are accepted
-    fabric.command("warp://localhost:9001?token=abcd", "/unit/master", "publishInfo", Text.from("With network, token"));
+    space.command("warp://localhost:9001?token=abcd", "/unit/master", "publishInfo", Text.from("With network, token"));
   }
 }
