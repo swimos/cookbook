@@ -16,17 +16,19 @@
 
 package com.oracle.adbaoverjdbc;
 
-import static jdk.incubator.sql2.AdbaDataSourceProperty.*;
-import static org.junit.Assert.*;
-
 import org.junit.Test;
+import static jdk.incubator.sql2.AdbaDataSourceProperty.MAX_RESOURCES;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
- * Verifies the public API of DataSourceProperty functions as described in the 
+ * Verifies the public API of DataSourceProperty functions as described in the
  * ADBA javadoc.
  */
 public class DataSourcePropertyTest {
-  
+
   @Test
   public void testMaxResources() {
     assertEquals("MAX_RESOURCES", MAX_RESOURCES.name());
@@ -38,6 +40,6 @@ public class DataSourcePropertyTest {
     assertTrue(MAX_RESOURCES.validate(MAX_RESOURCES.defaultValue()));
     assertFalse(MAX_RESOURCES.isSensitive());
   }
-  
+
   // TODO: Test the configure API
 }

@@ -20,15 +20,12 @@ import swim.api.downlink.MapDownlink;
 import swim.api.lane.CommandLane;
 import swim.api.lane.MapLane;
 import swim.collections.HashTrieMap;
+import swim.recon.Recon;
 import swim.structure.Form;
 import swim.structure.Record;
 import swim.structure.Value;
-import swim.recon.Recon;
 
 public class ListenerAgent extends AbstractAgent {
-
-  // Immutable java.util.Map containing all downlink subscriptions
-  private HashTrieMap<String, MapDownlink<String, Integer>> shoppingCartSubscribers;
 
   // Shopping cart data for *all* UnitAgents, aggregated into a single ListenerAgent
   @SwimLane("shoppingCarts")
@@ -36,7 +33,8 @@ public class ListenerAgent extends AbstractAgent {
       .didUpdate((k, n, o) -> {
         logMessage("shoppingCarts updated " + k + ": " + Recon.toString(n));
       });
-
+  // Immutable java.util.Map containing all downlink subscriptions
+  private HashTrieMap<String, MapDownlink<String, Integer>> shoppingCartSubscribers;
   // Opens a subscription to the `UnitAgent` indicated by `v`
   @SwimLane("triggerListen")
   public CommandLane<String> triggerListen = this.<String>commandLane()

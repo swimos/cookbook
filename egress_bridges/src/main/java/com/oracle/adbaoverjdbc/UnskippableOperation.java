@@ -23,32 +23,33 @@ import java.util.function.Function;
  *
  */
 class UnskippableOperation<T> extends SimpleOperation<T> {
-  
-  static <S> UnskippableOperation<S> newOperation(Session session,
-                                             OperationGroup<? super S, ?> group,
-                                             Function<SimpleOperation<S>, S> action) {
-    return new UnskippableOperation<>(session, group, action);
-  }
 
   protected UnskippableOperation(Session session,
-                            OperationGroup<? super T, ?> operationGroup,
-                            Function<SimpleOperation<T>, T> action) {
-    super(session, operationGroup, (Function<SimpleOperation<T>, T>)action);
+                                 OperationGroup<? super T, ?> operationGroup,
+                                 Function<SimpleOperation<T>, T> action) {
+    super(session, operationGroup, (Function<SimpleOperation<T>, T>) action);
+  }
+
+  static <S> UnskippableOperation<S> newOperation(Session session,
+                                                  OperationGroup<? super S, ?> group,
+                                                  Function<SimpleOperation<S>, S> action) {
+    return new UnskippableOperation<>(session, group, action);
   }
 
   @Override
   CompletionStage<T> follows(CompletionStage<?> tail, Executor executor) {
     return tail.handleAsync(
-            (Object v, Throwable t) -> {
-              try {
-                return get();
-              }
-              catch (Throwable ex) {
-                if (errorHandler != null) errorHandler.accept(ex);
-                throw ex;
-              }
-            },
-            executor);
+        (Object v, Throwable t) -> {
+          try {
+            return get();
+          } catch (Throwable ex) {
+            if (errorHandler != null) {
+              errorHandler.accept(ex);
+            }
+            throw ex;
+          }
+        },
+        executor);
   }
 
 }

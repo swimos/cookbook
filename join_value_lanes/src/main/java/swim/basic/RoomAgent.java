@@ -22,23 +22,22 @@ import swim.structure.Value;
 
 public class RoomAgent extends AbstractAgent {
 
-    @SwimLane("lights")
-    ValueLane<Boolean> lights = this.valueLane();
+  @SwimLane("lights")
+  ValueLane<Boolean> lights = this.valueLane();
+  @SwimLane("toggleLights")
+  CommandLane<String> toggleLights = this.<String>commandLane().onCommand(msg -> {
+    this.lights.set(!lights.get());
+  });
 
-    @Override
-    public void didStart() {
-        register();
-    }
+  @Override
+  public void didStart() {
+    register();
+  }
 
-    @SwimLane("toggleLights")
-    CommandLane<String> toggleLights = this.<String>commandLane().onCommand(msg -> {
-        this.lights.set(!lights.get());
-    });
-
-    private void register() {
-        String buildingUri = "/building/" + this.getProp("building").stringValue();
-        Value roomId = this.getProp("room");
-        command(buildingUri, "registerRoom", roomId);
-    }
+  private void register() {
+    String buildingUri = "/building/" + this.getProp("building").stringValue();
+    Value roomId = this.getProp("room");
+    command(buildingUri, "registerRoom", roomId);
+  }
 
 }

@@ -22,25 +22,23 @@ import java.util.Set;
 
 /**
  * Bare bones DataSource. No support for Session caching.
- *
  */
 class DataSource implements jdk.incubator.sql2.DataSource {
 
-  static DataSource newDataSource(Map<SessionProperty, Object> defaultSessionProperties,
-          Map<SessionProperty, Object> requiredSessionProperties) {
-    return new DataSource(defaultSessionProperties, requiredSessionProperties);
-  }
-
   protected final Map<SessionProperty, Object> defaultSessionProperties;
   protected final Map<SessionProperty, Object> requiredSessionProperties;
-  
   protected final Set<Session> openSessions = new HashSet<>();
 
   protected DataSource(Map<SessionProperty, Object> defaultProps,
-          Map<SessionProperty, Object> requiredProps) {
+                       Map<SessionProperty, Object> requiredProps) {
     super();
     defaultSessionProperties = defaultProps;
     requiredSessionProperties = requiredProps;
+  }
+
+  static DataSource newDataSource(Map<SessionProperty, Object> defaultSessionProperties,
+                                  Map<SessionProperty, Object> requiredSessionProperties) {
+    return new DataSource(defaultSessionProperties, requiredSessionProperties);
   }
 
   @Override
@@ -50,16 +48,15 @@ class DataSource implements jdk.incubator.sql2.DataSource {
 
   @Override
   public void close() {
-    openSessions.stream().forEach( c -> c.close() );
+    openSessions.stream().forEach(c -> c.close());
   }
-  
-  
-  
+
+
   DataSource registerSession(Session c) {
     openSessions.add(c);
     return this;
   }
-  
+
   DataSource deregisterSession(Session c) {
     openSessions.remove(c);
     return this;

@@ -2,31 +2,31 @@ apply from: '../project.gradle'
 
 description = 'Code corresponding to the Egress Bridges cookbook'
 ext.moduleName = 'swim.grade'
-mainClassName='swim.grade.GradePlane'
+mainClassName = 'swim.grade.GradePlane'
 
 repositories {
-  maven { url "https://repo.eclipse.org/content/repositories/paho-snapshots/" }
-  maven { url "https://dl.bintray.com/pull-vert/adba/"}
+    maven { url "https://repo.eclipse.org/content/repositories/paho-snapshots/" }
+    maven { url "https://dl.bintray.com/pull-vert/adba/" }
 }
 
 dependencies {
-  api group: 'com.h2database', name: 'h2', version: '1.4.199'
-  api group: 'jdk.incubator', name: 'adba', version: '0.07'
-  testCompile 'junit:junit:4.12'  
+    api group: 'com.h2database', name: 'h2', version: '1.4.199'
+    api group: 'jdk.incubator', name: 'adba', version: '0.07'
+    testCompile 'junit:junit:4.12'
 }
 
 test { // FIXME
-  exclude '**/*'
+    exclude '**/*'
 }
 
 task runSim(type: JavaExec) {
-  group = "application"
-  classpath sourceSets.main.runtimeClasspath
-  main = "swim.grade.Sim"
+    group = "application"
+    classpath sourceSets.main.runtimeClasspath
+    main = "swim.grade.Sim"
 }
 
 task runDb(type: JavaExec) {
-  group = "application"
-  classpath sourceSets.main.runtimeClasspath
-  main = "swim.grade.db.Database"
+    group = "application"
+    classpath sourceSets.main.runtimeClasspath
+    main = "swim.grade.db.Database"
 }

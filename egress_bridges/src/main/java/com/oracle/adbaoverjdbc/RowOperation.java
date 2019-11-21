@@ -16,10 +16,9 @@
 package com.oracle.adbaoverjdbc;
 
 import jdk.incubator.sql2.ParameterizedRowOperation;
+import jdk.incubator.sql2.Result;
 import jdk.incubator.sql2.SqlException;
 import jdk.incubator.sql2.SqlType;
-import jdk.incubator.sql2.Result;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,37 +32,37 @@ import java.util.stream.Collector;
 /**
  * Creates separate CompletionStages to execute the query, to fetch and process
  * each block of fetchSize rows and to compute the final result. Yes, these are
- * all synchronous actions so there is no theoretical requirement to do them in 
+ * all synchronous actions so there is no theoretical requirement to do them in
  * separate CompletionStages. This class does so to break up this large synchronous
  * action into smaller tasks so as to avoid hogging a thread.
  */
-class RowOperation<T>  extends RowBaseOperation<T> 
-        implements jdk.incubator.sql2.ParameterizedRowOperation<T> {
+class RowOperation<T> extends RowBaseOperation<T>
+    implements jdk.incubator.sql2.ParameterizedRowOperation<T> {
 
   static final Collector DEFAULT_COLLECTOR = Collector.of(
-          () -> null,
-          (a, v) -> {},
-          (a, b) -> null,
-          a -> null);
-  static <S> RowOperation<S> newRowOperation(Session session, OperationGroup grp, String sql) {
-    return new RowOperation<>(session, grp, sql);
-  }
-  
+      () -> null,
+      (a, v) -> {
+      },
+      (a, b) -> null,
+      a -> null);
   // attributes
   private Collector collector;
-  
   // internal state
   private Object accumulator;
-  
+
   protected RowOperation(Session session, OperationGroup grp, String sql) {
     super(session, grp, sql);
     collector = DEFAULT_COLLECTOR;
   }
-  
+
+  static <S> RowOperation<S> newRowOperation(Session session, OperationGroup grp, String sql) {
+    return new RowOperation<>(session, grp, sql);
+  }
+
   /**
    * Return a CompletionStage that fetches the next block of rows. If there are
    * no more rows to fetch return a CompletionStage that completes the query.
-   * 
+   *
    * @param x ignored
    * @return the next Completion stage in the processing of the query.
    */
@@ -72,25 +71,24 @@ class RowOperation<T>  extends RowBaseOperation<T>
     checkCanceled();
     if (rowsRemain) {
       return CompletableFuture.runAsync(this::handleFetchRows, getExecutor())
-              .thenComposeAsync(this::moreRows, getExecutor());
-    }
-    else {
+          .thenComposeAsync(this::moreRows, getExecutor());
+    } else {
       return CompletableFuture.supplyAsync(this::completeQuery, getExecutor());
     }
   }
-  
+
   @Override
   void executeQuery() {
     executeJdbcQuery();
     accumulator = collector.supplier().get();
   }
-  
+
   protected void initRowOperationResultSet(PreparedStatement jdbcStatement, ResultSet resultSet) {
     super.initRowOperationResultSet(jdbcStatement, resultSet);
     accumulator = collector.supplier().get();
   }
 
-  
+
   /**
    * Process fetchSize rows. If the fetches are in sync then all the rows will
    * be in memory after the first is fetched up through the last row processed.
@@ -107,68 +105,75 @@ class RowOperation<T>  extends RowBaseOperation<T>
         handleRow();
         rowCount++;
       }
-    }
-    catch (SQLException ex) {
+    } catch (SQLException ex) {
       throw new SqlException(ex.getMessage(), ex, ex.getSQLState(), ex.getErrorCode(), sqlString, -1);
     }
     return null;
   }
-  
+
   private void handleRow() throws SQLException {
     checkCanceled();
     try (com.oracle.adbaoverjdbc.Result.RowColumn row = com.oracle.adbaoverjdbc.Result.newRowColumn(this)) {
       collector.accumulator().accept(accumulator, row);
     }
   }
-  
+
   @Override
   T completeQuery() {
     completeJdbcQuery();
     return (T) collector.finisher().apply(accumulator);
   }
-  
+
   public ParameterizedRowOperation<T> fetchSize(long rows) throws IllegalArgumentException {
-    if (isImmutable() || fetchSize != NOT_SET) throw new IllegalStateException("TODO");
-    if (rows < 1) throw new IllegalArgumentException("TODO");
-    fetchSize = (int)rows;
+    if (isImmutable() || fetchSize != NOT_SET) {
+      throw new IllegalStateException("TODO");
+    }
+    if (rows < 1) {
+      throw new IllegalArgumentException("TODO");
+    }
+    fetchSize = (int) rows;
     return this;
   }
 
   @Override
   public <A, S extends T> ParameterizedRowOperation<T> collect(Collector<? super Result.RowColumn, A, S> c) {
-    if (isImmutable() || collector != DEFAULT_COLLECTOR) throw new IllegalStateException("TODO");
-    if (c == null) throw new IllegalArgumentException("TODO");
+    if (isImmutable() || collector != DEFAULT_COLLECTOR) {
+      throw new IllegalStateException("TODO");
+    }
+    if (c == null) {
+      throw new IllegalArgumentException("TODO");
+    }
     collector = c;
     return this;
   }
 
   @Override
   public RowOperation<T> onError(Consumer<Throwable> handler) {
-    return (RowOperation<T>)super.onError(handler);
+    return (RowOperation<T>) super.onError(handler);
   }
 
   @Override
   public RowOperation<T> timeout(Duration minTime) {
-    return (RowOperation<T>)super.timeout(minTime);
+    return (RowOperation<T>) super.timeout(minTime);
   }
 
   @Override
   public RowOperation<T> set(String id, Object value, SqlType type) {
-    return (RowOperation<T>)super.set(id, value, type);
+    return (RowOperation<T>) super.set(id, value, type);
   }
 
   @Override
   public RowOperation<T> set(String id, CompletionStage<?> source, SqlType type) {
-    return (RowOperation<T>)super.set(id, source, type);
+    return (RowOperation<T>) super.set(id, source, type);
   }
 
   @Override
   public RowOperation<T> set(String id, CompletionStage<?> source) {
-    return (RowOperation<T>)super.set(id, source);
+    return (RowOperation<T>) super.set(id, source);
   }
 
   @Override
   public RowOperation<T> set(String id, Object value) {
-    return (RowOperation<T>)super.set(id, value);
+    return (RowOperation<T>) super.set(id, value);
   }
 }

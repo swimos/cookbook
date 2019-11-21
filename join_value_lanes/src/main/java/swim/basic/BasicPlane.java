@@ -30,13 +30,6 @@ public class BasicPlane extends AbstractPlane {
   @SwimRoute("/:building/:room")
   AgentRoute<RoomAgent> roomAgentType;
 
-  @Override
-  public void didStart() {
-    super.didStart();
-    // Immediately wake up BuildingAgent upon plane load
-    context.command("/building/swim", "wakeup", Value.absent());
-  }
-
   public static void main(String[] args) {
     final Kernel kernel = ServerLoader.loadServer();
     final ActorSpace space = (ActorSpace) kernel.getSpace("basic");
@@ -50,6 +43,13 @@ public class BasicPlane extends AbstractPlane {
     space.command("/swim/1", "wakeup", Value.absent());
     space.command("/swim/2", "wakeup", Value.absent());
     space.command("/swim/3", "wakeup", Value.absent());
+  }
+
+  @Override
+  public void didStart() {
+    super.didStart();
+    // Immediately wake up BuildingAgent upon plane load
+    context.command("/building/swim", "wakeup", Value.absent());
   }
 }
 

@@ -19,14 +19,14 @@ import jdk.incubator.sql2.SessionProperty;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-
-import static com.oracle.adbaoverjdbc.JdbcConnectionProperties.*;
+import static com.oracle.adbaoverjdbc.JdbcConnectionProperties.JDBC_CONNECTION_PROPERTIES;
+import static com.oracle.adbaoverjdbc.JdbcConnectionProperties.SENSITIVE_JDBC_CONNECTION_PROPERTIES;
 
 /**
  * A builder to create an AoJ session. The AoJ session creates a JDBC
  * Connection by calling {@link java.sql.DriverManager#getConnection} with the following
  * user provided SessionProperty values:
- * 
+ *
  * <dl>
  * <dt>URL</dt>
  * <dd>passed as the url argument to getSession</dd>
@@ -40,37 +40,34 @@ import static com.oracle.adbaoverjdbc.JdbcConnectionProperties.*;
  */
 class SessionBuilder implements jdk.incubator.sql2.Session.Builder {
 
-  /**
-   *
-   * @param ds
-   * @param defaultProperties. Captured
-   * @param requiredProperties. Captured
-   * @return
-   */
-  static SessionBuilder newSessionBuilder(DataSource ds, 
-          Map<SessionProperty, Object> defaultProperties,
-          Map<SessionProperty, Object> requiredProperties) {
-    return new SessionBuilder(ds, defaultProperties, requiredProperties);
-  }
-
-  private boolean isBuilt = false;
   private final DataSource dataSource;
   private final Map<SessionProperty, Object> defaultProperties;
   private final Map<SessionProperty, Object> requiredProperties;
-
+  private boolean isBuilt = false;
   /**
-   * 
    * @param ds
    * @param defaultSessionProperties
-   * @param specifiedSessionProperties 
+   * @param specifiedSessionProperties
    */
   private SessionBuilder(DataSource ds,
-          Map<SessionProperty, Object> defaultSessionProperties,
-          Map<SessionProperty, Object> specifiedSessionProperties) {
+                         Map<SessionProperty, Object> defaultSessionProperties,
+                         Map<SessionProperty, Object> specifiedSessionProperties) {
     super();
     dataSource = ds;
     defaultProperties = new HashMap(defaultSessionProperties);
     requiredProperties = new HashMap(specifiedSessionProperties);
+  }
+
+  /**
+   * @param ds
+   * @param defaultProperties.  Captured
+   * @param requiredProperties. Captured
+   * @return
+   */
+  static SessionBuilder newSessionBuilder(DataSource ds,
+                                          Map<SessionProperty, Object> defaultProperties,
+                                          Map<SessionProperty, Object> requiredProperties) {
+    return new SessionBuilder(ds, defaultProperties, requiredProperties);
   }
 
   @Override
@@ -100,27 +97,28 @@ class SessionBuilder implements jdk.incubator.sql2.Session.Builder {
     validateProperties(defaultProperties);
     return Session.newSession(dataSource, defaultProperties);
   }
-  
+
   /**
    * Ensures that a collection of SessionProperties represents a valid
    * configuration.
+   *
    * @param properties A collection of SessionProperties.
    * @throws IllegalArgumentException If the collection is not valid.
    */
   private void validateProperties(Map<SessionProperty, Object> properties) {
 
     // Ensure sensitive and non-sensitive properties are distinct.
-    Properties nonSensitive = 
-      (Properties) properties.get(JDBC_CONNECTION_PROPERTIES);
-    Properties sensitive = 
-      (Properties) properties.get(SENSITIVE_JDBC_CONNECTION_PROPERTIES);
+    Properties nonSensitive =
+        (Properties) properties.get(JDBC_CONNECTION_PROPERTIES);
+    Properties sensitive =
+        (Properties) properties.get(SENSITIVE_JDBC_CONNECTION_PROPERTIES);
     boolean distinct = nonSensitive == null || sensitive == null
-      || !(nonSensitive.keySet().stream().anyMatch(sensitive::containsKey));
-    
-    if (! distinct) {
-      throw new IllegalArgumentException(JDBC_CONNECTION_PROPERTIES.name() 
-        + " and " + SENSITIVE_JDBC_CONNECTION_PROPERTIES.name()
-        + " cannot define the same property.");
+        || !(nonSensitive.keySet().stream().anyMatch(sensitive::containsKey));
+
+    if (!distinct) {
+      throw new IllegalArgumentException(JDBC_CONNECTION_PROPERTIES.name()
+          + " and " + SENSITIVE_JDBC_CONNECTION_PROPERTIES.name()
+          + " cannot define the same property.");
     }
   }
 }

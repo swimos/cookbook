@@ -14,7 +14,6 @@
 
 package swim.basic;
 
-import java.io.IOException;
 import swim.actor.ActorSpace;
 import swim.api.SwimRoute;
 import swim.api.agent.AgentRoute;
@@ -22,6 +21,7 @@ import swim.api.plane.AbstractPlane;
 import swim.kernel.Kernel;
 import swim.server.ServerLoader;
 import swim.structure.Value;
+import java.io.IOException;
 
 public class BasicPlane extends AbstractPlane {
 

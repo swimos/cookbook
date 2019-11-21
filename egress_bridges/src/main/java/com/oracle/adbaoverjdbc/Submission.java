@@ -27,16 +27,16 @@ class Submission<T> implements jdk.incubator.sql2.Submission<T> {
   final private Supplier<Boolean> cancel;
   final private CompletionStage<T> stage;
   private CompletionStage<T> publicStage;
-  
-  static <T> Submission<T> submit(Supplier<Boolean> cancel, CompletionStage<T> s) {
-    return new Submission<>(cancel, s);
-  }
-  
+
   protected Submission(Supplier<Boolean> can, CompletionStage<T> stg) {
     cancel = can;
     stage = stg;
   }
-  
+
+  static <T> Submission<T> submit(Supplier<Boolean> cancel, CompletionStage<T> s) {
+    return new Submission<>(cancel, s);
+  }
+
   @Override
   public CompletionStage<Boolean> cancel() {
     return new CompletableFuture().completeAsync(cancel);
@@ -44,8 +44,10 @@ class Submission<T> implements jdk.incubator.sql2.Submission<T> {
 
   @Override
   public CompletionStage<T> getCompletionStage() {
-    if (publicStage == null) publicStage = ((CompletableFuture)stage).minimalCompletionStage();
+    if (publicStage == null) {
+      publicStage = ((CompletableFuture) stage).minimalCompletionStage();
+    }
     return publicStage;
   }
-  
+
 }

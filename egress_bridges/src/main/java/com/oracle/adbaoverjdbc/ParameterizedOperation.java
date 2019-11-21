@@ -28,8 +28,8 @@ import java.util.concurrent.CompletionStage;
  *
  */
 public abstract class ParameterizedOperation<T> extends Operation<T>
-        implements jdk.incubator.sql2.ParameterizedOperation<T> {
-  
+    implements jdk.incubator.sql2.ParameterizedOperation<T> {
+
   protected final Map<String, ParameterValue> setParameters;
   protected CompletionStage futureParameters;
 
@@ -37,10 +37,14 @@ public abstract class ParameterizedOperation<T> extends Operation<T>
     super(session, operationGroup);
     setParameters = new HashMap<>();
   }
-  
+
   CompletionStage attachFutureParameters(CompletionStage predecessor) {
-    if (futureParameters == null) return predecessor;
-    else  return predecessor.runAfterBoth(futureParameters, () -> {});
+    if (futureParameters == null) {
+      return predecessor;
+    } else {
+      return predecessor.runAfterBoth(futureParameters, () -> {
+      });
+    }
   }
 
   @Override
@@ -53,21 +57,23 @@ public abstract class ParameterizedOperation<T> extends Operation<T>
     }
     if (value instanceof CompletionStage) {
       if (futureParameters == null) {
-        futureParameters = ((CompletionStage)value)
-                .thenAccept( v -> { setParameters.put(id, new ParameterValue(v, type)); });
+        futureParameters = ((CompletionStage) value)
+            .thenAccept(v -> {
+              setParameters.put(id, new ParameterValue(v, type));
+            });
+      } else {
+        futureParameters = ((CompletionStage) value)
+            .thenAcceptBoth(futureParameters,
+                (v, f) -> {
+                  setParameters.put(id, new ParameterValue(v, type));
+                });
       }
-      else {
-        futureParameters = ((CompletionStage)value)
-               .thenAcceptBoth(futureParameters, 
-                               (v, f) -> { setParameters.put(id, new ParameterValue(v, type)); });
-      }
-    }
-    else {
+    } else {
       setParameters.put(id, new ParameterValue(value, type));
     }
     return this;
   }
-  
+
   @Override
   public ParameterizedOperation<T> set(String id, CompletionStage<?> source, SqlType type) {
     return set(id, (Object) source, type);
@@ -82,47 +88,43 @@ public abstract class ParameterizedOperation<T> extends Operation<T>
   public ParameterizedOperation<T> set(String id, Object value) {
     return set(id, value, null);
   }
-  
+
   static final class ParameterValue {
-    
+
     final Object value;
     final SqlType type;
-    
+
     ParameterValue(Object val, SqlType typ) {
       value = val;
       type = typ;
     }
-    
+
     void set(PreparedStatement stmt, String id) {
       try {
         try {
           setByPosition(stmt, Integer.parseInt(id));
-        }
-        catch (NumberFormatException ex) {
+        } catch (NumberFormatException ex) {
           setByName(stmt, id);
         }
-      }
-      catch (SQLException ex) {
+      } catch (SQLException ex) {
         throw new SqlException(ex.getMessage(), ex, ex.getSQLState(), ex.getErrorCode(), null, -1);
       }
     }
-                    
+
     void setByPosition(PreparedStatement stmt, int index) throws SQLException {
       if (type == null) {
         stmt.setObject(index, value, toSQLType(value.getClass()));
-      }
-      else if (type instanceof AdbaType) {
-         stmt.setObject(index, value, toSQLType((AdbaType)type));
-      }
-      else {
+      } else if (type instanceof AdbaType) {
+        stmt.setObject(index, value, toSQLType((AdbaType) type));
+      } else {
         throw new IllegalArgumentException("TODO");
       }
     }
-    
+
     void setByName(PreparedStatement stmt, String id) throws SQLException {
       throw new UnsupportedOperationException("Not supported yet.");
     }
   }
-  
-  
+
+
 }

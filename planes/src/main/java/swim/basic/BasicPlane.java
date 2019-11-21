@@ -29,20 +29,6 @@ import swim.warp.Envelope;
 import java.io.IOException;
 
 public class BasicPlane extends AbstractPlane {
-  // Define policy; doesn't have to be an inner class
-  class BasicPolicy extends AbstractPolicy {
-    @Override
-    protected <T> PolicyDirective<T> authorize(Envelope envelope, Identity identity) {
-      if (identity != null) {
-        final String token = identity.requestUri().query().get("token");
-        if ("abcd".equals(token)) {
-          return allow();
-        }
-      }
-      return forbid();
-    }
-  }
-
   @SwimRoute("/unit/:id")
   AgentRoute<UnitAgent> unitAgentType;
 
@@ -50,16 +36,6 @@ public class BasicPlane extends AbstractPlane {
   // its implicit call to super() in Java
   public BasicPlane() {
     context.setPolicy(new BasicPolicy());
-  }
-
-  @Override
-  public void didStart() {
-    context.command("/unit/master", "WAKEUP", Value.absent());
-  }
-
-  @Override
-  public void willStop() {
-    System.out.println("Shutdown in progress...");
   }
 
   public static void main(String[] args) throws IOException {
@@ -85,5 +61,29 @@ public class BasicPlane extends AbstractPlane {
     space.command("warp://localhost:9001", "/unit/master", "publishInfo", Text.from("With network, no token"));
     // Network events with the right token are accepted
     space.command("warp://localhost:9001?token=abcd", "/unit/master", "publishInfo", Text.from("With network, token"));
+  }
+
+  @Override
+  public void didStart() {
+    context.command("/unit/master", "WAKEUP", Value.absent());
+  }
+
+  @Override
+  public void willStop() {
+    System.out.println("Shutdown in progress...");
+  }
+
+  // Define policy; doesn't have to be an inner class
+  class BasicPolicy extends AbstractPolicy {
+    @Override
+    protected <T> PolicyDirective<T> authorize(Envelope envelope, Identity identity) {
+      if (identity != null) {
+        final String token = identity.requestUri().query().get("token");
+        if ("abcd".equals(token)) {
+          return allow();
+        }
+      }
+      return forbid();
+    }
   }
 }

@@ -14,7 +14,6 @@
 
 package swim.basic;
 
-import java.io.IOException;
 import swim.actor.ActorSpace;
 import swim.api.SwimRoute;
 import swim.api.agent.AgentRoute;
@@ -23,6 +22,7 @@ import swim.kernel.Kernel;
 import swim.recon.Recon;
 import swim.server.ServerLoader;
 import swim.structure.Value;
+import java.io.IOException;
 
 public class BasicPlane extends AbstractPlane {
 
@@ -31,13 +31,6 @@ public class BasicPlane extends AbstractPlane {
 
   @SwimRoute("/unit/:id")
   AgentRoute<UnitAgent> unitAgentType;
-
-  @Override
-  public void didStart() {
-    super.didStart();
-    // Immediately wake up ListenerAgent upon plane load
-    context.command("/listener", "wakeup", Value.absent());
-  }
 
   public static void main(String[] args) throws IOException, InterruptedException {
     final Kernel kernel = ServerLoader.loadServer();
@@ -54,5 +47,12 @@ public class BasicPlane extends AbstractPlane {
           System.out.println("event downlink saw " + Recon.toString(v));
         })
         .open();
+  }
+
+  @Override
+  public void didStart() {
+    super.didStart();
+    // Immediately wake up ListenerAgent upon plane load
+    context.command("/listener", "wakeup", Value.absent());
   }
 }

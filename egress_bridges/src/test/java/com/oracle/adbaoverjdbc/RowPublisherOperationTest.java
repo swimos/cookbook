@@ -16,25 +16,29 @@
 package com.oracle.adbaoverjdbc;
 
 import jdk.incubator.sql2.DataSource;
-import java.util.concurrent.CompletionStage;
-import java.util.concurrent.TimeUnit;
+import jdk.incubator.sql2.Result;
+import jdk.incubator.sql2.Session;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Flow;
-import jdk.incubator.sql2.Result;
-import jdk.incubator.sql2.Session;
-import static com.oracle.adbaoverjdbc.TestConfig.*;
+import java.util.concurrent.TimeUnit;
+import static com.oracle.adbaoverjdbc.TestConfig.getDataSource;
+import static com.oracle.adbaoverjdbc.TestConfig.getTimeout;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
 
 /**
  * This is a quick and dirty test to check if anything at all is working.
  */
 public class RowPublisherOperationTest {
-  
+
   // Define these three constants with the appropriate values for the database
   // and JDBC driver you want to use. Should work with ANY reasonably standard
   // JDBC driver. These values are passed to DriverManager.getSession.
@@ -42,9 +46,9 @@ public class RowPublisherOperationTest {
   public static final String USER = TestConfig.getUser();
   public static final String PASSWORD = TestConfig.getPassword();
 
-  public static final String FACTORY_NAME = 
+  public static final String FACTORY_NAME =
       TestConfig.getDataSourceFactoryName();
-  
+
   @BeforeClass
   public static void setUpClass() {
     try (DataSource ds = getDataSource(); Session se = ds.getSession()) {
@@ -58,127 +62,128 @@ public class RowPublisherOperationTest {
       TestFixtures.dropTestSchema(se);
     }
   }
-    
+
   @Test
   public void rowSubscriber() throws Exception {
-    System.out.println("rowSubscriber"); 
-    System.out.println("============="); 
+    System.out.println("rowSubscriber");
+    System.out.println("=============");
 
     String sql = "select id, name from forum_user";
     CompletableFuture<List<String>> result = new CompletableFuture<>();
     CompletionStage<List<String>> cs;
 
     Flow.Subscriber<Result.RowColumn> subscriber = getSubscriber(result, false);
-            
+
     try (Session session = getSession()) {
-            cs = session.<List<String>>rowPublisherOperation(sql)
-              .subscribe(subscriber, result)
-              .onError(e -> fail(e.getMessage()))
-              .submit()
-              .getCompletionStage();
+      cs = session.<List<String>>rowPublisherOperation(sql)
+          .subscribe(subscriber, result)
+          .onError(e -> fail(e.getMessage()))
+          .submit()
+          .getCompletionStage();
     }
 
-    cs.toCompletableFuture().get(getTimeout().toMillis(), 
-                                 TimeUnit.MILLISECONDS);
-    List<String> names = result.get(getTimeout().toMillis(), 
-                                    TimeUnit.MILLISECONDS);;
+    cs.toCompletableFuture().get(getTimeout().toMillis(),
+        TimeUnit.MILLISECONDS);
+    List<String> names = result.get(getTimeout().toMillis(),
+        TimeUnit.MILLISECONDS);
+    ;
     assertNotNull(names);
     assertFalse(names.isEmpty());
-    assertEquals(14, names.size()); 
+    assertEquals(14, names.size());
   }
-  
+
   @Test
   public void slowRowSubscriberRequestOnThread() throws Exception {
 
-    System.out.println("slowRowSubscriberRequestOnThread"); 
-    System.out.println("================================"); 
-    
+    System.out.println("slowRowSubscriberRequestOnThread");
+    System.out.println("================================");
+
     String sql = "select id, name from forum_user";
     CompletableFuture<List<String>> result = new CompletableFuture<>();
     CompletionStage<List<String>> cs;
-    
+
     Flow.Subscriber<Result.RowColumn> subscriber = getSubscriber(result, true);
-    
+
     try (Session session = getSession()) {
-            cs = session.<List<String>>rowPublisherOperation(sql)
-              .subscribe(subscriber, result)
-              .onError(e -> e.printStackTrace())
-              .timeout(getTimeout())
-              .submit()
-              .getCompletionStage();
+      cs = session.<List<String>>rowPublisherOperation(sql)
+          .subscribe(subscriber, result)
+          .onError(e -> e.printStackTrace())
+          .timeout(getTimeout())
+          .submit()
+          .getCompletionStage();
     }
-    
-    cs.toCompletableFuture().get(getTimeout().toMillis() + 7000, 
-                                 TimeUnit.MILLISECONDS);
+
+    cs.toCompletableFuture().get(getTimeout().toMillis() + 7000,
+        TimeUnit.MILLISECONDS);
     List<String> names = result.get(getTimeout().toMillis(),
-                                    TimeUnit.MILLISECONDS);
+        TimeUnit.MILLISECONDS);
     assertNotNull(names);
     assertFalse(names.isEmpty());
-    assertEquals(14, names.size());  
+    assertEquals(14, names.size());
   }
-  
+
   private Session getSession() {
     return getDataSource().getSession();
   }
-  
+
   private Flow.Subscriber<Result.RowColumn> getSubscriber(CompletableFuture<List<String>> result, boolean reqOnThread) {
-    
-      Flow.Subscriber<Result.RowColumn> subscriber = new Flow.Subscriber<>() {
 
-        Flow.Subscription subscription;
-        List<String> names = new ArrayList<>();
-        int demand = 0;
-        final int BATCH_REQUEST_COUNT = 3;
-        final boolean requestOnThread = reqOnThread;
+    Flow.Subscriber<Result.RowColumn> subscriber = new Flow.Subscriber<>() {
 
-        @Override
-        public void onSubscribe(Flow.Subscription subscription) {
-          this.subscription = subscription;
-          this.subscription.request(BATCH_REQUEST_COUNT);
-          demand = BATCH_REQUEST_COUNT;
-        }
+      final int BATCH_REQUEST_COUNT = 3;
+      final boolean requestOnThread = reqOnThread;
+      Flow.Subscription subscription;
+      List<String> names = new ArrayList<>();
+      int demand = 0;
 
-        @Override
-        public void onNext(Result.RowColumn column) {
-          String name = column.at("NAME").get(String.class);
-          System.out.println(name);
-          names.add(name);
-          if (--demand < 1) {
-            if(requestOnThread) {
-              new Thread(new RequestGenerator()).start();
-            }
-            else {
-              subscription.request(BATCH_REQUEST_COUNT);
-              demand = BATCH_REQUEST_COUNT;
-            }
+      @Override
+      public void onSubscribe(Flow.Subscription subscription) {
+        this.subscription = subscription;
+        this.subscription.request(BATCH_REQUEST_COUNT);
+        demand = BATCH_REQUEST_COUNT;
+      }
+
+      @Override
+      public void onNext(Result.RowColumn column) {
+        String name = column.at("NAME").get(String.class);
+        System.out.println(name);
+        names.add(name);
+        if (--demand < 1) {
+          if (requestOnThread) {
+            new Thread(new RequestGenerator()).start();
+          } else {
+            subscription.request(BATCH_REQUEST_COUNT);
+            demand = BATCH_REQUEST_COUNT;
           }
         }
+      }
 
-        @Override
-        public void onError(Throwable throwable) {
-          result.completeExceptionally(throwable);
-        }
+      @Override
+      public void onError(Throwable throwable) {
+        result.completeExceptionally(throwable);
+      }
 
-        @Override
-        public void onComplete() {
-          result.complete(names);
-        }
-        
+      @Override
+      public void onComplete() {
+        result.complete(names);
+      }
+
       class RequestGenerator implements Runnable {
         @Override
         public void run() {
-          try{
+          try {
             Thread.sleep(500);
-          } catch(InterruptedException ex) {}
-          
+          } catch (InterruptedException ex) {
+          }
+
           subscription.request(BATCH_REQUEST_COUNT);
           demand = BATCH_REQUEST_COUNT;
         }
       }
-        
-      };
-      
-     return subscriber;
+
+    };
+
+    return subscriber;
   }
-  
+
 }

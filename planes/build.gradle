@@ -2,4 +2,4 @@ apply from: '../project.gradle'
 
 description = 'Code corresponding to the Planes cookbook'
 ext.moduleName = 'swim.basic'
-mainClassName='swim.basic.BasicPlane'
+mainClassName = 'swim.basic.BasicPlane'

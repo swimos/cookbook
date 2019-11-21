@@ -2,30 +2,30 @@ apply from: '../project.gradle'
 
 description = 'Code corresponding to the Ingress Bridges cookbook'
 ext.moduleName = 'swim.basic'
-mainClassName='swim.basic.BasicPlane'
+mainClassName = 'swim.basic.BasicPlane'
 
 repositories {
-  maven { url "https://repo.eclipse.org/content/repositories/paho-snapshots/" }
+    maven { url "https://repo.eclipse.org/content/repositories/paho-snapshots/" }
 }
 
 dependencies {
-  api group: 'org.eclipse.paho', name: 'org.eclipse.paho.client.mqttv3', version: '1.0.2'
+    api group: 'org.eclipse.paho', name: 'org.eclipse.paho.client.mqttv3', version: '1.0.2'
 }
 
 task runMqtt(type: JavaExec) {
-  group = "application"
-  classpath sourceSets.main.runtimeClasspath
-  main = "swim.basic.mqtt.DataSourcePopulator"
+    group = "application"
+    classpath sourceSets.main.runtimeClasspath
+    main = "swim.basic.mqtt.DataSourcePopulator"
 }
 
 task runBridge(type: JavaExec) {
-  group = "application"
-  classpath sourceSets.main.runtimeClasspath
-  main = "swim.basic.mqtt.IngressBridge"
+    group = "application"
+    classpath sourceSets.main.runtimeClasspath
+    main = "swim.basic.mqtt.IngressBridge"
 }
 
 task runWarp(type: JavaExec) {
-  group = "application"
-  classpath sourceSets.main.runtimeClasspath
-  main = "swim.basic.warp.SourcePlane"
+    group = "application"
+    classpath sourceSets.main.runtimeClasspath
+    main = "swim.basic.warp.SourcePlane"
 }

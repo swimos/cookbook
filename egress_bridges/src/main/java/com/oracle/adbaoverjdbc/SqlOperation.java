@@ -19,12 +19,12 @@ package com.oracle.adbaoverjdbc;
  *
  */
 class SqlOperation<T> extends SimpleOperation<T> {
-  
+
+  protected SqlOperation(Session session, OperationGroup<? super T, ?> group, String sql) {
+    super(session, group, op -> (T) session.jdbcExecute(op, sql));
+  }
+
   static <S> SqlOperation<S> newOperation(Session session, OperationGroup<? super S, ?> group, String sql) {
     return new SqlOperation<>(session, group, sql);
-  } 
-  
-  protected SqlOperation(Session session, OperationGroup<? super T, ?> group, String sql) {
-    super(session, group, op -> (T)session.jdbcExecute(op, sql));
   }
 }

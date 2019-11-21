@@ -21,16 +21,9 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
- *
  * @param <T>
  */
 class SimpleOperation<T> extends Operation<T> implements Supplier<T> {
-
-  static <S> SimpleOperation<S> newOperation(Session session,
-                                             OperationGroup<? super S, ?> group,
-                                             Function<SimpleOperation<S>, S> act) {
-    return new SimpleOperation<>(session, group, act);
-  }
 
   private final Function<SimpleOperation<T>, T> action;
 
@@ -39,6 +32,12 @@ class SimpleOperation<T> extends Operation<T> implements Supplier<T> {
                             Function<SimpleOperation<T>, T> act) {
     super(session, operationGroup);
     action = act;
+  }
+
+  static <S> SimpleOperation<S> newOperation(Session session,
+                                             OperationGroup<? super S, ?> group,
+                                             Function<SimpleOperation<S>, S> act) {
+    return new SimpleOperation<>(session, group, act);
   }
 
   @Override
@@ -58,8 +57,7 @@ class SimpleOperation<T> extends Operation<T> implements Supplier<T> {
     checkCanceled();
     try {
       return action.apply(this);
-    }
-    finally {
+    } finally {
       operationLifecycle = OperationLifecycle.COMPLETED;
     }
   }
