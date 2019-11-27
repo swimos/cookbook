@@ -1,0 +1,17 @@
+apply from: '../project.gradle'
+
+description = 'Code corresponding to the Join Value Lanes cookbook'
+ext.moduleName = 'swim.basic'
+mainClassName = 'swim.basic.BasicPlane'
+
+dependencies {
+    api group: 'org.swimos', name: 'swim-api', version: version
+    api group: 'org.swimos', name: 'swim-server', version: version
+    api group: 'org.swimos', name: 'swim-client', version: version
+}
+
+task runClient(type: JavaExec) {
+    group = "application"
+    classpath sourceSets.main.runtimeClasspath
+    main = "swim.basic.CustomClient"
+}

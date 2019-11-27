@@ -24,32 +24,32 @@ import swim.structure.Value;
 
 public class BasicPlane extends AbstractPlane {
 
-  @SwimRoute("/building/:name")
-  AgentRoute<BuildingAgent> buildingAgentType;
-  
-  @SwimRoute("/:building/:room")
-  AgentRoute<RoomAgent> roomAgentType;
-  
-  
-  @Override
-  public void didStart() {
-    super.didStart();
-    // Immediately wake up BuildingAgent upon plane load
-    context.command("/building/swim", "wakeup", Value.absent());
-  }
-  
-  public static void main(String[] args) {
-    final Kernel kernel = ServerLoader.loadServer();
-    final Fabric fabric = (Fabric) kernel.getSpace("basic");
+    @SwimRoute("/building/:name")
+    AgentRoute<BuildingAgent> buildingAgentType;
 
-    kernel.start();
-    System.out.println("Running Basic server...");
-    kernel.run();
+    @SwimRoute("/:building/:room")
+    AgentRoute<RoomAgent> roomAgentType;
 
-    fabric.command("/building/swim", "wakeup", Value.absent());
-    
-    fabric.command("/swim/1", "wakeup", Value.absent());
-    fabric.command("/swim/2", "wakeup", Value.absent());
-    fabric.command("/swim/3", "wakeup", Value.absent());
-  }
+    @Override
+    public void didStart() {
+        super.didStart();
+        // Immediately wake up BuildingAgent upon plane load
+        context.command("/building/swim", "wakeup", Value.absent());
+    }
+
+    public static void main(String[] args) {
+        final Kernel kernel = ServerLoader.loadServer();
+        final Fabric fabric = (Fabric) kernel.getSpace("basic");
+
+        kernel.start();
+        System.out.println("Running Basic server...");
+        kernel.run();
+
+        fabric.command("/building/swim", "wakeup", Value.absent());
+
+        fabric.command("/swim/1", "wakeup", Value.absent());
+        fabric.command("/swim/2", "wakeup", Value.absent());
+        fabric.command("/swim/3", "wakeup", Value.absent());
+    }
 }
+
