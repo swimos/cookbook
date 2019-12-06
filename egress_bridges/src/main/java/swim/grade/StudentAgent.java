@@ -17,22 +17,12 @@ package swim.grade;
 import swim.api.SwimLane;
 import swim.api.agent.AbstractAgent;
 import swim.api.lane.CommandLane;
-import swim.api.lane.MapLane;
 import swim.api.lane.ValueLane;
 import swim.recon.Recon;
 import swim.structure.Record;
 import swim.structure.Value;
 
 public class StudentAgent extends AbstractAgent {
-
-  private int id;
-
-  @SwimLane("currentGrade")
-  ValueLane<Value> grade = this.<Value>valueLane()
-      .didSet((n, o) -> {
-        logMessage("changed grade to " + Recon.toString(n));
-        CustomDriver.updateGrade(id, n.get("earned").intValue(), n.get("possible").intValue());
-      });
 
   @SwimLane("addAssignment")
   CommandLane<Value> publish = this.<Value>commandLane()
@@ -41,6 +31,13 @@ public class StudentAgent extends AbstractAgent {
         this.grade.set(Record.create(2)
             .slot("earned", current.get("earned").intValue() + msg.get("earned").intValue())
             .slot("possible", current.get("possible").intValue() + msg.get("possible").intValue()));
+      });
+  private int id;
+  @SwimLane("currentGrade")
+  ValueLane<Value> grade = this.<Value>valueLane()
+      .didSet((n, o) -> {
+        logMessage("changed grade to " + Recon.toString(n));
+        CustomDriver.updateGrade(id, n.get("earned").intValue(), n.get("possible").intValue());
       });
 
   private void logMessage(Object msg) {

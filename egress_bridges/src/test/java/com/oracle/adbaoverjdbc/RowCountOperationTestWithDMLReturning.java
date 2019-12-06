@@ -15,49 +15,50 @@
  */
 package com.oracle.adbaoverjdbc;
 
+import jdk.incubator.sql2.DataSource;
 import jdk.incubator.sql2.DataSourceFactory;
 import jdk.incubator.sql2.ParameterizedRowCountOperation;
 import jdk.incubator.sql2.Result;
-import jdk.incubator.sql2.DataSource;
-import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collector;
+import jdk.incubator.sql2.Session;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
-import static com.oracle.adbaoverjdbc.TestConfig.*;
-
-import jdk.incubator.sql2.Session;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collector;
+import static com.oracle.adbaoverjdbc.TestConfig.getDataSourceFactoryName;
+import static com.oracle.adbaoverjdbc.TestConfig.getPassword;
+import static com.oracle.adbaoverjdbc.TestConfig.getTimeout;
+import static com.oracle.adbaoverjdbc.TestConfig.getUrl;
+import static com.oracle.adbaoverjdbc.TestConfig.getUser;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * This is a quick and dirty test to check if anything at all is working.
  */
 public class RowCountOperationTestWithDMLReturning {
-  
+
   // Define these three constants with the appropriate values for the database
   // and JDBC driver you want to use. Should work with ANY reasonably standard
   // JDBC driver. These values are passed to DriverManager.getSession.
   public static final String URL = TestConfig.getUrl();
   public static final String USER = TestConfig.getUser();
   public static final String PASSWORD = TestConfig.getPassword();
-  private static final String TEST_TABLE = "AOJ_DML_RET_TEST";
-  
-  
-// CREATE TABLE DML_RET_TABLE1 (C11 int, C12 int GENERATED ALWAYS AS IDENTITY)  
-
-
-  public static final String FACTORY_NAME = 
+  public static final String FACTORY_NAME =
       TestConfig.getDataSourceFactoryName();
+
+
+// CREATE TABLE DML_RET_TABLE1 (C11 int, C12 int GENERATED ALWAYS AS IDENTITY)  
+  private static final String TEST_TABLE = "AOJ_DML_RET_TEST";
 
   @BeforeClass
   public static void setUpClass() throws Exception {
     DataSource ds = TestConfig.getDataSource();
-      
+
     try (Session se = ds.getSession()) {
-        se.operation("CREATE TABLE " + TEST_TABLE + "(C11 int, C12 int GENERATED ALWAYS AS IDENTITY)")
+      se.operation("CREATE TABLE " + TEST_TABLE + "(C11 int, C12 int GENERATED ALWAYS AS IDENTITY)")
           .submit();
-        se.endTransactionOperation(se.transactionCompletion())
+      se.endTransactionOperation(se.transactionCompletion())
           .timeout(getTimeout())
           .onError(err -> err.printStackTrace())
           .submit()
@@ -75,17 +76,17 @@ public class RowCountOperationTestWithDMLReturning {
         .username(getUser())
         .password(getPassword())
         .build();
-      
-      try (Session se = ds.getSession()) {
-          se.operation("DROP TABLE " + TEST_TABLE).submit();
-          se.endTransactionOperation(se.transactionCompletion())
-            .timeout(getTimeout())
-            .onError(err -> err.printStackTrace())
-            .submit()
-            .getCompletionStage()
-            .toCompletableFuture()
-            .get();
-      }    
+
+    try (Session se = ds.getSession()) {
+      se.operation("DROP TABLE " + TEST_TABLE).submit();
+      se.endTransactionOperation(se.transactionCompletion())
+          .timeout(getTimeout())
+          .onError(err -> err.printStackTrace())
+          .submit()
+          .getCompletionStage()
+          .toCompletableFuture()
+          .get();
+    }
   }
 
   /**
@@ -96,37 +97,37 @@ public class RowCountOperationTestWithDMLReturning {
   public void transaction() throws Exception {
     DataSourceFactory factory = DataSourceFactory.newFactory(FACTORY_NAME);
     try (DataSource ds = factory.builder()
-            .url(URL)
-            .username(USER)
-            .password(PASSWORD)
-            .build();
-            Session session = ds.getSession(t -> System.out.println("ERROR: " + t.toString()))) {
-      
-      ParameterizedRowCountOperation<Long> countOpReturning = 
-        session.<Long>rowCountOperation(
-          "insert into " + TEST_TABLE + "(C11) values (1)");
-      countOpReturning.returning(new String [] { "C12" })
-             .collect(Collector.of(
-                  () -> null,
-                  (a, r) -> assertEquals(1, r.at(1)
-                                             .get(Integer.class)
-                                             .intValue()),
-                  (l, r) -> null))
-             .onError( t -> fail(t.getMessage()))
-             .submit();
+        .url(URL)
+        .username(USER)
+        .password(PASSWORD)
+        .build();
+         Session session = ds.getSession(t -> System.out.println("ERROR: " + t.toString()))) {
 
-      ParameterizedRowCountOperation<Long> countOpApplying = 
-        session.<Long>rowCountOperation(
-          "insert into " + TEST_TABLE + "(C11) values (1)");
+      ParameterizedRowCountOperation<Long> countOpReturning =
+          session.<Long>rowCountOperation(
+              "insert into " + TEST_TABLE + "(C11) values (1)");
+      countOpReturning.returning(new String[] {"C12"})
+          .collect(Collector.of(
+              () -> null,
+              (a, r) -> assertEquals(1, r.at(1)
+                  .get(Integer.class)
+                  .intValue()),
+              (l, r) -> null))
+          .onError(t -> fail(t.getMessage()))
+          .submit();
+
+      ParameterizedRowCountOperation<Long> countOpApplying =
+          session.<Long>rowCountOperation(
+              "insert into " + TEST_TABLE + "(C11) values (1)");
       countOpApplying.apply(Result.RowCount::getCount)
-              .onError(t -> fail(t.getMessage()))
-              .submit()
-              .getCompletionStage()
-              .thenAccept(c -> assertEquals(1L, c.longValue()));
+          .onError(t -> fail(t.getMessage()))
+          .submit()
+          .getCompletionStage()
+          .thenAccept(c -> assertEquals(1L, c.longValue()));
       session.catchErrors();
       session.rollback()
-        .toCompletableFuture()
-        .get(TestConfig.getTimeout().toMillis(), TimeUnit.MILLISECONDS);
-    }    
+          .toCompletableFuture()
+          .get(TestConfig.getTimeout().toMillis(), TimeUnit.MILLISECONDS);
+    }
   }
 }

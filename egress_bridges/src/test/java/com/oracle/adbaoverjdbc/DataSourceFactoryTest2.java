@@ -17,7 +17,7 @@ package com.oracle.adbaoverjdbc;
 
 import jdk.incubator.sql2.DataSourceFactory;
 import org.junit.Test;
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 public class DataSourceFactoryTest2 {
 
@@ -25,9 +25,9 @@ public class DataSourceFactoryTest2 {
    * Verify that when DataSourceFactory name is null then it throws an
    * exception.
    */
-  @Test (expected = IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void nullDataSourceFactory() {
-     DataSourceFactory.newFactory(null);
-     fail("Exception expected");
+    DataSourceFactory.newFactory(null);
+    fail("Exception expected");
   }
 }

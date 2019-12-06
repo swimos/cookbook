@@ -22,7 +22,7 @@ import java.util.Properties;
  * Its value is a java.util.Properties. This value is passed as the info argument
  * when creating a java.sql.Connection.
  * <br>
- * Two types of JdbcConnectionProperties are defined in order to distinguish 
+ * Two types of JdbcConnectionProperties are defined in order to distinguish
  * {@linkplain jdk.incubator.sql2.SessionProperty#isSensitive() sensitive and non-sensitive JDBC properties.}:
  * <ul>
  * <li>
@@ -34,18 +34,17 @@ import java.util.Properties;
  *  properties.
  * </li>
  * </ul>
- * If values for both JdbcSessionProperties have been specified for a session, 
- * and both values specify the same JDBC property, this is an illegal 
- * specification. Attempting to create a {@link Session} with this 
- * configuration will result in an {@link IllegalArgumentException}.   
- *  
+ * If values for both JdbcSessionProperties have been specified for a session,
+ * and both values specify the same JDBC property, this is an illegal
+ * specification. Attempting to create a {@link Session} with this
+ * configuration will result in an {@link IllegalArgumentException}.
  */
-public enum JdbcConnectionProperties 
-  implements jdk.incubator.sql2.SessionProperty {
-  
-  /** 
-   * A SessionProperty which specifies non-sensitive JDBC Connection 
-   * properties. 
+public enum JdbcConnectionProperties
+    implements jdk.incubator.sql2.SessionProperty {
+
+  /**
+   * A SessionProperty which specifies non-sensitive JDBC Connection
+   * properties.
    */
   JDBC_CONNECTION_PROPERTIES(false),
 
@@ -54,9 +53,9 @@ public enum JdbcConnectionProperties
    * such as passwords.
    */
   SENSITIVE_JDBC_CONNECTION_PROPERTIES(true);
-  
+
   private final boolean sensitive;
-  
+
   private JdbcConnectionProperties(boolean sensitive) {
     this.sensitive = sensitive;
   }

@@ -14,10 +14,10 @@
 
 package swim.basic.warp;
 
+import swim.actor.ActorSpace;
 import swim.api.SwimRoute;
 import swim.api.agent.AgentRoute;
 import swim.api.plane.AbstractPlane;
-import swim.fabric.Fabric;
 import swim.kernel.Kernel;
 import swim.server.ServerLoader;
 import swim.structure.Text;
@@ -31,8 +31,7 @@ public class SourcePlane extends AbstractPlane {
     System.setProperty("swim.config", "source.recon");
 
     final Kernel kernel = ServerLoader.loadServer();
-    final Fabric fabric = (Fabric) kernel.getSpace("source");
-
+    final ActorSpace space = (ActorSpace) kernel.getSpace("basic");
     kernel.start();
     System.out.println("Running Source server...");
     kernel.run();
@@ -40,8 +39,8 @@ public class SourcePlane extends AbstractPlane {
     int count = 0;
     while (true) {
       for (int i = 0; i < 10; i++) {
-        fabric.command("/source/"+i, "val",
-            Text.from("FromOtherSwimServer"+(count++)));
+        space.command("/source/" + i, "val",
+            Text.from("FromOtherSwimServer" + (count++)));
         Thread.sleep(100);
       }
     }

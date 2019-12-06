@@ -23,6 +23,7 @@ import java.sql.Statement;
 
 class BlockingCustomDriver {
 
+  private static BlockingCustomDriver driver;
   private Connection conn;
   private String url;
 
@@ -30,8 +31,6 @@ class BlockingCustomDriver {
     this.conn = conn;
     this.url = url;
   }
-
-  private static BlockingCustomDriver driver;
 
   static void start(String host, String path, String usr, String pw)
       throws ClassNotFoundException, SQLException {
@@ -69,7 +68,7 @@ class BlockingCustomDriver {
   // throws NPE if called before start()
   static void createStudentsTable() throws SQLException {
     ResultSet res = driver.conn.getMetaData()
-        .getTables(null, null, "STUDENTS", new String[]{"TABLE"});
+        .getTables(null, null, "STUDENTS", new String[] {"TABLE"});
     if (res.next()) {
       System.out.println("[WARN] Skipping STUDENTS table creation, as it already exists");
       return;

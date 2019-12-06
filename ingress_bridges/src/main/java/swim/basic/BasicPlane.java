@@ -14,14 +14,14 @@
 
 package swim.basic;
 
-import java.io.IOException;
+import swim.actor.ActorSpace;
 import swim.api.SwimRoute;
 import swim.api.agent.AgentRoute;
 import swim.api.plane.AbstractPlane;
-import swim.fabric.Fabric;
 import swim.kernel.Kernel;
 import swim.server.ServerLoader;
 import swim.structure.Value;
+import java.io.IOException;
 
 public class BasicPlane extends AbstractPlane {
 
@@ -30,8 +30,7 @@ public class BasicPlane extends AbstractPlane {
 
   public static void main(String[] args) throws IOException {
     final Kernel kernel = ServerLoader.loadServer();
-    final Fabric fabric = (Fabric) kernel.getSpace("basic");
-
+    final ActorSpace space = (ActorSpace) kernel.getSpace("basic");
     kernel.start();
     System.out.println("Running Basic server...");
     kernel.run();
@@ -41,6 +40,6 @@ public class BasicPlane extends AbstractPlane {
     // is unnecessary. In the WARP demo, the data flow from `SourcePlane` to
     // `BasicPlane` is strictly pull-based, and it happens in a Web Agent; we
     // solve this chicken-and-egg problem by jump-starting one `UnitAgent`.
-    fabric.command("/unit/0", "wakeup", Value.absent());
+    space.command("/unit/0", "wakeup", Value.absent());
   }
 }

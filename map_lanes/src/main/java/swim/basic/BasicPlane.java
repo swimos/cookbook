@@ -14,10 +14,10 @@
 
 package swim.basic;
 
+import swim.actor.ActorSpace;
 import swim.api.SwimRoute;
 import swim.api.agent.AgentRoute;
 import swim.api.plane.AbstractPlane;
-import swim.fabric.Fabric;
 import swim.kernel.Kernel;
 import swim.server.ServerLoader;
 import swim.structure.Value;
@@ -29,12 +29,12 @@ public class BasicPlane extends AbstractPlane {
 
   public static void main(String[] args) {
     final Kernel kernel = ServerLoader.loadServer();
-    final Fabric fabric = (Fabric) kernel.getSpace("basic");
+    final ActorSpace space = (ActorSpace) kernel.getSpace("basic");
 
     kernel.start();
     System.out.println("Running Basic server...");
     kernel.run();
 
-    fabric.command("/unit/foo", "wakeup", Value.absent());
+    space.command("/unit/foo", "wakeup", Value.absent());
   }
 }

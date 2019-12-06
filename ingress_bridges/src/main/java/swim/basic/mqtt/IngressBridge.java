@@ -51,12 +51,18 @@ public class IngressBridge {
             nodeUri, // nodeUri
             "publish", // laneUri
             structure.get("val") // value
-          );
+        );
       }
 
       @Override
-      public void deliveryComplete(IMqttDeliveryToken token) { }
+      public void deliveryComplete(IMqttDeliveryToken token) {
+      }
     });
+  }
+
+  public static void main(String[] args) throws MqttException {
+    final IngressBridge lis = new IngressBridge("warp://localhost:9001", "tcp://iot.eclipse.org:1883");
+    lis.listen();
   }
 
   public void listen() throws MqttException {
@@ -64,13 +70,9 @@ public class IngressBridge {
     connOpts.setCleanSession(true);
     this.mqtt.connect(connOpts);
     // Spin until connected
-    while (!this.mqtt.isConnected()) { }
+    while (!this.mqtt.isConnected()) {
+    }
     System.out.println("Connected!");
     this.mqtt.subscribe("swimSensors/all", 1);
-  }
-
-  public static void main(String[] args) throws MqttException {
-    final IngressBridge lis = new IngressBridge("warp://localhost:9001", "tcp://iot.eclipse.org:1883");
-    lis.listen();
   }
 }

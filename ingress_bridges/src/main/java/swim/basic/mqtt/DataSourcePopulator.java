@@ -32,6 +32,11 @@ public class DataSourcePopulator {
     System.out.println("Populator connected!");
   }
 
+  public static void main(String[] args) throws MqttException {
+    final DataSourcePopulator pop = new DataSourcePopulator("tcp://iot.eclipse.org:1883");
+    pop.populate();
+  }
+
   public void populate() {
     final int qos = 1;
     final String topic = "swimSensors/all";
@@ -53,10 +58,5 @@ public class DataSourcePopulator {
         }
       }
     }
-  }
-
-  public static void main(String[] args) throws MqttException {
-    final DataSourcePopulator pop = new DataSourcePopulator("tcp://iot.eclipse.org:1883");
-    pop.populate();
   }
 }

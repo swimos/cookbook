@@ -23,19 +23,17 @@ import swim.structure.Form;
 
 public class UnitAgent extends AbstractAgent {
 
-  private ValueDownlink<String> toDataSource;
-
   @SwimLane("history")
   MapLane<Long, String> history = this.<Long, String>mapLane()
       .didUpdate((k, n, o) -> {
         logMessage(String.format("history update: <%d, %s>", k, n));
       });
-
   @SwimLane("publish")
   CommandLane<String> publish = this.<String>commandLane()
       .onCommand(msg -> {
         this.history.put(System.currentTimeMillis(), msg);
       });
+  private ValueDownlink<String> toDataSource;
 
   @Override
   public void didStart() {

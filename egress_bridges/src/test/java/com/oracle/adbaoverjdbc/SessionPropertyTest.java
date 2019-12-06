@@ -16,23 +16,23 @@
 
 package com.oracle.adbaoverjdbc;
 
-import static jdk.incubator.sql2.AdbaSessionProperty.*;
-import static org.junit.Assert.*;
-
-import java.util.Properties;
-
-import org.junit.Test;
-
-import com.oracle.adbaoverjdbc.JdbcConnectionProperties;
-
 import jdk.incubator.sql2.SessionProperty;
+import org.junit.Test;
+import java.util.Properties;
+import static jdk.incubator.sql2.AdbaSessionProperty.PASSWORD;
+import static jdk.incubator.sql2.AdbaSessionProperty.USER;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
- * Verifies the public API of SessionProperty functions as described in the 
+ * Verifies the public API of SessionProperty functions as described in the
  * ADBA javadoc.
  */
 public class SessionPropertyTest {
-  
+
   @Test
   public void testUser() {
     assertEquals("USER", USER.name());
@@ -42,7 +42,7 @@ public class SessionPropertyTest {
     assertNull(USER.defaultValue());
     assertFalse(USER.isSensitive());
   }
-  
+
   @Test
   public void testPassword() {
     assertEquals("PASSWORD", PASSWORD.name());
@@ -52,12 +52,12 @@ public class SessionPropertyTest {
     assertNull(PASSWORD.defaultValue());
     assertTrue(PASSWORD.isSensitive());
   }
-  
+
   @Test
   public void testJdbcConnectionProperties() {
-    SessionProperty jdbcProps = 
-      JdbcConnectionProperties.JDBC_CONNECTION_PROPERTIES;
-    
+    SessionProperty jdbcProps =
+        JdbcConnectionProperties.JDBC_CONNECTION_PROPERTIES;
+
     assertEquals("JDBC_CONNECTION_PROPERTIES", jdbcProps.name());
     assertEquals(Properties.class, jdbcProps.range());
     assertFalse(jdbcProps.validate(1234));
@@ -66,15 +66,15 @@ public class SessionPropertyTest {
     assertTrue(jdbcProps.validate(jdbcProps.defaultValue()));
     assertFalse(jdbcProps.isSensitive());
   }
-  
+
 
   @Test
   public void testSensitiveJdbcConnectionProperties() {
-    SessionProperty sensitiveJdbcProps = 
-      JdbcConnectionProperties.SENSITIVE_JDBC_CONNECTION_PROPERTIES;
-    
-    assertEquals("SENSITIVE_JDBC_CONNECTION_PROPERTIES", 
-                 sensitiveJdbcProps.name());
+    SessionProperty sensitiveJdbcProps =
+        JdbcConnectionProperties.SENSITIVE_JDBC_CONNECTION_PROPERTIES;
+
+    assertEquals("SENSITIVE_JDBC_CONNECTION_PROPERTIES",
+        sensitiveJdbcProps.name());
     assertEquals(Properties.class, sensitiveJdbcProps.range());
     assertFalse(sensitiveJdbcProps.validate(1234));
     assertTrue(sensitiveJdbcProps.validate(new Properties()));
@@ -82,6 +82,6 @@ public class SessionPropertyTest {
     assertTrue(sensitiveJdbcProps.validate(sensitiveJdbcProps.defaultValue()));
     assertTrue(sensitiveJdbcProps.isSensitive());
   }
-  
+
   // TODO: Test the configureOperation API
 }

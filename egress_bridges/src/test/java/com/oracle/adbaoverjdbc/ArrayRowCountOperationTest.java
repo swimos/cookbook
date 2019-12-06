@@ -15,34 +15,33 @@
  */
 package com.oracle.adbaoverjdbc;
 
-import jdk.incubator.sql2.DataSourceFactory;
 import jdk.incubator.sql2.DataSource;
-import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collector;
+import jdk.incubator.sql2.DataSourceFactory;
+import jdk.incubator.sql2.Session;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
-import jdk.incubator.sql2.Session;
-import jdk.incubator.sql2.TransactionCompletion;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collector;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * This is a quick and dirty test to check if anything at all is working.
  */
 public class ArrayRowCountOperationTest {
-  
+
   // Define these three constants with the appropriate values for the database
   // and JDBC driver you want to use. Should work with ANY reasonably standard
   // JDBC driver. These values are passed to DriverManager.getSession.
   public static final String URL = TestConfig.getUrl();
   public static final String USER = TestConfig.getUser();
   public static final String PASSWORD = TestConfig.getPassword();
-  
-  public static final String FACTORY_NAME = 
-    TestConfig.getDataSourceFactoryName();
+
+  public static final String FACTORY_NAME =
+      TestConfig.getDataSourceFactoryName();
 
   public ArrayRowCountOperationTest() {
   }
@@ -50,11 +49,11 @@ public class ArrayRowCountOperationTest {
   @BeforeClass
   public static void setUpClass() throws Exception {
     try (DataSource ds = DataSourceFactory.newFactory(FACTORY_NAME)
-                           .builder()
-                           .url(URL)
-                           .username(USER)
-                           .password(PASSWORD)
-                           .build();
+        .builder()
+        .url(URL)
+        .username(USER)
+        .password(PASSWORD)
+        .build();
          Session se = ds.getSession()) {
       TestFixtures.createTestSchema(se);
     }
@@ -63,16 +62,16 @@ public class ArrayRowCountOperationTest {
   @AfterClass
   public static void tearDownClass() throws Exception {
     try (DataSource ds = DataSourceFactory.newFactory(FACTORY_NAME)
-                           .builder()
-                           .url(URL)
-                           .username(USER)
-                           .password(PASSWORD)
-                           .build();
+        .builder()
+        .url(URL)
+        .username(USER)
+        .password(PASSWORD)
+        .build();
          Session se = ds.getSession()) {
       TestFixtures.dropTestSchema(se);
     }
   }
-  
+
   /**
    * Do something that approximates real work. Do a transaction. Uses
    * TransactionCompletion, CompletionStage args, and catch Operation.
@@ -81,11 +80,11 @@ public class ArrayRowCountOperationTest {
   public void transaction() throws Exception {
     DataSourceFactory factory = DataSourceFactory.newFactory(FACTORY_NAME);
     try (DataSource ds = factory.builder()
-            .url(URL)
-            .username(USER)
-            .password(PASSWORD)
-            .build();
-            Session session = ds.getSession(t -> System.out.println("ERROR: " + t.toString()))) {
+        .url(URL)
+        .username(USER)
+        .password(PASSWORD)
+        .build();
+         Session session = ds.getSession(t -> System.out.println("ERROR: " + t.toString()))) {
       List<Integer> userList = new ArrayList<Integer>();
       userList.add(100);
       userList.add(101);
@@ -95,24 +94,24 @@ public class ArrayRowCountOperationTest {
       cityList.add(30);
       cityList.add(40);
       cityList.add(10);
-      
+
 //public <A, S extends T> ArrayRowCountOperation<T> collect(Collector<? super Result.RowCount, A, S> c);      
 
       session.<Long>arrayRowCountOperation(
-        "insert into forum_user(id, city_id) values (?, ?)")
-              .set("1", userList)
-              .set("2", cityList)
-              .collect(Collector.of(
-                      () -> null,
-                      (a, r) -> assertEquals(1L, r.getCount()),
-                      (l, r) -> null))
-              .onError(t -> fail(t.getMessage()))
-              .submit()
-              .getCompletionStage();
+          "insert into forum_user(id, city_id) values (?, ?)")
+          .set("1", userList)
+          .set("2", cityList)
+          .collect(Collector.of(
+              () -> null,
+              (a, r) -> assertEquals(1L, r.getCount()),
+              (l, r) -> null))
+          .onError(t -> fail(t.getMessage()))
+          .submit()
+          .getCompletionStage();
       session.catchErrors();
       session.rollback()
-        .toCompletableFuture()
-        .get(TestConfig.getTimeout().toMillis(), TimeUnit.MILLISECONDS);
-    }    
+          .toCompletableFuture()
+          .get(TestConfig.getTimeout().toMillis(), TimeUnit.MILLISECONDS);
+    }
   }
 }

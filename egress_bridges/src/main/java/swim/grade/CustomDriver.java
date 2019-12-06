@@ -14,15 +14,19 @@
 
 package swim.grade;
 
-import java.util.stream.Collector;
 import jdk.incubator.sql2.DataSource;
 import jdk.incubator.sql2.DataSourceFactory;
 import jdk.incubator.sql2.Session;
 import jdk.incubator.sql2.SqlException;
 import jdk.incubator.sql2.TransactionCompletion;
+import java.util.stream.Collector;
 
 class CustomDriver {
 
+  private static final DataSource.Builder DATA_SOURCE_BUILDER = DataSourceFactory
+      .newFactory("com.oracle.adbaoverjdbc.DataSourceFactory")
+      .builder();
+  private static CustomDriver driver;
   private Session conn;
   private String url;
 
@@ -30,12 +34,6 @@ class CustomDriver {
     this.conn = conn;
     this.url = url;
   }
-
-  private static final DataSource.Builder DATA_SOURCE_BUILDER = DataSourceFactory
-      .newFactory("com.oracle.adbaoverjdbc.DataSourceFactory")
-      .builder();
-
-  private static CustomDriver driver;
 
   public static void start(String host, String path, String usr, String pw) {
     // `start` becomes `restart` if `driver` already exists
@@ -70,14 +68,6 @@ class CustomDriver {
     }
   }
 
-  private void stopDriver() {
-    if (this.conn != null && !this.conn.getSessionLifecycle().isClosed()) {
-      this.conn.close();
-    }
-    this.conn = null;
-    this.url = null;
-  }
-
   static void checkGrade(final int id) {
     final String sql = String.format("SELECT points_earned, points_possible FROM STUDENTS WHERE id = %d;", id);
     driver.conn.<Integer>rowOperation(sql)
@@ -105,8 +95,8 @@ class CustomDriver {
 
     final String baseSql = String.format(
         "UPDATE STUDENTS "
-          + "SET points_earned = %d, points_possible = %d "
-          + "WHERE id = %d;", earned, possible, id);
+            + "SET points_earned = %d, points_possible = %d "
+            + "WHERE id = %d;", earned, possible, id);
     driver.conn.<Long>rowCountOperation(baseSql)
         .apply(c -> {
           if (c.getCount() != 1L) {
@@ -119,5 +109,13 @@ class CustomDriver {
         .submit();
     driver.conn.catchErrors();
     driver.conn.commitMaybeRollback(trans);
+  }
+
+  private void stopDriver() {
+    if (this.conn != null && !this.conn.getSessionLifecycle().isClosed()) {
+      this.conn.close();
+    }
+    this.conn = null;
+    this.url = null;
   }
 }

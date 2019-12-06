@@ -23,14 +23,12 @@ import swim.structure.Value;
 
 public class UnitAgent extends AbstractAgent {
 
-  private TimerRef timer;
-
   @SwimLane("minutesSincePublish")
   ValueLane<Integer> minutes = this.<Integer>valueLane()
       .didSet((n, o) -> {
         System.out.println((n * 1) + " seconds since last event");
       });
-
+  private TimerRef timer;
   @SwimLane("publish")
   CommandLane<Value> publish = this.<Value>commandLane()
       .onCommand(v -> {
@@ -51,9 +49,9 @@ public class UnitAgent extends AbstractAgent {
   private void resetTimer() {
     cancelTimer();
     this.timer = setTimer(1000, () -> {
-        this.minutes.set(this.minutes.get() + 1);
-        this.timer.reschedule(1000);
-      });
+      this.minutes.set(this.minutes.get() + 1);
+      this.timer.reschedule(1000);
+    });
   }
 
   private void cancelTimer() {

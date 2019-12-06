@@ -16,6 +16,7 @@
 
 package com.oracle.adbaoverjdbc;
 
+import jdk.incubator.sql2.SqlException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -23,67 +24,61 @@ import java.sql.SQLException;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Executor;
 import java.util.logging.Level;
-import jdk.incubator.sql2.SqlException;
 
 
 /**
- *
  * @param <T>
  */
 public abstract class RowBaseOperation<T> extends ParameterizedOperation<T> {
-  
+
+  protected static final int NOT_SET = -1;
   // attributes
   protected final String sqlString;
   protected int fetchSize;
-  
+  protected ResultSet resultSet;
+  protected long rowCount;
+  protected boolean rowsRemain;
   // internal state
   private PreparedStatement jdbcStatement;
   private ResultSetMetaData resultSetMetaData;
   private String[] identifiers;
 
-  protected ResultSet resultSet;
-  protected long rowCount;
-  protected boolean rowsRemain;
-  
-  protected static final int NOT_SET = -1;
-  
   RowBaseOperation(Session session, OperationGroup operationGroup, String sql) {
     super(session, operationGroup);
     sqlString = sql;
     fetchSize = NOT_SET;
   }
-  
+
   @Override
   CompletionStage<T> follows(CompletionStage<?> predecessor, Executor executor) {
     predecessor = attachFutureParameters(predecessor);
     return predecessor
-            .thenRunAsync(this::executeQuery, executor)
-            .thenCompose(this::moreRows);
+        .thenRunAsync(this::executeQuery, executor)
+        .thenCompose(this::moreRows);
   }
-  
-  abstract CompletionStage<T> moreRows(Object x);  
-  
+
+  abstract CompletionStage<T> moreRows(Object x);
+
   @Override
   boolean cancel() {
     JdbcCancel();
     super.cancel();
     return rowsRemain; // if all rows processed then
   }
-  
+
   protected void JdbcCancel() {
     try {
-        if (jdbcStatement != null) {
-          jdbcStatement.cancel();
-        }
-    }
-    catch (SQLException ex) {
+      if (jdbcStatement != null) {
+        jdbcStatement.cancel();
+      }
+    } catch (SQLException ex) {
       throw new SqlException(ex.getMessage(), ex, ex.getSQLState(), ex.getErrorCode(), sqlString, -1);
     }
   }
-  
+
 
   abstract void executeQuery();
-  
+
   protected void executeJdbcQuery() {
     checkCanceled();
     try {
@@ -97,29 +92,27 @@ public abstract class RowBaseOperation<T> extends ParameterizedOperation<T> {
       resultSetMetaData = resultSet.getMetaData();
       rowsRemain = true;
       rowCount = 0;
-    }
-    catch (SQLException ex) {
+    } catch (SQLException ex) {
       throw new SqlException(ex.getMessage(), ex, ex.getSQLState(), ex.getErrorCode(), sqlString, -1);
     }
   }
-  
+
   protected void initRowOperationResultSet(PreparedStatement jdbcStatement, ResultSet resultSet) {
     try {
       this.jdbcStatement = jdbcStatement;
-      initFetchSize();     
+      initFetchSize();
       this.resultSet = resultSet;
       resultSetMetaData = this.resultSet.getMetaData();
       rowsRemain = true;
       rowCount = 0;
-    }
-    catch (SQLException ex) {
+    } catch (SQLException ex) {
       throw new SqlException(ex.getMessage(), ex, ex.getSQLState(), ex.getErrorCode(), sqlString, -1);
     }
   }
-  
-  
+
+
   abstract T completeQuery();
-  
+
   protected void completeJdbcQuery() throws SqlException {
     JdbcClose();
     checkCanceled();
@@ -129,8 +122,7 @@ public abstract class RowBaseOperation<T> extends ParameterizedOperation<T> {
     try {
       // Closing a statement, also close resultset associated with the statement
       jdbcStatement.close();
-    }
-    catch (SQLException ex) {
+    } catch (SQLException ex) {
       throw new SqlException(ex.getMessage(), ex, ex.getSQLState(), ex.getErrorCode(), sqlString, -1);
     }
   }
@@ -147,42 +139,39 @@ public abstract class RowBaseOperation<T> extends ParameterizedOperation<T> {
         for (int i = 0; i < count; i++) {
           identifiers[i] = resultSetMetaData.getColumnLabel(i + 1);
         }
-      }
-      catch (SQLException ex) {
+      } catch (SQLException ex) {
         throw new SqlException(ex.getMessage(), ex, ex.getSQLState(), ex.getErrorCode(), sqlString, -1);
       }
     }
     return identifiers;
   }
-  
+
   String enquoteIdentifier(String id) {
     try {
       return jdbcStatement.enquoteIdentifier(id, false);
-    }
-    catch (SQLException ex) {
+    } catch (SQLException ex) {
       throw new SqlException(ex.getMessage(), ex, ex.getSQLState(), ex.getErrorCode(), sqlString, -1);
     }
   }
-  
+
   private void initFetchSize() throws SQLException {
     if (fetchSize == NOT_SET) {
       fetchSize = jdbcStatement.getFetchSize();
-    }
-    else {
+    } else {
       jdbcStatement.setFetchSize(fetchSize);
     }
   }
-  
+
   ResultSet resultSet() {
     return resultSet;
   }
-  
+
   String sqlString() {
     return sqlString;
   }
-  
+
   long rowCount() {
     return rowCount;
   }
-  
+
 }

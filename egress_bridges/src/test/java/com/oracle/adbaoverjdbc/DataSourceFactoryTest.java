@@ -16,30 +16,31 @@
 
 package com.oracle.adbaoverjdbc;
 
-import static com.oracle.adbaoverjdbc.TestConfig.*;
-import static org.junit.Assert.*;
-import org.junit.Test;
-
 import jdk.incubator.sql2.DataSource;
 import jdk.incubator.sql2.DataSourceFactory;
+import org.junit.Test;
+import static com.oracle.adbaoverjdbc.TestConfig.getDataSourceFactoryName;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 /**
- * Verifies the public API of DataSourceFactory functions as described in the 
+ * Verifies the public API of DataSourceFactory functions as described in the
  * ADBA javadoc.
  */
 public class DataSourceFactoryTest {
-  
+
   /**
    * Assert DataSourceFactory.newFactory(String) returns null if the input
    * is not the name of a factory class.
    */
   @Test
   public void testNewFactoryNegative() {
-    DataSourceFactory factory = 
-      DataSourceFactory.newFactory("NOT A FACTORY NAME");
+    DataSourceFactory factory =
+        DataSourceFactory.newFactory("NOT A FACTORY NAME");
     assertNull(factory);
   }
-  
+
   /**
    * Assert DataSourceFactory.newFactory(String) returns a DataSourceFactory
    * instance if the input is the name of a factory class.
@@ -51,14 +52,14 @@ public class DataSourceFactoryTest {
     assertNotNull(factory);
     assertEquals(name, factory.getClass().getName());
   }
-  
+
   /**
    * Assert DataSourceFactory.builder() returns a DataSource.Builder instance.
    */
   @Test
   public void testBuilder() {
-    DataSourceFactory factory = 
-      DataSourceFactory.newFactory(getDataSourceFactoryName());
+    DataSourceFactory factory =
+        DataSourceFactory.newFactory(getDataSourceFactoryName());
     DataSource.Builder builder = factory.builder();
     assertNotNull(builder);
   }

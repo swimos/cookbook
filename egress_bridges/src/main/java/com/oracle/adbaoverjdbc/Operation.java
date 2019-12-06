@@ -43,11 +43,12 @@ import java.util.function.Consumer;
  * constructs one or more CompletionStages that will do the work of the
  * Operation. Finally it connects the CompletionStage(s) to result
  * CompletionStage of the preceeding Operation.
- *
  */
 abstract class Operation<T> implements jdk.incubator.sql2.Operation<T> {
-  
+
   private static final Map<Class, SQLType> CLASS_TO_JDBCTYPE = new HashMap<>(20);
+  private static final Map<SqlType, SQLType> ADBATYPE_TO_JDBCTYPE = new HashMap<>(40);
+
   static {
     try {
       CLASS_TO_JDBCTYPE.put(BigInteger.class, JDBCType.BIGINT);
@@ -65,11 +66,9 @@ abstract class Operation<T> implements jdk.incubator.sql2.Operation<T> {
       CLASS_TO_JDBCTYPE.put(OffsetTime.class, JDBCType.TIME_WITH_TIMEZONE);
       CLASS_TO_JDBCTYPE.put(Short.class, JDBCType.SMALLINT);
       CLASS_TO_JDBCTYPE.put(String.class, JDBCType.VARCHAR);
-    }
-    catch (ClassNotFoundException ex) { /* should never happen */ }
+    } catch (ClassNotFoundException ex) { /* should never happen */ }
   }
-  
-  private static final Map<SqlType, SQLType> ADBATYPE_TO_JDBCTYPE = new HashMap<>(40);
+
   static {
     ADBATYPE_TO_JDBCTYPE.put(AdbaType.ARRAY, JDBCType.ARRAY);
     ADBATYPE_TO_JDBCTYPE.put(AdbaType.BIGINT, JDBCType.BIGINT);
@@ -110,10 +109,28 @@ abstract class Operation<T> implements jdk.incubator.sql2.Operation<T> {
     ADBATYPE_TO_JDBCTYPE.put(AdbaType.VARBINARY, JDBCType.VARBINARY);
     ADBATYPE_TO_JDBCTYPE.put(AdbaType.VARCHAR, JDBCType.VARCHAR);
   }
-  
+
+  // internal state
+  protected final Session session;
+  protected final OperationGroup<T, ?> group;
+  // attributes
+  protected Duration timeout = null;
+  protected Consumer<Throwable> errorHandler = null;
+  protected OperationLifecycle operationLifecycle = OperationLifecycle.MUTABLE;
+  // used only by Session
+  protected Operation() {
+    session = (Session) this;
+    group = (OperationGroup) this;
+  }
+
+  Operation(Session session, OperationGroup operationGroup) {
+    this.session = session;
+    group = operationGroup;
+  }
+
   /**
    * Find the default SQLType to represent a Java type.
-   * 
+   *
    * @param c a Java type
    * @return the default SQLType to represent the Java type
    */
@@ -127,56 +144,37 @@ abstract class Operation<T> implements jdk.incubator.sql2.Operation<T> {
 
   /**
    * Return the java.sql.SQLType corresponding to the jdk.incubator.sql2.SqlType.
-   * 
+   *
    * @param t an ADBA type
    * @return a JDBC type
    */
   static SQLType toSQLType(SqlType t) {
     SQLType s = ADBATYPE_TO_JDBCTYPE.get(t);
     if (s == null) {
-      throw new UnsupportedOperationException("Not supported yet.");      
+      throw new UnsupportedOperationException("Not supported yet.");
     }
     return s;
   }
 
   /**
-   * Return the jdk.incubator.sql2.SqlType corresponding to the 
+   * Return the jdk.incubator.sql2.SqlType corresponding to the
    * java.sql.SQLType.
-   * 
+   *
    * @param t a JDBC type
    * @return an ADBA type
    */
   static SqlType fromSQLType(SQLType t) {
     for (Entry<SqlType, SQLType> mapping : ADBATYPE_TO_JDBCTYPE.entrySet()) {
-      if (mapping.getValue() == t)
+      if (mapping.getValue() == t) {
         return mapping.getKey();
+      }
     }
     throw new RuntimeException(
-      "No SqlType mapping is defined for SQLType: " + t);
-  }
-  
-  static Throwable unwrapException(Throwable ex) {
-    return ex instanceof CompletionException ? ex.getCause() : ex;
-  }
-  
-  // attributes
-  protected Duration timeout = null;
-  protected Consumer<Throwable> errorHandler = null;
-  
-  // internal state
-  protected final Session session;
-  protected final OperationGroup<T, ?> group;
-  protected OperationLifecycle operationLifecycle = OperationLifecycle.MUTABLE;
-  
-  // used only by Session
-  protected Operation() {
-    session = (Session)this;
-    group = (OperationGroup)this;
+        "No SqlType mapping is defined for SQLType: " + t);
   }
 
-  Operation(Session session, OperationGroup operationGroup) {
-    this.session = session;
-    group = operationGroup;
+  static Throwable unwrapException(Throwable ex) {
+    return ex instanceof CompletionException ? ex.getCause() : ex;
   }
 
   @Override
@@ -215,7 +213,7 @@ abstract class Operation<T> implements jdk.incubator.sql2.Operation<T> {
   /**
    * Returns true if this Operation is immutable. An Operation is immutable if
    * it has been submitted. Held OperationGroups are an exception.
-   * 
+   *
    * @return return true if immutable
    */
   boolean isImmutable() {
@@ -230,12 +228,11 @@ abstract class Operation<T> implements jdk.incubator.sql2.Operation<T> {
   long getTimeoutMillis() {
     if (timeout == null) {
       return 0L;
-    }
-    else {
+    } else {
       return timeout.toMillis();
     }
   }
-  
+
   protected Executor getExecutor() {
     return session.getExecutor();
   }
@@ -245,12 +242,12 @@ abstract class Operation<T> implements jdk.incubator.sql2.Operation<T> {
    * return a CompletableFuture that represents completion of this Operation.
    * The returned CompletableFuture may not be directly attached to the tail,
    * but completion of the tail should result in completion of the returned
-   * CompletableFuture. (Note: Not quite true for OperationGroups. While the 
-   * returned CompletableFuture does depend on the tail, it also depends on 
+   * CompletableFuture. (Note: Not quite true for OperationGroups. While the
+   * returned CompletableFuture does depend on the tail, it also depends on
    * user code calling {@link OperationGroup#close()}.)
    *
-   * @param tail the predecessor of this operation. Completion of tail starts
-   * execution of this Operation
+   * @param tail     the predecessor of this operation. Completion of tail starts
+   *                 execution of this Operation
    * @param executor used for asynchronous execution
    * @return completion of this CompletableFuture means this Operation is
    * complete. The value of the Operation is the value of the CompletableFuture.
@@ -260,8 +257,7 @@ abstract class Operation<T> implements jdk.incubator.sql2.Operation<T> {
   boolean cancel() {
     if (operationLifecycle.isFinished()) {
       return false;
-    }
-    else {
+    } else {
       operationLifecycle = OperationLifecycle.CANCELED;
       return true;
     }
@@ -270,7 +266,7 @@ abstract class Operation<T> implements jdk.incubator.sql2.Operation<T> {
   boolean isCanceled() {
     return operationLifecycle.isCanceled();
   }
-  
+
   Operation<T> checkCanceled() {
     if (isCanceled()) {
       throw new SqlSkippedException("TODO", null, null, -1, null, -1);
@@ -282,131 +278,138 @@ abstract class Operation<T> implements jdk.incubator.sql2.Operation<T> {
    * Attaches a completion stage which handles completion of the stage returned
    * by {@link Operation#follows(CompletionStage, Executor)}.
    * <br>
-   * If the session is aborted, the attached stage will complete exceptionally 
-   * with a RuntimeException, with any exceptional completion from the 
-   * argument added as a suppressed exception. Neither 
-   * {@link Operation#handleResult(Object)} nor 
+   * If the session is aborted, the attached stage will complete exceptionally
+   * with a RuntimeException, with any exceptional completion from the
+   * argument added as a suppressed exception. Neither
+   * {@link Operation#handleResult(Object)} nor
    * {@link Operation#handleError(Throwable)} will be called.
    * <br>
-   * If the argument completes normally, it's computed value is passed to 
-   * {@link Operation#handleResult(Object)}, and the returned value completes 
-   * the the stage returned by this method. 
+   * If the argument completes normally, it's computed value is passed to
+   * {@link Operation#handleResult(Object)}, and the returned value completes
+   * the the stage returned by this method.
    * <br>
-   * Otherwise, if the argument completes exceptionally, the 
-   * CompletetionException's cause is passed to 
-   * {@link Operation#handleError(Throwable)}, and the returned Throwable 
-   * exceptionally completes the stage returned by this method.  
-   * 
-   * @param result A CompletionStage returned by 
-   *   {@link Operation#follows(CompletionStage, Executor)}.
+   * Otherwise, if the argument completes exceptionally, the
+   * CompletetionException's cause is passed to
+   * {@link Operation#handleError(Throwable)}, and the returned Throwable
+   * exceptionally completes the stage returned by this method.
+   *
+   * @param result A CompletionStage returned by
+   *               {@link Operation#follows(CompletionStage, Executor)}.
    * @return a CompletionStage that will handle the argument's completion.
    */
   final CompletionStage<T> attachCompletionHandler(CompletionStage<T> result) {
     return result.handle((r, t) -> {
       Throwable ex = unwrapException(t);
       checkAbort(ex);
-      
-      if (t == null)
+
+      if (t == null) {
         return handleResult(r);
-      else
+      } else {
         throw handleError(ex);
+      }
     });
   }
 
   /**
    * Check if the session has been aborted.
-   * @param suppressed A Throwable to be added as a suppressed exception if 
-   *   this method throws a RuntimeException. Maybe null, in which case no 
-   *   suppressed exception will be added.
+   *
+   * @param suppressed A Throwable to be added as a suppressed exception if
+   *                   this method throws a RuntimeException. Maybe null, in which case no
+   *                   suppressed exception will be added.
    * @throws RuntimeException If the session is aborted.
    */
   private void checkAbort(Throwable suppressed) {
     if (Lifecycle.ABORTING == session.getSessionLifecycle()) {
       RuntimeException abortEx = new RuntimeException("Session aborted.");
-      if (suppressed != null) abortEx.addSuppressed(suppressed);
+      if (suppressed != null) {
+        abortEx.addSuppressed(suppressed);
+      }
       throw abortEx;
     }
   }
-  
+
   /**
    * Handle the result of this operation.
    * <br>
-   * The {@code result} argument is the value computed by the 
+   * The {@code result} argument is the value computed by the
    * {@link Operation#follows(CompletionStage, Executor)} stage. This method
    * is only called when the stage completes normally.
-   *  
-   * @implSpec Operation's implementation of this method will pass the 
-   * {@code result} argument to the
-   * {@link OperationGroup#accumulateResult(Object)} method of this 
-   * operation's group.  
-   * @param result The result of the 
-   * {@link Operation#follows(CompletionStage, Executor)} stage.
+   *
+   * @param result The result of the
+   *               {@link Operation#follows(CompletionStage, Executor)} stage.
    * @return The result of this operation.
+   * @implSpec Operation's implementation of this method will pass the
+   * {@code result} argument to the
+   * {@link OperationGroup#accumulateResult(Object)} method of this
+   * operation's group.
    */
   protected T handleResult(T result) {
     group.accumulateResult(result);
     return result;
   }
-  
+
   /**
    * Handle exceptional completion of this operation. The {@code ex} argument
    * is the result of the {@link Operation#follows(CompletionStage, Executor)}
-   * stage. This method is only called when the stage completes exceptionally. 
-   * Assuming the stage completed exceptionally with a 
+   * stage. This method is only called when the stage completes exceptionally.
+   * Assuming the stage completed exceptionally with a
    * {@link CompletionException}, the {@code ex} argument is the return value
    * of {@link CompletionException#getCause()}.
-   *  
-   * @implSpec Operation's implementation of this method will invoke any 
-   *   handler defined by {@link Operation#onError(Consumer)}. If 
-   *   the {@code ex} argument is not a SqlSkippedException, this 
-   *   implementation returns a SqlSkippedException with {@code ex} as it's 
-   *   cause. Otherwise, {@code ex} is returned as is.
+   *
    * @param ex An exception which completed this operation. Not null.
-   * @return A SqlSkippedException which describes the provided exception, 
-   *   {@code ex}, as the cause for a skipping subsequent member operations.
+   * @return A SqlSkippedException which describes the provided exception,
+   * {@code ex}, as the cause for a skipping subsequent member operations.
+   * @implSpec Operation's implementation of this method will invoke any
+   * handler defined by {@link Operation#onError(Consumer)}. If
+   * the {@code ex} argument is not a SqlSkippedException, this
+   * implementation returns a SqlSkippedException with {@code ex} as it's
+   * cause. Otherwise, {@code ex} is returned as is.
    */
   protected SqlSkippedException handleError(Throwable ex) {
-    if (ex instanceof SqlSkippedException) 
-      throw (SqlSkippedException)ex;
-    else {
+    if (ex instanceof SqlSkippedException) {
+      throw (SqlSkippedException) ex;
+    } else {
       // Only called if execution of *this* operation results in an error.
-      if (errorHandler != null) errorHandler.accept(ex);
-      
-      if (ex instanceof SqlException)
-        throw new SqlSkippedException((SqlException)ex);
-      else 
+      if (errorHandler != null) {
+        errorHandler.accept(ex);
+      }
+
+      if (ex instanceof SqlException) {
+        throw new SqlSkippedException((SqlException) ex);
+      } else {
         throw new SqlSkippedException(/*(Throwable)*/ex);
+      }
     }
   }
-  
+
   static enum OperationLifecycle {
     MUTABLE,
     HELD,
     RELEASED,
     COMPLETED,
     CANCELED;
-    
+
     /**
      * @return true iff op has been submitted which means no more configuration
      */
     boolean isSubmitted() {
       return this != MUTABLE;
     }
-        
+
     /**
      * @return return true if no new members may be added. Implies isSubmitted
      */
     boolean isImmutable() { //TODO better name?
       return this == RELEASED || this == COMPLETED || this == CANCELED;
     }
-    
+
     boolean isFinished() {
       return this == COMPLETED || this == CANCELED;
     }
-    
+
     boolean isCanceled() {
       return this == CANCELED;
     }
-    
+
   }
 }
