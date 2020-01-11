@@ -2,6 +2,8 @@
 
 All [cookbook](https://swim.dev/tutorials/) code snippets, gathered into runnable Gradle projects.
 
+*Read this in other languages: [简体中文](README.zh-cn.md)*
+
 ## Running a Java Class
 
 Running any cookbook requires running at least one Java class.
