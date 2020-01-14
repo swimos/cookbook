@@ -2,6 +2,8 @@
 
 Code corresponding to the [egress bridges cookbook](https://swim.dev/tutorials/egress-bridges/).
 
+*Read this in other languages: [简体中文](README.zh-cn.md)*
+
 ## Demo Motivation
 
 Recall the two designs of push-type egress bridges to non-Swim sinks:

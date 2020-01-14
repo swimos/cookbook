@@ -2,6 +2,8 @@
 
 Code corresponding to the [Web Agents cookbook](https://swim.dev/tutorials/web-agents/).
 
+*Read this in other languages: [简体中文](README.zh-cn.md)*
+
 ## Running This Demo
 
 This demo only requires running the `swim.basic.BasicPlane` class.

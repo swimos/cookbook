@@ -2,6 +2,8 @@
 
 Code corresponding to the [Ingress Bridges cookbook](https://swim.dev/tutorials/ingress-bridges/).
 
+*Read this in other languages: [简体中文](README.zh-cn.md)*
+
 ## Demo Motivation
 
 Recall the high-level designs of ingress bridges:
