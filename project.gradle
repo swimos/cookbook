@@ -8,7 +8,7 @@ version = project.property('swim.version')
 
 repositories {
     mavenCentral()
-    maven { url 'https://swimos.bintray.com/maven/' }
+    jcenter()
     maven { url 'http://packages.confluent.io/maven/' }
 }
 

@@ -27,7 +27,7 @@ public class StudentAgent extends AbstractAgent {
   @SwimLane("addAssignment")
   CommandLane<Value> publish = this.<Value>commandLane()
       .onCommand(msg -> {
-        final Value current = grade.get();
+        final Value current = this.grade.get();
         this.grade.set(Record.create(2)
             .slot("earned", current.get("earned").intValue() + msg.get("earned").intValue())
             .slot("possible", current.get("possible").intValue() + msg.get("possible").intValue()));
