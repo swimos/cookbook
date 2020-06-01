@@ -1,9 +1,7 @@
 apply plugin: 'java-library'
 apply plugin: 'application'
-apply plugin: 'idea'
 
 group = 'org.swimos'
-idea.module.outputDir file("out/production/classes")
 version = project.property('swim.version')
 
 repositories {
@@ -19,8 +17,14 @@ dependencies {
 }
 
 afterEvaluate {
+    sourceSets {
+        main.output.resourcesDir = main.java.outputDir
+    }
+
     compileJava {
-        options.compilerArgs = ['--module-path', classpath.asPath, '-Xlint:all']
+        options.compilerArgs = ['--module-path', classpath.asPath,
+                                '-Xlint:all',
+                                '--patch-module', "$moduleName=" + files(sourceSets.main.resources.srcDirs).asPath]
         classpath = files()
         options.encoding = 'UTF-8'
         source = sourceSets.main.allJava
