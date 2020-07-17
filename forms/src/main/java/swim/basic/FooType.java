@@ -4,23 +4,23 @@
 
 @Tag("fooType")
 public class FooType {
-	private int numberVal = 0;
-	private String stringType = "";
+	private int i = 0;
+	private String s = "";
 	
 	public FooType() {
 	}
 	
-	public FooType(int numberVal, String stringType) {
-		this.numberVal = numberVal;
-		this.stringType = stringType;
+	public FooType(int i, String s) {
+		this.i = i;
+		this.s = s;
 	}
 	
 	public int getNumber() {
-		return numberVal;
+		return i;
 	}
 	
 	public String getString() {
-		return stringVal;
+		return s;
 	}
 	
 	@Kind
