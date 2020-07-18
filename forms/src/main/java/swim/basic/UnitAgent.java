@@ -30,3 +30,10 @@ public class UnitAgent {
   		System.out.println(value);
   	});
 }
+
+// TODO:
+//Has ValueLane<FooType> foo, whose didSet(newValue, oldValue) callback prints newValue.
+//Has CommandLane<FooType> addFoo, whose onCommand(value) callback invokes foo.set(value).
+//Has ValueLane<BarType> bar, whose didSet(newValue, oldValue) callback prints newValue.
+//Has CommandLane<BarType> addBar, whose onCommand(value) callback invokes bar.set(value).
+//OPTIONAL: Has CommandLane<Value> addValue, whose onCommand(value) callback prints value. Just to exercise that the internal lane type is always fundamentally a Value, so this type is compatible with anything. Though it's up to you to decide if this actually isn't that useful.
