@@ -33,3 +33,10 @@ public class FooType {
 		return form;
 	}
 }
+
+// TODO:
+//Fundamentally a simple Java class, with a small number of fields of any simple type you'd like (e.g. primitives, Strings). Something like class FooType { int i; String s; }
+//Add the necessary pieces to automatically generated a form, like here
+//@Tag annotation
+//Default values and (hugely important, easily forgettable) a no-argument constructor
+//@Kind-annotated static field and static accessor method.
