@@ -83,3 +83,8 @@ class BarTypeForm extends Form<BarType> {
 		}
 	}
 }
+
+// TODO:
+//Again a simple Java class but distinguishable from FooType, e.g. class BarType { int i; String s; int j }
+//Add an auxiliary class (i.e. outside BarType but within the same file) BarTypeForm extends Form<BarType>
+//Override BarTypeForm's required methods like here.
