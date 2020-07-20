@@ -1,8 +1,15 @@
+package swim.basic;
+
+import swim.api.SwimLane;
+import swim.api.lane.CommandLane;
+import swim.api.lane.ValueLane;
+import swim.structure.Value;
+
 public class UnitAgent {
 	
 	@SwimLane("foo")
 	public ValueLane<FooType> foo = this.<FooType>valueLane()
-			.didSet(newValue, oldValue) -> {
+			.didSet((newValue, oldValue) -> {
 				System.out.println(newValue);
 			});
 	
@@ -14,16 +21,19 @@ public class UnitAgent {
 
   @SwimLane("bar")
   public ValueLane<BarType> bar = this.<BarType>valueLane()
-  		.didSet(newValue, oldValue) -> {
+  		.didSet((newValue, oldValue) -> {
   			System.out.println(newValue);
   		});
   
   @SwimLane("addBar")
-  public CommandLane<FooType> addBar = this.<BarType>commandLane()
+  public CommandLane<BarType> addBar = this.<BarType>commandLane()
   	.onCommand((BarType value) -> {
   		bar.set(value);
   	});
 	
+  // TODO: add explanation why: 
+  // Just to exercise that the internal lane type is always fundamentally a Value, 
+  // so this type is compatible with anything.
   @SwimLane("addValue")
   public CommandLane<Value> addValue = this.<Value>commandLane()
   	.onCommand((Value value) -> {

@@ -1,3 +1,5 @@
-gradle.projectsEvaluated {
-    apply plugin: 'java'
-}
+apply from: '../project.gradle'
+
+description = 'Code corresponding to the Forms cookbook'
+ext.moduleName = 'swim.basic'
+mainClassName = 'swim.basic.BasicPlane'

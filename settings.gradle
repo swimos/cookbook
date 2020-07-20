@@ -32,3 +32,6 @@ project(':join-value-lanes').projectDir = file('join_value_lanes')
 
 include 'join-map-lanes'
 project(':join-map-lanes').projectDir = file('join_map_lanes')
+
+include 'forms'
+project(':forms').projectDir = file('forms')

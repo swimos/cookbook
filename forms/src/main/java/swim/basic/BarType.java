@@ -1,3 +1,7 @@
+package swim.basic;
+
+import swim.structure.Attr;
+
 /**
  * TODO: write a javadoc
  */
@@ -79,7 +83,7 @@ class BarTypeForm extends Form<BarType> {
 					value.get("s").stringValue(""),
 					value.get("j").intValue(0));
 		} catch (Exception e) {
-			return BarType.EMPTY;
+			return BarType.EMPTY; // returns object, not clone
 		}
 	}
 }

@@ -1,3 +1,11 @@
+package swim.basic;
+
+import swim.actor.ActorSpace;
+import swim.api.SwimRoute;
+import swim.api.plane.AbstractPlane;
+import swim.kernel.Kernel;
+import swim.server.ServerLoader;
+
 public class BasicPlane extends AbstractPlane {
 
   @SwimRoute("/unit/:id")
