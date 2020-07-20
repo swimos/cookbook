@@ -1,18 +1,20 @@
 package swim.basic;
 
 import swim.api.SwimLane;
+import swim.api.agent.AbstractAgent;
+import swim.api.agent.Agent;
 import swim.api.lane.CommandLane;
 import swim.api.lane.ValueLane;
 import swim.structure.Value;
 
-public class UnitAgent {
+public class UnitAgent extends AbstractAgent {
 	
 	@SwimLane("foo")
 	public ValueLane<FooType> foo = this.<FooType>valueLane()
 			.didSet((newValue, oldValue) -> {
 				System.out.println(newValue);
 			});
-	
+
 	@SwimLane("addFoo")
   public CommandLane<FooType> addFoo = this.<FooType>commandLane()
   	.onCommand((FooType value) -> {

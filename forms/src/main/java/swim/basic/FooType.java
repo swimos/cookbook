@@ -1,3 +1,9 @@
+package swim.basic;
+
+import swim.structure.Form;
+import swim.structure.Kind;
+import swim.structure.Tag;
+
 /**
  * TODO: write a javadoc
  */
