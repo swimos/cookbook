@@ -3,9 +3,7 @@ package swim.basic;
 import swim.structure.*;
 import swim.structure.Record;
 
-/**
- * TODO: write a javadoc
- */
+// Another simple Java class distinguishable from FooType
 
 @Tag("barType")
 public class BarType {
@@ -55,7 +53,7 @@ public class BarType {
 	}
 }
 
-
+// Auxiliary class to BarType with overridden methods
 class BarTypeForm extends Form<BarType> {
 	
 	@Override 
@@ -68,6 +66,7 @@ class BarTypeForm extends Form<BarType> {
 		return BarType.class;
 	}
 
+	// mold method creates a Value from the fields of the BarType object argument
 	@Override
 	public Value mold(BarType barType) {
 		return Record.create(3)
@@ -76,7 +75,8 @@ class BarTypeForm extends Form<BarType> {
 				.slot("s", barType.getString())
 				.slot("j", barType.getNumber2());
 	}
-	
+
+	// the cast method is the inverse of mold, converts Value -> BarType object
 	@Override
 	public BarType cast(Item value) {
 		try {
@@ -90,12 +90,7 @@ class BarTypeForm extends Form<BarType> {
 					value.get("j").intValue(0));
 			return b;
 		} catch (Exception e) {
-			return BarType.EMPTY; // TODO: needs to return clone, not the mutable object itself
+			return BarType.EMPTY;
 		}
 	}
 }
-
-// TODO:
-//Again a simple Java class but distinguishable from FooType, e.g. class BarType { int i; String s; int j }
-//Add an auxiliary class (i.e. outside BarType but within the same file) BarTypeForm extends Form<BarType>
-//Override BarTypeForm's required methods like here.

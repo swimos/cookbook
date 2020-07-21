@@ -19,9 +19,13 @@ class CustomClient {
     Value barVal = (Value) BarType.form().mold(barObj);
 
     for (int i = 0; i < 10; i++) {
+      // Commands the addFoo lane of UnitAgent with some Record that is compatible with FooType.
       swimClient.command(hostUri, fooNodeUri, "addFoo", fooVal);
+
+      // Commands the addBar lane of UnitAgent with BarType molded into type Value
       swimClient.command(hostUri, barNodeUri, "addBar", barVal);
 
+      // Commands the addValue lane of UnitAgent with both of the aforementioned messages.
       swimClient.command(hostUri, fooNodeUri, "addValue", fooVal);
       swimClient.command(hostUri, barNodeUri, "addValue", barVal);
 
@@ -31,8 +35,3 @@ class CustomClient {
     swimClient.stop();
   }
 }
-
-// TODO: from git issue
-//Commands the addFoo lane of UnitAgent with some Record that is compatible with FooType. With the example, and assuming the class was annotated with @Tag("foo"), such a Record might look like Record.create(3).attr("foo").slot("i", 5).slot("s", "potato").
-//Commands the addBar lane of UnitAgent with the result of (Value) BarType.form().mold(someBarTypeInstance).
-//OPTIONAL: commands the addValue lane of UnitAgent with both of the aforementioned messages.

@@ -8,44 +8,40 @@ import swim.api.lane.ValueLane;
 import swim.structure.Value;
 
 public class UnitAgent extends AbstractAgent {
-	
+
+	// ValueLane<FooType> foo, whose didSet(newValue, oldValue) callback prints newValue
 	@SwimLane("foo")
 	public ValueLane<FooType> foo = this.<FooType>valueLane()
 			.didSet((newValue, oldValue) -> {
-				System.out.println(newValue);
+				System.out.println("foo: " + newValue);
 			});
 
+	// CommandLane<FooType> addFoo, whose onCommand(value) callback invokes foo.set(value)
 	@SwimLane("addFoo")
-  public CommandLane<FooType> addFoo = this.<FooType>commandLane()
-  	.onCommand((FooType value) -> {
-  		foo.set(value);
-  	});
+  	public CommandLane<FooType> addFoo = this.<FooType>commandLane()
+  			.onCommand((FooType value) -> {
+  				foo.set(value);
+  			});
 
-  @SwimLane("bar")
-  public ValueLane<BarType> bar = this.<BarType>valueLane()
-  		.didSet((newValue, oldValue) -> {
-  			System.out.println(newValue);
+	// ValueLane<BarType> bar, whose didSet(newValue, oldValue) callback prints newValue
+	@SwimLane("bar")
+  	public ValueLane<BarType> bar = this.<BarType>valueLane()
+  			.didSet((newValue, oldValue) -> {
+  				System.out.println("bar: " + newValue);
+  			});
+
+	// CommandLane<BarType> addBar, whose onCommand(value) callback invokes bar.set(value)
+  	@SwimLane("addBar")
+  	public CommandLane<BarType> addBar = this.<BarType>commandLane()
+  			.onCommand((BarType value) -> {
+  				bar.set(value);
   		});
-  
-  @SwimLane("addBar")
-  public CommandLane<BarType> addBar = this.<BarType>commandLane()
-  	.onCommand((BarType value) -> {
-  		bar.set(value);
-  	});
 	
-  // TODO: add explanation why: 
-  // Just to exercise that the internal lane type is always fundamentally a Value, 
-  // so this type is compatible with anything.
+  // CommandLane<Value> addValue, whose onCommand(value) callback prints value
+  // Just included to exercise that the internal lane type is always fundamentally a Value, so this type is compatible with anything.
   @SwimLane("addValue")
   public CommandLane<Value> addValue = this.<Value>commandLane()
   	.onCommand((Value value) -> {
-  		System.out.println(value);
+  		System.out.println("some value: " + value);
   	});
 }
-
-// TODO:
-//Has ValueLane<FooType> foo, whose didSet(newValue, oldValue) callback prints newValue.
-//Has CommandLane<FooType> addFoo, whose onCommand(value) callback invokes foo.set(value).
-//Has ValueLane<BarType> bar, whose didSet(newValue, oldValue) callback prints newValue.
-//Has CommandLane<BarType> addBar, whose onCommand(value) callback invokes bar.set(value).
-//OPTIONAL: Has CommandLane<Value> addValue, whose onCommand(value) callback prints value. Just to exercise that the internal lane type is always fundamentally a Value, so this type is compatible with anything. Though it's up to you to decide if this actually isn't that useful.

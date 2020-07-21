@@ -4,9 +4,8 @@ import swim.structure.Form;
 import swim.structure.Kind;
 import swim.structure.Tag;
 
-/**
- * TODO: write a javadoc
- */
+// Fundamentally a simple Java class, with a small number of fields of any simple type
+// with the necessary pieces added to automatically generate a form
 
 @Tag("fooType")
 public class FooType {
@@ -28,7 +27,8 @@ public class FooType {
 	public String getString() {
 		return s;
 	}
-	
+
+	//@Kind-annotated static field and static accessor method
 	@Kind
 	private static Form<FooType> form;
 	
@@ -39,10 +39,3 @@ public class FooType {
 		return form;
 	}
 }
-
-// TODO:
-//Fundamentally a simple Java class, with a small number of fields of any simple type you'd like (e.g. primitives, Strings). Something like class FooType { int i; String s; }
-//Add the necessary pieces to automatically generated a form, like here
-//@Tag annotation
-//Default values and (hugely important, easily forgettable) a no-argument constructor
-//@Kind-annotated static field and static accessor method.
