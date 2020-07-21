@@ -4,6 +4,7 @@
 .gradle
 .vscode
 build
+bin
 out
 Listener-tcpioteclipseorg1883/
 Writer-tcpioteclipseorg1883/
