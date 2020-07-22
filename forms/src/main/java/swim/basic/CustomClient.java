@@ -13,7 +13,7 @@ class CustomClient {
     final String fooNodeUri = "/unit/foo";
     final String barNodeUri = "/unit/bar";
 
-    Value fooVal = Record.create(3).attr("foo").slot("i", 5).slot("s", "potato");
+    Value fooVal = Record.create(3).attr("fooType").slot("i", 5).slot("s", "potato");
 
     BarType barObj = new BarType(1, "two", 3);
     Value barVal = (Value) BarType.form().mold(barObj);
