@@ -1,5 +1,6 @@
 package swim.basic;
 
+import swim.recon.Recon;
 import swim.structure.*;
 import swim.structure.Record;
 
@@ -50,6 +51,11 @@ public class BarType {
 			form = Form.forClass(BarType.class);
 		}
 		return form;
+	}
+
+	@Override
+	public String toString() {
+		return Recon.toString(form().mold(this));
 	}
 }
 

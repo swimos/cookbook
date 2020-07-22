@@ -1,5 +1,6 @@
 package swim.basic;
 
+import swim.recon.Recon;
 import swim.structure.Form;
 import swim.structure.Kind;
 import swim.structure.Tag;
@@ -37,5 +38,10 @@ public class FooType {
 			form = Form.forClass(FooType.class);
 		}
 		return form;
+	}
+
+	@Override
+	public String toString() {
+		return Recon.toString(form().mold(this));
 	}
 }
