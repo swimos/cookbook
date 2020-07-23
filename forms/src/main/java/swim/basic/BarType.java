@@ -6,9 +6,8 @@ import swim.structure.Record;
 
 // Another simple Java class distinguishable from FooType
 
-@Tag("barType")
 public class BarType {
-
+	
 	public static final BarType EMPTY = new BarType(0,"",0);
 
 	
@@ -37,13 +36,10 @@ public class BarType {
 		return j;
 	}
 	
+	private static Form<BarType> form = new BarTypeForm();
+
 	@Kind
-	private static Form<BarType> form;
-	
 	public static Form<BarType> form() {
-		if(form == null) {
-			form = Form.forClass(BarType.class);
-		}
 		return form;
 	}
 
