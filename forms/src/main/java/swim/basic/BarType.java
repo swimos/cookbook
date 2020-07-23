@@ -8,15 +8,9 @@ import swim.structure.Record;
 
 @Tag("barType")
 public class BarType {
-	
-	// TODO: the final vars were not specified in the git issue, but were included in the example Token class
-	// they also come up in the auxiliary class, are they necessary?
-	
-	// the empty obj seems helpful for readabilty purposes
+
 	public static final BarType EMPTY = new BarType(0,"",0);
 
-	// however, FORM below seems covered by the "if(form==null)" logic already
-	//	public static final BarTypeForm = FORM = new BarTypeForm();
 	
 	private int i = 0;
 	private String s = "";
