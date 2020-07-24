@@ -1,13 +1,11 @@
 package swim.basic;
 
-import swim.actor.ActorSpace;
 import swim.api.SwimRoute;
 import swim.api.agent.AgentRoute;
 import swim.api.plane.AbstractPlane;
 import swim.api.space.Space;
 import swim.kernel.Kernel;
 import swim.server.ServerLoader;
-import swim.structure.Record;
 import swim.structure.Value;
 
 public class BasicPlane extends AbstractPlane {
@@ -30,7 +28,7 @@ public class BasicPlane extends AbstractPlane {
 
     // The following two statements return null. Why do you think that is?
     System.out.println(FooType.form().cast(barVal));
-    System.out.println(BarType.form().cast(fooVal)); // TODO: this isn't null actually, strangely it creates an empty BarType object
+    System.out.println(BarType.form().cast(fooVal));
 
     // Consider why the following would fail to compile:
     // FooType.form().mold(barType);
@@ -48,7 +46,7 @@ public class BasicPlane extends AbstractPlane {
 
   public static void main(String[] args) {
     // Switch the flag to tue to run the server only once you understand what happens in pojoTransformations()
-    Boolean willRunServer = false;
+    boolean willRunServer = false;
 
     pojoTransformations();
 

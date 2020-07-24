@@ -13,9 +13,9 @@
 // limitations under the License.
 
 open module swim.basic {
-    requires transitive swim.api;
-    requires swim.server;
-    requires swim.client;
+  requires transitive swim.api;
+  requires swim.server;
+  requires swim.client;
 
-    exports swim.basic;
+  exports swim.basic;
 }
