@@ -32,6 +32,11 @@ public class BasicPlane extends AbstractPlane {
 
     // Consider why the following would fail to compile:
     // FooType.form().mold(barType);
+
+    // The following logic exercises introduces the somewhat advanced use for Forms that is mentioned in the cookbook: composability
+    BazType bazType = new BazType(fooType, barType);
+    Value bazVal = (Value) BazType.form().mold(bazType);
+    BazType.form().cast(bazVal);
   }
 
   public static void runServer() {
