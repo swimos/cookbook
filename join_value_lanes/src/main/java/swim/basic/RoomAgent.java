@@ -31,6 +31,7 @@ public class RoomAgent extends AbstractAgent {
 
   @Override
   public void didStart() {
+    this.lights.set(false);
     register();
   }
 
