@@ -12,7 +12,7 @@ repositories {
 dependencies {
     api group: 'com.h2database', name: 'h2', version: '1.4.199'
     api group: 'jdk.incubator', name: 'adba', version: '0.07'
-    testCompile 'junit:junit:4.12'
+    implementation 'junit:junit:4.12'
 }
 
 test { // FIXME
