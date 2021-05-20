@@ -1,6 +1,6 @@
 # Web Agents
 
-Code corresponding to the [Web Agents cookbook](https://swim.dev/tutorials/web-agents/).
+Code corresponding to the [Web Agents cookbook](https://swimos.org/tutorials/web-agents/).
 
 *Read this in other languages: [简体中文](README.zh-cn.md)*
 

@@ -1,6 +1,6 @@
 # Map Lanes
 
-Code corresponding to the [Map Lanes cookbook](https://swim.dev/tutorials/map-lanes/).
+Code corresponding to the [Map Lanes cookbook](https://swimos.org/tutorials/map-lanes/).
 
 *Read this in other languages: [简体中文](README.zh-cn.md)*
 

@@ -1,6 +1,6 @@
 # Downlinks
 
-Code corresponding to the [Downlinks cookbook](https://swim.dev/tutorials/downlinks/).
+Code corresponding to the [Downlinks cookbook](https://swimos.org/tutorials/downlinks/).
 
 *Read this in other languages: [简体中文](README.zh-cn.md)*
 

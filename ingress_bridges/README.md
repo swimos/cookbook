@@ -1,6 +1,6 @@
 # Ingress Bridges
 
-Code corresponding to the [Ingress Bridges cookbook](https://swim.dev/tutorials/ingress-bridges/).
+Code corresponding to the [Ingress Bridges cookbook](https://swimos.org/tutorials/ingress-bridges/).
 
 *Read this in other languages: [简体中文](README.zh-cn.md)*
 

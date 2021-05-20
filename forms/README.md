@@ -1,6 +1,6 @@
 # Forms
 
-Code corresponding to the [Forms cookbook](https://swim.dev/tutorials/forms/).
+Code corresponding to the [Forms cookbook](https://swimos.org/tutorials/forms/).
 
 *Read this in other languages: [简体中文](README.zh-cn.md)*
 

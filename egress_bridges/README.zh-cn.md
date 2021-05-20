@@ -1,6 +1,6 @@
 # Egress Bridges（出口网桥）
 
-代码可在 [egress bridges cookbook](https://swim.dev/tutorials/egress-bridges/) 中找到。
+代码可在 [egress bridges cookbook](https://swimos.org/tutorials/egress-bridges/) 中找到。
 
 *其他语言版本：[English](README.md), [简体中文](README.zh-cn.md)*
 

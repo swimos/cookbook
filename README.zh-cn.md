@@ -1,6 +1,6 @@
 # Cookbook（烹饪书）
 
-所有的[cookbook](https://swim.dev/tutorials/) 代码片段，组合成了可运行的Gradle项目。
+所有的[cookbook](https://swimos.org/tutorials/) 代码片段，组合成了可运行的Gradle项目。
 
 *其他语言版本：[English](README.md), [简体中文](README.zh-cn.md)*
 

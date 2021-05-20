@@ -1,6 +1,6 @@
 # Cookbook
 
-All [cookbook](https://swim.dev/tutorials/) code snippets, gathered into runnable Gradle projects.
+All [cookbook](https://swimos.org/tutorials/) code snippets, gathered into runnable Gradle projects.
 
 *Read this in other languages: [简体中文](README.zh-cn.md)*
 

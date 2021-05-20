@@ -1,6 +1,6 @@
 # Timers
 
-Code corresponding to the [Timers cookbook](https://swim.dev/tutorials/timers/).
+Code corresponding to the [Timers cookbook](https://swimos.org/tutorials/timers/).
 
 *Read this in other languages: [简体中文](README.zh-cn.md)*
 

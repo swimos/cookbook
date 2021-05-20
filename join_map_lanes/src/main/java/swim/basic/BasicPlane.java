@@ -10,7 +10,7 @@ import swim.server.ServerLoader;
 import swim.service.web.WebServiceDef;
 
 /**
- * The complimentary code as part of the <a href="https://swim.dev/tutorials/join-map-lanes/">Join Map Lane</a> cookbook.
+ * The complimentary code as part of the <a href="https://swimos.org/tutorials/join-map-lanes/">Join Map Lane</a> cookbook.
  * <p>
  * In this cookbook, three map lanes are created to hold information pertaining to state statistics and is aggregated
  * into a Join Map Lane. This join map lane checks entries that are added to see if they exceed a threshold. If it is,

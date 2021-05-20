@@ -1,6 +1,6 @@
 # Ingress Bridges （入口网桥）
 
-代码可在 [Ingress Bridges cookbook](https://swim.dev/tutorials/ingress-bridges/) 中找到。
+代码可在 [Ingress Bridges cookbook](https://swimos.org/tutorials/ingress-bridges/) 中找到。
 
 *其他语言版本：[English](README.md), [简体中文](README.zh-cn.md)*
 

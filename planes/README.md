@@ -1,6 +1,6 @@
 # Planes
 
-Code corresponding to the [Planes cookbook](https://swim.dev/tutorials/planes/).
+Code corresponding to the [Planes cookbook](https://swimos.org/tutorials/planes/).
 
 *Read this in other languages: [简体中文](README.zh-cn.md)*
 

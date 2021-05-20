@@ -1,6 +1,6 @@
 # Web Agents
 
-代码可在 [Web Agents cookbook](https://swim.dev/tutorials/web-agents/) 中找到。
+代码可在 [Web Agents cookbook](https://swimos.org/tutorials/web-agents/) 中找到。
 
 *其他语言版本：[English](README.md), [简体中文](README.zh-cn.md)*
 

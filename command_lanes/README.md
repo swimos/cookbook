@@ -1,6 +1,6 @@
 # Command Lanes
 
-Code corresponding to the [Command Lanes cookbook](https://swim.dev/tutorials/command-lanes/).
+Code corresponding to the [Command Lanes cookbook](https://swimos.org/tutorials/command-lanes/).
 
 *Read this in other languages: [简体中文](README.zh-cn.md)*
 

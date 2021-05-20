@@ -1,6 +1,6 @@
 # Join Lanes
 
-Code corresponding to the [Join Value Lanes cookbook](https://swim.dev/tutorials/join-value-lanes/).
+Code corresponding to the [Join Value Lanes cookbook](https://swimos.org/tutorials/join-value-lanes/).
 
 *Read this in other languages: [简体中文](README.zh-cn.md)*
 

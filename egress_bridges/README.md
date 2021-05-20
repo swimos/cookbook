@@ -1,6 +1,6 @@
 # Egress Bridges
 
-Code corresponding to the [egress bridges cookbook](https://swim.dev/tutorials/egress-bridges/).
+Code corresponding to the [egress bridges cookbook](https://swimos.org/tutorials/egress-bridges/).
 
 *Read this in other languages: [简体中文](README.zh-cn.md)*
 

@@ -1,6 +1,6 @@
 # Value Lanes
 
-代码可在 [Value Lanes cookbook](https://swim.dev/tutorials/value-lanes/) 中找到。
+代码可在 [Value Lanes cookbook](https://swimos.org/tutorials/value-lanes/) 中找到。
 
 *其他语言版本：[English](README.md), [简体中文](README.zh-cn.md)*
 
