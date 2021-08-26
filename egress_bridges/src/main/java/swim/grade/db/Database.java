@@ -54,11 +54,11 @@ public class Database {
 
     // For demo purposes, use driver to seed database
     try {
-      BlockingCustomDriver.start("tcp://localhost:9002", "~/test", "sa", "");
+      BlockingStudentsDriver.start("tcp://localhost:9002", "~/test", "sa", "");
     } catch (ClassNotFoundException e) {
       e.printStackTrace();
     } finally {
-      BlockingCustomDriver.stop();
+      BlockingStudentsDriver.stop();
     }
   }
 }

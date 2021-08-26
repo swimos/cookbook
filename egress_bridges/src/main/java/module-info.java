@@ -12,13 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+@SuppressWarnings("requires-automatic")
 open module swim.grade {
-  requires transitive jdk.incubator.adba;
   requires transitive swim.api;
   requires swim.server;
   requires swim.client;
   requires com.h2database;
   requires java.sql;
-
-  provides jdk.incubator.sql2.DataSourceFactory with com.oracle.adbaoverjdbc.DataSourceFactory;
 }

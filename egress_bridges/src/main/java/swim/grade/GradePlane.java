@@ -14,10 +14,12 @@
 
 package swim.grade;
 
+import java.sql.SQLException;
 import swim.actor.ActorSpace;
 import swim.api.SwimRoute;
 import swim.api.agent.AgentRoute;
 import swim.api.plane.AbstractPlane;
+import swim.grade.db.BlockingStudentsDriver;
 import swim.kernel.Kernel;
 import swim.server.ServerLoader;
 import swim.structure.Value;
@@ -32,15 +34,16 @@ public class GradePlane extends AbstractPlane {
   @SwimRoute("/egress")
   AgentRoute<EgressAgent> egressAgentType;
 
-  public static void main(String[] args) {
+  public static void main(String[] args)
+      throws ClassNotFoundException, SQLException {
 
-    // Attempt to start CustomDriver
-    CustomDriver.start("tcp://localhost:9002", "~/test", "sa", "");
+    // Attempt to start driver
+    BlockingStudentsDriver.start("tcp://localhost:9002", "~/test", "sa", "");
 
     final Kernel kernel = ServerLoader.loadServer();
-    final ActorSpace space = (ActorSpace) kernel.getSpace("basic");
+    final ActorSpace space = (ActorSpace) kernel.getSpace("grade");
     kernel.start();
-    System.out.println("Running Basic server...");
+    System.out.println("Running Grade server...");
     kernel.run();
 
     // Immediately wake up EgressAgent
@@ -49,11 +52,11 @@ public class GradePlane extends AbstractPlane {
     Runtime.getRuntime().addShutdownHook(
         new Thread(() -> {
           System.out.println("Database sees:");
-          CustomDriver.checkGrade(1);
-          CustomDriver.checkGrade(2);
-          CustomDriver.checkGrade(3);
-          CustomDriver.checkGrade(4);
-          CustomDriver.checkGrade(5);
+          BlockingStudentsDriver.logGrade(1);
+          BlockingStudentsDriver.logGrade(2);
+          BlockingStudentsDriver.logGrade(3);
+          BlockingStudentsDriver.logGrade(4);
+          BlockingStudentsDriver.logGrade(5);
           ForkJoinPool.commonPool().awaitQuiescence(1, TimeUnit.MINUTES);
         })
 

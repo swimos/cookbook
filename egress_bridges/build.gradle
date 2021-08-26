@@ -11,13 +11,6 @@ repositories {
 
 dependencies {
     api group: 'com.h2database', name: 'h2', version: '1.4.199'
-//    api group: 'jdk.incubator', name: 'adba', version: '0.07'
-    compile fileTree(dir: 'lib', include: '*.jar')
-    implementation 'junit:junit:4.12'
-}
-
-test { // FIXME
-    exclude '**/*'
 }
 
 task runSim(type: JavaExec) {

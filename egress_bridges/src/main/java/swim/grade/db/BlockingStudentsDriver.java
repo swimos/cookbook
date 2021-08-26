@@ -21,20 +21,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-class BlockingCustomDriver {
+public class BlockingStudentsDriver {
 
-  private static BlockingCustomDriver driver;
-  private Connection conn;
-  private String url;
+  private final Connection conn;
+  private final String url;
 
-  private BlockingCustomDriver(Connection conn, String url) {
+  // singleton pattern
+  private static BlockingStudentsDriver driver;
+
+  private BlockingStudentsDriver(Connection conn, String url) {
     this.conn = conn;
     this.url = url;
   }
 
-  static void start(String host, String path, String usr, String pw)
+  public static void start(String host, String path, String usr, String pw)
       throws ClassNotFoundException, SQLException {
-    // `start` becomes `restart` if `driver` already exists
+    // start() becomes restart() if BlockingDriver.driver already exists
     if (driver != null) {
       stop();
     }
@@ -46,7 +48,7 @@ class BlockingCustomDriver {
         + ((!host.endsWith("/") && !path.startsWith("/")) ? "/" : "")
         + path;
     System.out.println("[DEBUG] will start driver at " + url);
-    driver = new BlockingCustomDriver(DriverManager.getConnection(url, usr, pw), url);
+    driver = new BlockingStudentsDriver(DriverManager.getConnection(url, usr, pw), url);
     System.out.println("[INFO] Connection Established: "
         + driver.conn.getMetaData().getDatabaseProductName() + "/"
         + driver.conn.getCatalog());
@@ -55,18 +57,7 @@ class BlockingCustomDriver {
     createStudentsTable();
   }
 
-  private static void seed(PreparedStatement seed,
-                           int id, String f, String l) throws SQLException {
-    seed.setInt(1, id);
-    seed.setString(2, f);
-    seed.setString(3, l);
-    seed.setInt(4, 0);
-    seed.setInt(5, 0);
-    seed.execute();
-  }
-
-  // throws NPE if called before start()
-  static void createStudentsTable() throws SQLException {
+  private static void createStudentsTable() throws SQLException {
     ResultSet res = driver.conn.getMetaData()
         .getTables(null, null, "STUDENTS", new String[] {"TABLE"});
     if (res.next()) {
@@ -97,6 +88,41 @@ class BlockingCustomDriver {
     seed.close();
   }
 
+  private static void seed(PreparedStatement seed,
+                           int id, String f, String l) throws SQLException {
+    seed.setInt(1, id);
+    seed.setString(2, f);
+    seed.setString(3, l);
+    seed.setInt(4, 0);
+    seed.setInt(5, 0);
+    seed.execute();
+  }
+
+  public static void updateGrade(int id, int earned, int possible) {
+    final String baseSql = String.format(
+        "UPDATE STUDENTS "
+            + "SET points_earned = %d, points_possible = %d "
+            + "WHERE id = %d;", earned, possible, id);
+    try (Statement stmt = driver.conn.createStatement()) {
+      stmt.executeUpdate(baseSql);
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public static void logGrade(final int id) {
+    final String sql = String.format("SELECT points_earned, points_possible FROM STUDENTS WHERE id = %d;", id);
+    try (Statement stmt = driver.conn.createStatement();
+        ResultSet rs = stmt.executeQuery(sql)) {
+      while (rs.next()) {
+        System.out.println(rs.getInt("points_earned"));
+        System.out.println(rs.getInt("points_possible"));
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+  }
+
   static void stop() throws SQLException {
     if (driver != null) {
       System.out.println("[DEBUG] Will stop driver");
@@ -106,8 +132,4 @@ class BlockingCustomDriver {
     }
   }
 
-  public static void main(String[] args) throws ClassNotFoundException, SQLException {
-    start("tcp://localhost:9002", "~/test", "sa", "");
-    stop();
-  }
 }
