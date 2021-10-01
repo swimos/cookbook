@@ -2,7 +2,6 @@ package swim.basic;
 
 import swim.api.SwimLane;
 import swim.api.agent.AbstractAgent;
-import swim.api.downlink.MapDownlink;
 import swim.api.lane.CommandLane;
 import swim.structure.Form;
 import swim.structure.Text;
@@ -22,15 +21,15 @@ public class SupplierAgent extends AbstractAgent {
         final String warehouseNodeUri = "/warehouse/" + location;
 
         //Create a downlink to a different Swim server from an agent
-        final MapDownlink<String, Integer> resupplyDownlink = this.downlinkMap()
+        this.downlinkMap()
                 .keyForm(Form.forString()).valueForm(Form.forInteger())
-                .hostUri(CustomPlane.WAREHOUSE_HOST_URI)
+                .hostUri(SupplierPlane.WAREHOUSE_HOST_URI)
                 .nodeUri(warehouseNodeUri)
                 .laneUri("stock")
                 .didUpdate(((item, newValue, oldValue) -> {
                     if(newValue < RESUPPLY_THRESHOLD){ //If the stock is too low then resupply it
                         logResupply(item, newValue, location);
-                        this.command(CustomPlane.WAREHOUSE_HOST_URI, warehouseNodeUri, "resupply", Text.from(item));
+                        this.command(SupplierPlane.WAREHOUSE_HOST_URI, warehouseNodeUri, "resupply", Text.from(item));
                     }
                 }))
                 .open();

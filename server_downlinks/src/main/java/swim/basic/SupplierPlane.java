@@ -17,9 +17,9 @@ import swim.structure.Value;
  * In this cookbook, two Swim servers create two different agents simulating a warehouse and a supplier. A downlink is created
  * between them so that the supplier can resupply any stock that falls below a given threshold.
  * <p>
- * See {@link BasicPlane}
+ * See {@link WarehousePlane}
  */
-public class CustomPlane extends AbstractPlane {
+public class SupplierPlane extends AbstractPlane {
 
     public final static String WAREHOUSE_HOST_URI = "warp://localhost:9001";
 
@@ -29,10 +29,10 @@ public class CustomPlane extends AbstractPlane {
     public static void main(String[] args) throws InterruptedException {
         final Kernel kernel = ServerLoader.loadServerStack();
 
-        final CustomPlane plane = kernel.openSpace(ActorSpaceDef.fromName("custom"))
-                .openPlane("custom", CustomPlane.class);
+        final SupplierPlane plane = kernel.openSpace(ActorSpaceDef.fromName("supplier"))
+                .openPlane("supplier", SupplierPlane.class);
 
-        kernel.openService(WebServiceDef.standard().port(9002).spaceName("custom"));
+        kernel.openService(WebServiceDef.standard().port(9002).spaceName("supplier"));
         kernel.start();
 
         //Create a downlink to a different Swim server directly from this plane

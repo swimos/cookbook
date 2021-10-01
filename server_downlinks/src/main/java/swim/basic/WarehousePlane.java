@@ -13,18 +13,18 @@ import swim.structure.Value;
  * In this cookbook, two Swim servers create two different agents simulating a warehouse and a supplier. A downlink is created
  * between them so that the supplier can resupply any stock that falls below a given threshold.
  * <p>
- * See {@link CustomPlane}
+ * See {@link SupplierPlane}
  */
-public class BasicPlane extends AbstractPlane {
+public class WarehousePlane extends AbstractPlane {
 
     @SwimRoute("/warehouse/:location")
     AgentRoute<WarehouseAgent> warehouseAgentType;
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         final Kernel kernel = ServerLoader.loadServer();
 
+        System.out.println("Starting Warehouse server...");
         kernel.start();
-        System.out.println("Running Basic server...");
         kernel.run();
     }
 

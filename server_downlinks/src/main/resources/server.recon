@@ -1,9 +1,9 @@
 basic: @fabric {
-  @plane(class: "swim.basic.BasicPlane")
+  @plane(class: "swim.basic.WarehousePlane")
 }
 
 @web(port: 9001) {
-  space: "basic"
+  space: "warehouse"
   documentRoot: "./ui/"
   @websocket {
     serverCompressionLevel: 0# -1 = default; 0 = off; 1-9 = deflate level
