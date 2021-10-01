@@ -33,10 +33,6 @@ public class SupplierAgent extends AbstractAgent {
                 })).open();
     }
 
-    private void logResupply(final String item, final Integer stock, final String location){
-        System.out.println("current stock of (" + item + ":" + stock + ") too low at " + location + " warehouse, resupplying");
-    }
-
     @Override
     public void didStart() {
         logEvent("opened");
@@ -47,7 +43,15 @@ public class SupplierAgent extends AbstractAgent {
         logEvent("stopped");
     }
 
+    private void logResupply(final String item, final Integer stock, final String location){
+        logMessage("current stock of (" + item + ":" + stock + ") too low at " + location + " warehouse, resupplying");
+    }
+
     private void logEvent(Object msg) {
-        System.out.println("supplier " + msg);
+        logMessage("supplier " + msg);
+    }
+
+    private void logMessage(final Object msg) {
+        System.out.println(nodeUri() + ": " + msg);
     }
 }

@@ -28,7 +28,7 @@ public class CustomerAgent extends AbstractAgent {
                 .hostUri(SupplierPlane.WAREHOUSE_HOST_URI)
                 .nodeUri(warehouseNodeUri).laneUri("lastResupplyId")
                 .didSet((newValue, oldValue) -> {
-                    if(!Objects.equals(newValue, oldValue)) System.out.println("customer received new stock notification, resupply: " + newValue);
+                    if(!Objects.equals(newValue, oldValue)) logMessage("customer received new stock notification, resupply: " + newValue);
                 }).open();
     }
 
@@ -50,6 +50,10 @@ public class CustomerAgent extends AbstractAgent {
     @Override
     public void willStop() {
         cancelTimer();
+    }
+
+    private void logMessage(final Object msg) {
+        System.out.println(nodeUri() + ": " + msg);
     }
 
 }

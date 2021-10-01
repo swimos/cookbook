@@ -44,7 +44,7 @@ public class SupplierPlane extends AbstractPlane {
                 .hostUri(WAREHOUSE_HOST_URI)
                 .nodeUri("/warehouse/cambridge").laneUri("lastResupplyId")
                 .didSet((newValue, oldValue) -> {
-                    System.out.println("latest supply id received at warehouse: " + newValue);
+                    logMessage("latest supply id received at warehouse: " + newValue);
                 }).open();
 
         //Create a map downlink to a different Swim server directly from this plane
@@ -53,7 +53,7 @@ public class SupplierPlane extends AbstractPlane {
                 .hostUri(WAREHOUSE_HOST_URI)
                 .nodeUri("/warehouse/cambridge").laneUri("stock")
                 .didUpdate(((key, newValue, oldValue) -> {
-                    System.out.println(key + " stock at cambridge warehouse changed to: " + newValue);
+                    logMessage(key + " stock at cambridge warehouse changed to: " + newValue);
                 })).open();
     }
 
@@ -68,5 +68,9 @@ public class SupplierPlane extends AbstractPlane {
         context.command("/customer/1", "wakeup", Value.absent());
         //Register the customer to the warehouse
         context.command("/customer/1", "register", Text.from("cambridge"));
+    }
+
+    private static void logMessage(final String message) {
+        System.out.println("plane: " + message);
     }
 }

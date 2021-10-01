@@ -31,10 +31,6 @@ public class WarehouseAgent extends AbstractAgent {
     @SwimLane("lastResupplyId")
     public ValueLane<Integer> lastResupplyId = this.<Integer>valueLane();
 
-    private void logResupply(final String item, final Integer stock){
-        System.out.println("resupplied " + item + " in " + getProp("location").stringValue() + " warehouse to " + stock + " units");
-    }
-
     @Override
     public void didStart() {
         this.lastResupplyId.set(0);
@@ -46,8 +42,16 @@ public class WarehouseAgent extends AbstractAgent {
         logEvent("stopped");
     }
 
-    private void logEvent(Object msg) {
-        System.out.println(getProp("location").stringValue() + " warehouse " + msg);
+    private void logResupply(final String item, final Integer stock){
+        logMessage("resupplied " + item + " in " + getProp("location").stringValue() + " warehouse to " + stock + " units");
+    }
+
+    private void logEvent(final Object msg) {
+        logMessage(getProp("location").stringValue() + " warehouse " + msg);
+    }
+
+    private void logMessage(final Object msg) {
+        System.out.println(nodeUri() + ": " + msg);
     }
 
 }

@@ -1,4 +1,4 @@
-# Join Lanes
+# Server Downlinks
 
 Code corresponding to the [Server Downlinks cookbook](https://swimos.org/tutorials/server-downlinks/).
 
