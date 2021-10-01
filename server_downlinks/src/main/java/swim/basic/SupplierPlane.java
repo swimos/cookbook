@@ -26,7 +26,10 @@ public class SupplierPlane extends AbstractPlane {
     @SwimRoute("/supplier")
     AgentRoute<SupplierAgent> supplierAgentType;
 
-    public static void main(String[] args) throws InterruptedException {
+    @SwimRoute("/customer/:id")
+    AgentRoute<CustomerAgent> customerAgentType;
+
+    public static void main(String[] args) {
         final Kernel kernel = ServerLoader.loadServerStack();
 
         final SupplierPlane plane = kernel.openSpace(ActorSpaceDef.fromName("supplier"))
@@ -35,22 +38,23 @@ public class SupplierPlane extends AbstractPlane {
         kernel.openService(WebServiceDef.standard().port(9002).spaceName("supplier"));
         kernel.start();
 
-        //Create a downlink to a different Swim server directly from this plane
+        //Create a value downlink to a different Swim server directly from this plane
         plane.downlinkValue()
                 .valueForm(Form.forInteger())
                 .hostUri(WAREHOUSE_HOST_URI)
-                .nodeUri("/warehouse/cambridge")
-                .laneUri("lastResupplyId")
+                .nodeUri("/warehouse/cambridge").laneUri("lastResupplyId")
                 .didSet((newValue, oldValue) -> {
-                    System.out.println("Latest supply id received at warehouse: " + newValue);
-                })
-                .open();
+                    System.out.println("latest supply id received at warehouse: " + newValue);
+                }).open();
 
-        //Take an item every second so the supplier can resupply when stock is low
-        while(true){
-            Thread.sleep(1000);
-            plane.command(WAREHOUSE_HOST_URI, "/warehouse/cambridge", "takeItem", Text.from("foo"));
-        }
+        //Create a map downlink to a different Swim server directly from this plane
+        plane.downlinkMap()
+                .keyForm(Form.forString()).valueForm(Form.forInteger())
+                .hostUri(WAREHOUSE_HOST_URI)
+                .nodeUri("/warehouse/cambridge").laneUri("stock")
+                .didUpdate(((key, newValue, oldValue) -> {
+                    System.out.println(key + " stock at cambridge warehouse changed to: " + newValue);
+                })).open();
     }
 
     @Override
@@ -60,5 +64,9 @@ public class SupplierPlane extends AbstractPlane {
         context.command("/supplier", "wakeup", Value.absent());
         //Register the supplier to the warehouse
         context.command("/supplier", "register", Text.from("cambridge"));
+        // Immediately wake up CustomerAgent upon plane load
+        context.command("/customer/1", "wakeup", Value.absent());
+        //Register the customer to the warehouse
+        context.command("/customer/1", "register", Text.from("cambridge"));
     }
 }

@@ -20,19 +20,17 @@ public class SupplierAgent extends AbstractAgent {
     private void addResupplyDownlink(final String location) {
         final String warehouseNodeUri = "/warehouse/" + location;
 
-        //Create a downlink to a different Swim server from an agent
+        //Create a map downlink to a different Swim server from an agent
         this.downlinkMap()
                 .keyForm(Form.forString()).valueForm(Form.forInteger())
                 .hostUri(SupplierPlane.WAREHOUSE_HOST_URI)
-                .nodeUri(warehouseNodeUri)
-                .laneUri("stock")
+                .nodeUri(warehouseNodeUri).laneUri("stock")
                 .didUpdate(((item, newValue, oldValue) -> {
                     if(newValue < RESUPPLY_THRESHOLD){ //If the stock is too low then resupply it
                         logResupply(item, newValue, location);
                         this.command(SupplierPlane.WAREHOUSE_HOST_URI, warehouseNodeUri, "resupply", Text.from(item));
                     }
-                }))
-                .open();
+                })).open();
     }
 
     private void logResupply(final String item, final Integer stock, final String location){
