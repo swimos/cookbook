@@ -7,6 +7,7 @@ import swim.api.plane.AbstractPlane;
 import swim.kernel.Kernel;
 import swim.server.ServerLoader;
 import swim.service.web.WebServiceDef;
+import swim.structure.Form;
 import swim.structure.Text;
 import swim.structure.Value;
 
@@ -20,8 +21,10 @@ import swim.structure.Value;
  */
 public class CustomPlane extends AbstractPlane {
 
-    @SwimRoute("/warehouse/:location")
-    AgentRoute<WarehouseAgent> warehouseAgentType;
+    public final static String WAREHOUSE_HOST_URI = "warp://localhost:9001";
+
+    @SwimRoute("/supplier")
+    AgentRoute<SupplierAgent> supplierAgentType;
 
     public static void main(String[] args) throws InterruptedException {
         final Kernel kernel = ServerLoader.loadServerStack();
@@ -32,19 +35,30 @@ public class CustomPlane extends AbstractPlane {
         kernel.openService(WebServiceDef.standard().port(9002).spaceName("custom"));
         kernel.start();
 
+        //Create a downlink to a different Swim server directly from this plane
+        plane.downlinkValue()
+                .valueForm(Form.forInteger())
+                .hostUri(WAREHOUSE_HOST_URI)
+                .nodeUri("/warehouse/cambridge")
+                .laneUri("lastResupplyId")
+                .didSet((newValue, oldValue) -> {
+                    System.out.println("Latest supply id received at warehouse: " + newValue);
+                })
+                .open();
+
         //Take an item every second so the supplier can resupply when stock is low
         while(true){
             Thread.sleep(1000);
-            plane.command("/warehouse/cambridge", "takeItem", Text.from("foo"));
+            plane.command(WAREHOUSE_HOST_URI, "/warehouse/cambridge", "takeItem", Text.from("foo"));
         }
     }
 
     @Override
     public void didStart() {
         super.didStart();
-        // Immediately wake up WarehouseAgent upon plane load
-        context.command("/warehouse/cambridge", "wakeup", Value.absent());
-        //Add an item to the cambridge warehouse which will resupply immediately
-        context.command("/warehouse/cambridge", "addItem", Text.from("foo"));
+        // Immediately wake up SupplierAgent upon plane load
+        context.command("/supplier", "wakeup", Value.absent());
+        //Register the supplier to the warehouse
+        context.command("/supplier", "register", Text.from("cambridge"));
     }
 }

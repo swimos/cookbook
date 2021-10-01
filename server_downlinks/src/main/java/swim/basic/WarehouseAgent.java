@@ -4,24 +4,18 @@ import swim.api.SwimLane;
 import swim.api.agent.AbstractAgent;
 import swim.api.lane.CommandLane;
 import swim.api.lane.MapLane;
+import swim.api.lane.ValueLane;
 
 public class WarehouseAgent extends AbstractAgent {
-
-    private final static String SUPPLIER_HOST_URI = "warp://localhost:9001";
 
     @SwimLane("stock")
     public MapLane<String, Integer> stock = this.<String, Integer>mapLane();
 
-    @SwimLane("addItem")
-    public CommandLane<String> addItem = this.<String>commandLane()
-            .onCommand(item -> {
-                this.stock.put(item, 0);
-            });
-
     @SwimLane("takeItem")
     public CommandLane<String> takeItem = this.<String>commandLane()
             .onCommand(item -> {
-                final int newValue = this.stock.getOrDefault(item, 1) - 1;
+                int newValue = this.stock.getOrDefault(item, 1) - 1;
+                if(newValue < 0) newValue = 0;
                 this.stock.put(item, newValue);
             });
 
@@ -30,8 +24,12 @@ public class WarehouseAgent extends AbstractAgent {
             .onCommand(item -> {
                 final int newValue = this.stock.getOrDefault(item, 0) + 5;
                 this.stock.put(item, newValue);
+                this.lastResupplyId.set(this.lastResupplyId.get() + 1);
                 logResupply(item, newValue);
             });
+
+    @SwimLane("lastResupplyId")
+    public ValueLane<Integer> lastResupplyId = this.<Integer>valueLane();
 
     private void logResupply(final String item, final Integer stock){
         System.out.println("resupplied " + item + " in " + getProp("location").stringValue() + " warehouse to " + stock + " units");
@@ -39,7 +37,7 @@ public class WarehouseAgent extends AbstractAgent {
 
     @Override
     public void didStart() {
-        command(SUPPLIER_HOST_URI, "/supplier", "register", getProp("location")); //Register this warehouse to the supplier
+        this.lastResupplyId.set(0);
         logEvent("opened");
     }
 
