@@ -1,4 +1,4 @@
-basic: @fabric {
+warehouse: @fabric {
   @plane(class: "swim.basic.WarehousePlane")
 }
 
