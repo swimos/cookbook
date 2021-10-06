@@ -42,11 +42,11 @@ public class BasicPlane extends AbstractPlane {
         Thread.sleep(1000);
 
         System.out.println("Creating downlink to data - raw will start being transformed.");
-        final ValueDownlink<Integer> dataDownlnink =
+        final ValueDownlink<String> dataDownlnink =
                 space.downlinkValue()
-                        .valueForm(Form.forInteger())
+                        .valueForm(Form.forString())
                         .nodeUri("/unit").laneUri("data")
-                        .didSet((n, o) -> System.out.println("data updated from " + o + " to " + n))
+                        .didSet((n, o) -> System.out.println("data updated from '" + o + "' to '" + n + "'"))
                         .open();
 
         Thread.sleep(1000);

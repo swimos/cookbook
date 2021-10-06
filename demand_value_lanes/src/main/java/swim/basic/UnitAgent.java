@@ -11,16 +11,16 @@ public class UnitAgent extends AbstractAgent {
     ValueLane<Integer> raw = this.<Integer>valueLane().didSet((n, o) -> this.data.cue());
 
     @SwimLane("data")
-    DemandLane<Integer> data = this.<Integer>demandLane().onCue(uplink -> transformRaw());
+    DemandLane<String> data = this.<String>demandLane().onCue(uplink -> transformRaw());
 
     // Transform raw data to the desired format
-    private Integer transformRaw() {
+    private String transformRaw() {
         final Integer v = this.raw.get();
         System.out.println(nodeUri() + ": Transforming raw data: "+ v);
         if (v != null) {
-            return (v*11); //Arbitrary transformation for display purposes
+            return  "Num:" + v; //Arbitrary transformation for display purposes
         } else {
-            return v;
+            return "";
         }
     }
 
