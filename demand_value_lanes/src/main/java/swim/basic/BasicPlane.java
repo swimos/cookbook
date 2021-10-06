@@ -10,6 +10,13 @@ import swim.server.ServerLoader;
 import swim.structure.Form;
 import swim.structure.Value;
 
+/**
+ * The complimentary code as part of the <a href="https://swimos.org/tutorials/demand-value-lanes/">Demand Value Lanes</a> cookbook.
+ * <p>
+ * In this cookbook, an agent is created with a DemandLane. This demand lane will only transform data when there is an downlink
+ * that is subscribed to it.
+ * <p>
+ */
 public class BasicPlane extends AbstractPlane {
 
     @SwimRoute("/unit")
