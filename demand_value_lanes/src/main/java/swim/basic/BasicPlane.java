@@ -34,7 +34,9 @@ public class BasicPlane extends AbstractPlane {
                 space.downlinkValue()
                         .valueForm(Form.forInteger())
                         .nodeUri("/unit").laneUri("raw")
-                        .didSet((n, o) -> System.out.println("raw updated from " + o + " to " + n))
+                        .didSet((n, o) -> {
+                            if (!n.equals(o)) System.out.println("raw updated from " + o + " to " + n);
+                        })
                         .open();
 
         Thread.sleep(1000); //Sleeps are used to ensure logging is in correct order for clarity
@@ -56,6 +58,9 @@ public class BasicPlane extends AbstractPlane {
         System.out.println("Closing downlnink to data - raw will no longer be transformed.");
         dataDownlnink.close();
         rawDownlink.set(3);
+        Thread.sleep(1000);
+
+        kernel.stop();
     }
 
     @Override
