@@ -35,3 +35,7 @@ project(':join-map-lanes').projectDir = file('join_map_lanes')
 
 include 'forms'
 project(':forms').projectDir = file('forms')
+
+include 'server-downlinks'
+project(':server-downlinks').projectDir = file('server_downlinks')
+
