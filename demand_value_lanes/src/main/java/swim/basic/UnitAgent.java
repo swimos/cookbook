@@ -5,23 +5,23 @@ import swim.api.agent.AbstractAgent;
 import swim.api.lane.DemandLane;
 import swim.api.lane.ValueLane;
 
+import java.util.Base64;
+
 public class UnitAgent extends AbstractAgent {
 
     @SwimLane("raw")
-    ValueLane<Integer> raw = this.<Integer>valueLane().didSet((n, o) -> this.data.cue());
+    ValueLane<String> raw = this.<String>valueLane().didSet((n, o) -> this.data.cue());
 
     @SwimLane("data")
-    DemandLane<String> data = this.<String>demandLane().onCue(uplink -> transformRaw());
+    DemandLane<String> data = this.<String>demandLane().onCue(uplink -> decodeRaw());
 
     // Transform raw data to the desired format
-    private String transformRaw() {
-        final Integer v = this.raw.get();
-        System.out.println(nodeUri() + ": Transforming raw data: "+ v);
-        if (v != null) {
-            return  "Num:" + v; //Arbitrary transformation for display purposes
-        } else {
-            return "";
-        }
+    private String decodeRaw() {
+        final String encoded = this.raw.get();
+        if (encoded == null) return "";
+        final String decoded = new String(Base64.getDecoder().decode(encoded.getBytes()));
+        System.out.println(nodeUri() + ": Decoded raw data to: "+ decoded);
+        return decoded;
     }
 
     @Override
