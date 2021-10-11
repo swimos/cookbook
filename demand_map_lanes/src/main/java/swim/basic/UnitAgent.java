@@ -5,29 +5,37 @@ import swim.api.agent.AbstractAgent;
 import swim.api.lane.DemandMapLane;
 import swim.api.lane.MapLane;
 
+import java.util.Base64;
+import java.util.Collections;
+
 public class UnitAgent extends AbstractAgent {
 
     @SwimLane("raw")
-    protected MapLane<Integer, String> raw = this.<Integer, String>mapLane()
+    protected MapLane<String, String> raw = this.<String, String>mapLane()
             .didUpdate((key, newValue, oldValue) -> this.data.cue(key));
 
     @SwimLane("data")
-    protected DemandMapLane<Integer, String> data = this.<Integer, String>demandMapLane()
-            .onCue((key, uplink) -> transformRaw(key))
-            .onSync(uplink -> this.raw.keyIterator());
+    protected DemandMapLane<String, String> data = this.<String, String>demandMapLane()
+            .onCue((key, uplink) -> {
+                final String name = uplink.laneUri().query().get("name");
+                return (key.equals(name)) ? decodeRaw(key) : null;
+            })
+            .onSync(uplink -> {
+                final String name = uplink.laneUri().query().get("name");
+                return (this.raw.containsKey(name)) ? Collections.singletonList(name).iterator() : Collections.emptyIterator();
+            });
 
-    private String transformRaw(Integer key) {
-        final String rawValue = this.raw.get(key);
-        if (rawValue == null) return null;
-        System.out.println(nodeUri() + ": Transforming raw value: " + rawValue);
-        return rawValue.toUpperCase(); //Arbitrary transformation for display purposes
+    private String decodeRaw(String key) {
+        final String encoded = this.raw.get(key);
+        if (encoded == null) return "";
+        final String decoded = new String(Base64.getDecoder().decode(encoded.getBytes()));
+        System.out.println(nodeUri() + ": Decoded raw data to: "+ decoded);
+        return decoded;
     }
 
     @Override
     public void didStart() {
         System.out.println(nodeUri() + " did start");
-        raw.put(1, "foo");
-        raw.put(2, "foo");
     }
 
 }

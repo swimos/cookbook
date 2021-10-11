@@ -15,6 +15,7 @@
 open module swim.basic {
   requires transitive swim.api;
   requires swim.server;
+  requires swim.client;
 
   exports swim.basic;
 }
