@@ -18,6 +18,7 @@ import java.util.Base64;
  * In this cookbook, an agent is created with a Demand Lane. This Demand Lane will only transform data when there is a downlink
  * that is subscribed to it.
  * <p>
+ * See {@link CustomClient}
  */
 public class BasicPlane extends AbstractPlane {
 
@@ -40,34 +41,13 @@ public class BasicPlane extends AbstractPlane {
                             if (!n.equals(o)) System.out.println("raw updated from '" + o + "' to '" + n + "'");
                         })
                         .open();
-        Thread.sleep(1000); //Sleeps are used to ensure logging is in correct order for clarity
 
-        //This message will never be decoded because the downlink has not been created yet
-        rawDownlink.set(encode("MESSAGE_ONE"));
-        Thread.sleep(1000);
-
-        //This message will be decoded as it will be the value of the lane when the downlink is created
-        rawDownlink.set(encode("MESSAGE_TWO"));
-        Thread.sleep(1000);
-
-        System.out.println("Creating downlink to data - raw will start being decoded.");
-        final ValueDownlink<String> dataDownlnink =
-                space.downlinkValue()
-                        .valueForm(Form.forString())
-                        .nodeUri("/unit").laneUri("data")
-                        .didSet((n, o) -> System.out.println("data updated from '" + o + "' to '" + n + "'"))
-                        .open();
-        Thread.sleep(1000);
-
-        rawDownlink.set(encode("MESSAGE_THREE"));
-        Thread.sleep(1000);
-
-        System.out.println("Closing downlnink to data - raw will no longer be decoded.");
-        dataDownlnink.close();
-        rawDownlink.set(encode("MESSAGE_FOUR"));
-        Thread.sleep(1000);
-
-        kernel.stop();
+        //Incrementally change the raw lane so the client can observe changes
+        int messageNumber = 0;
+        while(true){
+            Thread.sleep(1000);
+            rawDownlink.set(encode("MESSAGE_" + messageNumber++));
+        }
     }
 
     private static String encode(final String rawMessage) {
