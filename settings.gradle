@@ -39,3 +39,5 @@ project(':forms').projectDir = file('forms')
 include 'server-downlinks'
 project(':server-downlinks').projectDir = file('server_downlinks')
 
+include 'demand-value-lanes'
+project(':demand-value-lanes').projectDir = file('demand_value_lanes')
