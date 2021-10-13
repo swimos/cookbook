@@ -18,11 +18,12 @@ public class UnitAgent extends AbstractAgent {
     protected DemandMapLane<String, String> data = this.<String, String>demandMapLane()
             .onCue((key, uplink) -> {
                 final String name = uplink.laneUri().query().get("name");
-                return (key.equals(name)) ? decodeRaw(key) : null;
+                //Decode if no parameter was passed by the uplink or if the key matches the parameter
+                return (name == null || name.equals(key)) ? decodeRaw(key) : null;
             })
             .onSync(uplink -> {
                 final String name = uplink.laneUri().query().get("name");
-                return (this.raw.containsKey(name)) ? Collections.singletonList(name).iterator() : Collections.emptyIterator();
+                return (this.raw.containsKey(name)) ? Collections.singletonList(name).iterator() : this.raw.keyIterator();
             });
 
     private String decodeRaw(String key) {
