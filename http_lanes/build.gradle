@@ -3,9 +3,3 @@ apply from: '../project.gradle'
 description = 'Code corresponding to the Http Lane cookbook'
 ext.moduleName = 'swim.basic'
 mainClassName = 'swim.basic.BasicPlane'
-
-task runClient(type: JavaExec) {
-    group = "application"
-    classpath sourceSets.main.runtimeClasspath
-    main = "swim.basic.CustomClient"
-}

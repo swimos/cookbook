@@ -4,7 +4,7 @@ Code corresponding to the [Http Lanes cookbook](https://swimos.org/tutorials/htt
 
 ## Running This Demo
 
-This demo requires running the `swim.basic.BasicPlane` class. Then, the below curl commands can be used or run the `swim.basic.CustomClient` class. Review [`README.md` from the parent directory](../README.md) for instructions on how to do this. For those who pick Option 2, the `gradle` task corresponding to `swim.basic.CustomClient` is called `runClient`.
+This demo requires running the `swim.basic.BasicPlane` class followed by the below curl commands. Review [`README.md` from the parent directory](../README.md) for instructions on how to do this.
 
 ### Curl Commands
 
