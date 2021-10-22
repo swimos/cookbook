@@ -24,8 +24,9 @@ public class UnitAgent extends AbstractAgent {
     @SwimLane("http")
     HttpLane<Value> http = this.<Value>httpLane()
             .doRespond(request -> {
-                if (HttpMethod.POST.equals(request.method()))
+                if (HttpMethod.POST.equals(request.method())){
                     state.set(request.entity().get());
+                }
                 return HttpResponse.from(HttpStatus.OK).body(Recon.toString(state.get()), MediaType.applicationXRecon());
             });
 
