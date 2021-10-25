@@ -1,0 +1,5 @@
+apply from: '../project.gradle'
+
+description = 'Code corresponding to the Http Lane cookbook'
+ext.moduleName = 'swim.basic'
+mainClassName = 'swim.basic.BasicPlane'
