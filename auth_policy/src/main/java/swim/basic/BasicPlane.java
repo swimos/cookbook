@@ -20,6 +20,9 @@ public class BasicPlane extends AbstractPlane {
     @SwimRoute("/unit")
     AgentRoute<UnitAgent> unitAgentType;
 
+    @SwimRoute("/control")
+    AgentRoute<ControlAgent> controlAgentType;
+
     public BasicPlane() {
         context.setPolicy(new BasicPolicy());
     }
@@ -36,6 +39,7 @@ public class BasicPlane extends AbstractPlane {
     public void didStart() {
         super.didStart();
         command("/unit", "WAKEUP", Value.absent());
+        command("/control", "WAKEUP", Value.absent());
     }
 
 }

@@ -14,24 +14,32 @@ public class BasicPolicy extends AbstractPolicy {
     protected <T> PolicyDirective<T> authorize(Envelope envelope, Identity identity) {
         if (identity != null) {
             final String token = identity.requestUri().query().get("token");
+
             //Always authorize admins
             if (ADMIN_TOKEN.equals(token)) {
-                System.out.println("Accepting admin token: " + token);
+               logRequest(true, envelope.nodeUri().toString(), envelope.laneUri().toString(), token);
                 return allow();
             }
-            //Only admins should be authorized for this lane
-            if ("adminInfo".equals(envelope.laneUri().toString())) {
-                System.out.println("Rejecting request to admin lane without admin token");
+
+            //Admin tokens must be used for 'adminInfo' lanes or '/control' agents
+            if ("adminInfo".equals(envelope.laneUri().toString()) ||
+                    envelope.nodeUri().toString().startsWith("/control")) {
+                logRequest(false, envelope.nodeUri().toString(), envelope.laneUri().toString(), token);
                 return forbid();
             }
+
             //Users can access any remaining lanes
             if (USER_TOKEN.equals(token)) {
-                System.out.println("Accepting user token: " + token);
+                logRequest(true, envelope.nodeUri().toString(), envelope.laneUri().toString(), token);
                 return allow();
             }
-            System.out.println("Rejecting token: " + token);
+            logRequest(false, envelope.nodeUri().toString(), envelope.laneUri().toString(), token);
         }
         return forbid();
+    }
+
+    private static void logRequest(final boolean accepted, final String nodeUri, final String laneUri, final String token) {
+        System.out.println("policy: " + (accepted ? "Accepted " : "Rejected ") + "request to " + nodeUri + "/" + laneUri + " with token " + token);
     }
 }
 
