@@ -47,3 +47,7 @@ project(':demand-map-lanes').projectDir = file('demand_map_lanes')
 
 include 'http-lanes'
 project(':http-lanes').projectDir = file('http_lanes')
+
+include 'auth-policy'
+project(':auth-policy').projectDir = file('auth_policy')
+
