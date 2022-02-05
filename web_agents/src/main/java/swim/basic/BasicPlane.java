@@ -18,9 +18,9 @@ import swim.actor.ActorSpace;
 import swim.api.SwimRoute;
 import swim.api.agent.AgentRoute;
 import swim.api.plane.AbstractPlane;
+import swim.api.plane.PlaneContext;
 import swim.kernel.Kernel;
 import swim.server.ServerLoader;
-import swim.structure.Value;
 
 public class BasicPlane extends AbstractPlane {
 
@@ -30,15 +30,12 @@ public class BasicPlane extends AbstractPlane {
   public static void main(String[] args) throws InterruptedException {
     final Kernel kernel = ServerLoader.loadServer();
     final ActorSpace space = (ActorSpace) kernel.getSpace("basic");
+    final PlaneContext plane = (PlaneContext) kernel.getSpace("basic");
 
     kernel.start();
     System.out.println("Running Basic server...");
     kernel.run();
 
-    space.command("/unit/1", "unusedForNow", Value.absent());
-    space.command("/unit/foo", "unusedForNow", Value.absent());
-    space.command("/unit/foo_1", "unusedForNow", Value.absent());
-    
     Thread.sleep(1000);
 
     System.out.println("Server will shut down in 3 seconds");

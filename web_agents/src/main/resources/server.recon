@@ -1,6 +1,4 @@
-basic: @fabric {
-  @plane(class: "swim.basic.BasicPlane")
-}
+@kernel(class: "swim.store.db.DbStoreKernel", optional: true)
 
 @web(port: 9001) {
   space: "basic"
@@ -9,4 +7,29 @@ basic: @fabric {
     serverCompressionLevel: 0# -1 = default; 0 = off; 1-9 = deflate level
     clientCompressionLevel: 0# -1 = default; 0 = off; 1-9 = deflate level
   }
+}
+
+basic: @fabric {
+    @plane(class: "swim.basic.BasicPlane")
+    @node {
+        uri: "/unit/1"
+        @agent(class: "swim.basic.UnitAgent") {
+            propString: "unitProp"
+            propInt: 20
+        }
+    }
+    @node {
+        uri: "/unit/foo"
+        @agent(class: "swim.basic.UnitAgent") {
+            propFloat: 98.2
+            propBool: true
+        }
+    }
+    @node {
+        uri: "/unit/fooBar"
+        @agent(class: "swim.basic.UnitAgent") {
+            propInt: abc
+            propBool: FAlSe
+        }
+    }
 }
