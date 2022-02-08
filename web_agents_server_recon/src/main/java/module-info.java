@@ -1,4 +1,4 @@
-// Copyright 2015-2019 SWIM.AI inc.
+// Copyright 2015-2022 SWIM.AI inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,24 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package swim.basic;
+open module swim.basic {
+  requires transitive swim.api;
+  requires swim.server;
 
-import swim.api.agent.AbstractAgent;
-
-public class UnitAgent extends AbstractAgent {
-
-  @Override
-  public void didStart() {
-    logMessage("didStart");
-    close();
-  }
-
-  @Override
-  public void willStop() {
-    logMessage("willStop");
-  }
-
-  private void logMessage(Object msg) {
-    System.out.println(nodeUri() + ": " + msg);
-  }
+  exports swim.basic;
 }

@@ -1,0 +1,41 @@
+@kernel(class: "swim.store.db.DbStoreKernel", optional: true)
+
+@web(port: 9001) {
+  space: "basic"
+  documentRoot: "./ui/"
+  @websocket {
+    serverCompressionLevel: 0# -1 = default; 0 = off; 1-9 = deflate level
+    clientCompressionLevel: 0# -1 = default; 0 = off; 1-9 = deflate level
+  }
+}
+
+basic: @fabric {
+    @plane(class: "swim.basic.BasicPlane")
+    @node {
+        uri: "/unit/1"
+        @agent(class: "swim.basic.UnitAgent") {
+            propString: "unitProp"
+            propInt: 20
+            propFloat: 45.7
+            propBool: true
+        }
+    }
+    @node {
+        uri: "/unit/foo"
+        @agent(class: "swim.basic.UnitAgent") {
+            propString: "fooProp"
+            propInt: 67
+            propFloat: 98.2
+            propBool: false
+        }
+    }
+    @node {
+        uri: "/unit/:id"
+        @agent(class: "swim.basic.UnitAgent") {
+            propString: "defaultProp"
+            propInt: 343
+            propFloat: 767.0
+            propBool: true
+        }
+    }
+}
