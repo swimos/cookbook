@@ -1,4 +1,4 @@
-// Copyright 2015-2019 SWIM.AI inc.
+// Copyright 2015-2022 SWIM.AI inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -40,28 +40,25 @@ public class UnitAgent extends AbstractAgent {
   void prop() {
     // 1. Property type: String
     final String stringVal = getProp("propString").stringValue("");
-    System.out.println("Property " + stringVal + " belongs to " + nodeUri());
+    logMessage("String Property '" + stringVal + "'");
 
     // 2. Property type: Integer
     final int intVal = getProp("propInt").intValue(0);
-    System.out.println("Property 'propInt' with value " + intVal
-            + " belongs to " + nodeUri());
+    logMessage("Integer Property 'propInt' with value " + intVal);
 
     // 3. Property type: Float
     final float floatVal = getProp("propFloat").floatValue(0.0f);
-    System.out.println("Property 'propFloat' with value " + floatVal
-            + " belongs to " + nodeUri());
+    logMessage("Float Property 'propFloat' with value " + floatVal);
 
     // 4. Property type: Boolean
     final boolean boolVal = getProp("propBool").booleanValue(false);
-    System.out.println("Property 'propBool' with value " + boolVal
-            + " belongs to " + nodeUri());
+    logMessage("Boolean Property 'propBool' with value " + boolVal);
 
     // 5. Dynamic Agent Uri demonstration:
     if (nodeUri().toString() == "/unit/dynamic") {
       // n.b., "id" is dynamically declared.
       final String defaultID = getProp("id").stringValue(null);
-      System.out.println("The dynamically declared ID is : " + defaultID);
+      logMessage("The dynamically declared ID is : " + defaultID);
     }
   }
 

@@ -10,32 +10,32 @@
 }
 
 basic: @fabric {
-    @plane(class: "swim.basic.BasicPlane")
-    @node {
-        uri: "/unit/1"
-        @agent(class: "swim.basic.UnitAgent") {
-            propString: "unitProp"
-            propInt: 20
-            propFloat: 45.7
-            propBool: true
-        }
+  @plane(class: "swim.basic.BasicPlane")
+  @node {
+    uri: "/unit/1"
+    @agent(class: "swim.basic.UnitAgent") {
+      propString: "unitProp"
+      propInt: 20
+      propFloat: 45.7
+      propBool: true
     }
-    @node {
-        uri: "/unit/foo"
-        @agent(class: "swim.basic.UnitAgent") {
-            propString: "fooProp"
-            propInt: 67
-            propFloat: 98.2
-            propBool: false
-        }
+  }
+  @node {
+    uri: "/unit/foo"
+    @agent(class: "swim.basic.UnitAgent") {
+      propString: "fooProp"
+      propInt: 67
+      propFloat: 98.2
+      propBool: false
     }
-    @node {
-        uri: "/unit/:id"
-        @agent(class: "swim.basic.UnitAgent") {
-            propString: "defaultProp"
-            propInt: 343
-            propFloat: 767.0
-            propBool: true
-        }
+  }
+  @node {
+    uri: "/unit/:id"
+    @agent(class: "swim.basic.UnitAgent") {
+      propString: "defaultProp"
+      propInt: 343
+      propFloat: 767.0
+      propBool: true
     }
+  }
 }
