@@ -1,5 +1,5 @@
 apply from: '../project.gradle'
 
-description = 'Code corresponding to the Web Agents cookbook'
+description = 'Code corresponding to the Web Agents Server Recon cookbook'
 ext.moduleName = 'swim.basic'
 mainClassName = 'swim.basic.BasicPlane'
