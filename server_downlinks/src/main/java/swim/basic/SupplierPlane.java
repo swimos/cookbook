@@ -1,5 +1,6 @@
 package swim.basic;
 
+import swim.actor.ActorSpace;
 import swim.actor.ActorSpaceDef;
 import swim.api.SwimRoute;
 import swim.api.agent.AgentRoute;
@@ -30,11 +31,12 @@ public class SupplierPlane extends AbstractPlane {
     AgentRoute<CustomerAgent> customerAgentType;
 
     public static void main(String[] args) {
-        final Kernel kernel = ServerLoader.loadServerStack();
+        // System.setProperty("swim.config", "supplier.recon");
 
+        final Kernel kernel = ServerLoader.loadServerStack();
         final SupplierPlane plane = kernel.openSpace(ActorSpaceDef.fromName("supplier"))
                 .openPlane("supplier", SupplierPlane.class);
-
+        final ActorSpace space = (ActorSpace) kernel.getSpace("supplier");
         kernel.openService(WebServiceDef.standard().port(9002).spaceName("supplier"));
         kernel.start();
 

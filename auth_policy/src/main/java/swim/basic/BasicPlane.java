@@ -1,7 +1,5 @@
 package swim.basic;
 
-import swim.api.SwimRoute;
-import swim.api.agent.AgentRoute;
 import swim.api.plane.AbstractPlane;
 import swim.kernel.Kernel;
 import swim.server.ServerLoader;
@@ -16,12 +14,6 @@ import swim.structure.Value;
  * See {@link CustomClient}
  */
 public class BasicPlane extends AbstractPlane {
-
-    @SwimRoute("/unit")
-    AgentRoute<UnitAgent> unitAgentType;
-
-    @SwimRoute("/control")
-    AgentRoute<ControlAgent> controlAgentType;
 
     public BasicPlane() {
         context.setPolicy(new BasicPolicy());

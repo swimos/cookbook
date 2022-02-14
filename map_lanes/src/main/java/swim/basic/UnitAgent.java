@@ -37,6 +37,12 @@ public class UnitAgent extends AbstractAgent {
         this.shoppingCart.put(msg, n);
       });
 
+    @Override
+    public void didStart() {
+        System.out.println(nodeUri() + " didStart region");
+        close();
+    }
+
   private void logMessage(Object msg) {
     System.out.println(nodeUri() + ": " + msg);
   }

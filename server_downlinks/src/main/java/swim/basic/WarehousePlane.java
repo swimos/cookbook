@@ -1,7 +1,5 @@
 package swim.basic;
 
-import swim.api.SwimRoute;
-import swim.api.agent.AgentRoute;
 import swim.api.plane.AbstractPlane;
 import swim.kernel.Kernel;
 import swim.server.ServerLoader;
@@ -17,12 +15,10 @@ import swim.structure.Value;
  */
 public class WarehousePlane extends AbstractPlane {
 
-    @SwimRoute("/warehouse/:location")
-    AgentRoute<WarehouseAgent> warehouseAgentType;
-
     public static void main(String[] args) {
-        final Kernel kernel = ServerLoader.loadServer();
+        System.setProperty("swim.config", "warehouse.recon");
 
+        final Kernel kernel = ServerLoader.loadServer();
         System.out.println("Starting Warehouse server...");
         kernel.start();
         kernel.run();

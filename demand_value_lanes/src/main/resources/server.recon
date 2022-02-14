@@ -1,5 +1,10 @@
 basic: @fabric {
   @plane(class: "swim.basic.BasicPlane")
+  @node {
+      uri: "/unit"
+      @agent(class: "swim.basic.UnitAgent") {
+      }
+  }
 }
 
 @web(port: 9001) {

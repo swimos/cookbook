@@ -10,8 +10,13 @@
 basic: @fabric {
     @plane(class: "swim.basic.BasicPlane")
     @node {
-        uri: "/unit"
-        @agent(class: "swim.basic.UnitAgent") {
+        uri: "/state/:name"
+        @agent(class: "swim.basic.StreetStatisticsAgent") {
+        }
+    }
+    @node {
+        uri: "/join/state/:name"
+        @agent(class: "swim.basic.AggregatedStatisticsAgent") {
         }
     }
 }

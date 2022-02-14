@@ -15,8 +15,6 @@
 package swim.basic;
 
 import swim.actor.ActorSpace;
-import swim.api.SwimRoute;
-import swim.api.agent.AgentRoute;
 import swim.api.auth.Identity;
 import swim.api.plane.AbstractPlane;
 import swim.api.policy.AbstractPolicy;
@@ -26,12 +24,10 @@ import swim.server.ServerLoader;
 import swim.structure.Text;
 import swim.structure.Value;
 import swim.warp.Envelope;
+
 import java.io.IOException;
 
 public class BasicPlane extends AbstractPlane {
-  @SwimRoute("/unit/:id")
-  AgentRoute<UnitAgent> unitAgentType;
-
   // Inject policy. Swim internally calls the no-argument constructor, which retains
   // its implicit call to super() in Java
   public BasicPlane() {

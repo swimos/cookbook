@@ -1,5 +1,17 @@
+@kernel(class: "swim.store.db.DbStoreKernel", optional: true)
+
 grade: @fabric {
   @plane(class: "swim.grade.GradePlane")
+  @node {
+      uri: "/student/:id"
+      @agent(class: "swim.grade.StudentAgent") {
+      }
+  }
+  @node {
+      uri: "/egress"
+      @agent(class: "swim.grade.EgressAgent") {
+      }
+  }
 }
 
 @web(port: 9001) {

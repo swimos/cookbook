@@ -1,5 +1,10 @@
 warehouse: @fabric {
   @plane(class: "swim.basic.WarehousePlane")
+  @node {
+      uri: "/warehouse/:location"
+      @agent(class: "swim.basic.WarehouseAgent") {
+      }
+  }
 }
 
 @web(port: 9001) {

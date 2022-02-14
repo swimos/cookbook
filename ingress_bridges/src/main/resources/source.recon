@@ -1,5 +1,10 @@
 source: @fabric {
   @plane(class: "swim.basic.warp.SourcePlane")
+  @node {
+      uri: "/source/:id"
+      @agent(class: "swim.basic.warp.SourceAgent") {
+      }
+  }
 }
 
 @web(port: 9002) {

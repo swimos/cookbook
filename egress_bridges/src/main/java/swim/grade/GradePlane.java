@@ -14,25 +14,18 @@
 
 package swim.grade;
 
-import java.sql.SQLException;
 import swim.actor.ActorSpace;
-import swim.api.SwimRoute;
-import swim.api.agent.AgentRoute;
 import swim.api.plane.AbstractPlane;
 import swim.grade.db.BlockingStudentsDriver;
 import swim.kernel.Kernel;
 import swim.server.ServerLoader;
 import swim.structure.Value;
+
+import java.sql.SQLException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 
 public class GradePlane extends AbstractPlane {
-
-  @SwimRoute("/student/:id")
-  AgentRoute<StudentAgent> unitAgentType;
-
-  @SwimRoute("/egress")
-  AgentRoute<EgressAgent> egressAgentType;
 
   public static void main(String[] args)
       throws ClassNotFoundException, SQLException {

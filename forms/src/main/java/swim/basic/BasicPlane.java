@@ -1,7 +1,5 @@
 package swim.basic;
 
-import swim.api.SwimRoute;
-import swim.api.agent.AgentRoute;
 import swim.api.plane.AbstractPlane;
 import swim.api.space.Space;
 import swim.kernel.Kernel;
@@ -9,9 +7,6 @@ import swim.server.ServerLoader;
 import swim.structure.Value;
 
 public class BasicPlane extends AbstractPlane {
-
-  @SwimRoute("/unit/:id")
-  AgentRoute<UnitAgent> unitAgentType;
 
   public static void pojoTransformations() {
     // FooType instance fooType

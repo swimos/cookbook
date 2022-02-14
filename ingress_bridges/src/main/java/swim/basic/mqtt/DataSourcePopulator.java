@@ -33,7 +33,7 @@ public class DataSourcePopulator {
   }
 
   public static void main(String[] args) throws MqttException {
-    final DataSourcePopulator pop = new DataSourcePopulator("tcp://mqtt.eclipse.org:1883");
+    final DataSourcePopulator pop = new DataSourcePopulator("tcp://mqtt.eclipseprojects.io:1883");
     pop.populate();
   }
 

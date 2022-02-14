@@ -1,8 +1,6 @@
 package swim.basic;
 
 import swim.actor.ActorSpace;
-import swim.api.SwimRoute;
-import swim.api.agent.AgentRoute;
 import swim.api.downlink.ValueDownlink;
 import swim.api.plane.AbstractPlane;
 import swim.kernel.Kernel;
@@ -21,9 +19,6 @@ import java.util.Base64;
  * See {@link CustomClient}
  */
 public class BasicPlane extends AbstractPlane {
-
-    @SwimRoute("/unit")
-    AgentRoute<UnitAgent> unitAgentType;
 
     public static void main(String[] args) throws InterruptedException {
         final Kernel kernel = ServerLoader.loadServer();

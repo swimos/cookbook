@@ -61,7 +61,7 @@ public class IngressBridge {
   }
 
   public static void main(String[] args) throws MqttException {
-    final IngressBridge lis = new IngressBridge("warp://localhost:9001", "tcp://mqtt.eclipse.org:1883");
+    final IngressBridge lis = new IngressBridge("warp://localhost:9001", "tcp://mqtt.eclipseprojects.io:1883");
     lis.listen();
   }
 

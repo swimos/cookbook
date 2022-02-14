@@ -15,23 +15,17 @@
 package swim.basic.warp;
 
 import swim.actor.ActorSpace;
-import swim.api.SwimRoute;
-import swim.api.agent.AgentRoute;
 import swim.api.plane.AbstractPlane;
 import swim.kernel.Kernel;
 import swim.server.ServerLoader;
 import swim.structure.Text;
 
 public class SourcePlane extends AbstractPlane {
-
-  @SwimRoute("/source/:id")
-  AgentRoute<SourceAgent> sourceAgentType;
-
   public static void main(String[] args) throws InterruptedException {
     System.setProperty("swim.config", "source.recon");
 
     final Kernel kernel = ServerLoader.loadServer();
-    final ActorSpace space = (ActorSpace) kernel.getSpace("basic");
+    final ActorSpace space = (ActorSpace) kernel.getSpace("source");
     kernel.start();
     System.out.println("Running Source server...");
     kernel.run();

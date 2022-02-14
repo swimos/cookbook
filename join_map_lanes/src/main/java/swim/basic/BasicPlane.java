@@ -1,8 +1,6 @@
 package swim.basic;
 
 import swim.actor.ActorSpaceDef;
-import swim.api.SwimRoute;
-import swim.api.agent.AgentRoute;
 import swim.api.downlink.MapDownlink;
 import swim.api.plane.AbstractPlane;
 import swim.kernel.Kernel;
@@ -21,12 +19,6 @@ import swim.service.web.WebServiceDef;
 public class BasicPlane extends AbstractPlane {
 
   static final String HOST_URI = "warp://localhost:53556";
-
-  @SwimRoute("/state/:name")
-  private AgentRoute<StreetStatisticsAgent> mapRoute;
-
-  @SwimRoute("/join/state/:name")
-  private AgentRoute<AggregatedStatisticsAgent> joinMapRoute;
 
   /**
    * Returns a downlink map for a given plane and node URI using the 'state' lane URI

@@ -15,6 +15,7 @@
 package swim.grade.db;
 
 import org.h2.tools.Server;
+
 import java.sql.SQLException;
 
 public class Database {
