@@ -1,12 +1,22 @@
+@kernel(class: "swim.store.db.DbStoreKernel", optional: true)
 grade: @fabric {
   @plane(class: "swim.grade.GradePlane")
+  @node {
+    pattern: "/student/:id"
+    @agent(class: "swim.grade.StudentAgent")
+  }
+  @node {
+    uri: "/egress"
+    @agent(class: "swim.grade.EgressAgent")
+  }
 }
-
 @web(port: 9001) {
   space: "grade"
   documentRoot: "./ui/"
   @websocket {
-    serverCompressionLevel: 0# -1 = default; 0 = off; 1-9 = deflate level
-    clientCompressionLevel: 0# -1 = default; 0 = off; 1-9 = deflate level
+    serverCompressionLevel: 0
+    # -1 = default; 0 = off; 1-9 = deflate level
+    clientCompressionLevel: 0
+    # -1 = default; 0 = off; 1-9 = deflate level
   }
 }

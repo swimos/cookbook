@@ -32,11 +32,11 @@ class CustomClient {
     swimClient.command(hostUri, nodeUri, "WAKEUP", Value.absent());
 
     final EventDownlink<Value> link = swimClient.downlink()
-        .hostUri(hostUri).nodeUri(nodeUri).laneUri("publishValue")
-        .onEvent((Value event) -> {
-          System.out.println("link received event: " + event);
-        })
-        .open();
+            .hostUri(hostUri).nodeUri(nodeUri).laneUri("publishValue")
+            .onEvent((Value event) -> {
+              System.out.println("link received event: " + event);
+            })
+            .open();
     final Value msg = Num.from(9035768);
     // command() `msg` TO
     // the "publish" lane OF

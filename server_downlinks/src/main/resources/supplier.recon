@@ -1,0 +1,21 @@
+supplier: @fabric {
+  @plane(class: "swim.basic.SupplierPlane")
+  @node {
+    uri: "/supplier"
+    @agent(class: "swim.basic.SupplierAgent")
+  }
+  @node {
+    pattern: "/customer/:id"
+    @agent(class: "swim.basic.CustomerAgent")
+  }
+}
+@web(port: 9002) {
+  space: "supplier"
+  documentRoot: "./ui/"
+  @websocket {
+    serverCompressionLevel: 0
+    # -1 = default; 0 = off; 1-9 = deflate level
+    clientCompressionLevel: 0
+    # -1 = default; 0 = off; 1-9 = deflate level
+  }
+}

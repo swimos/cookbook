@@ -31,10 +31,10 @@ class CustomClient {
 
     // Write-only downlink; note keepLinked is false
     final MapDownlink<String, Integer> link = swimClient.downlinkMap()
-        .keyForm(Form.forString()).valueForm(Form.forInteger())
-        .hostUri(hostUri).nodeUri(nodeUriPrefix + "0").laneUri("shoppingCart")
-        .keepLinked(false)
-        .open();
+            .keyForm(Form.forString()).valueForm(Form.forInteger())
+            .hostUri(hostUri).nodeUri(nodeUriPrefix + "0").laneUri("shoppingCart")
+            .keepLinked(false)
+            .open();
     link.put("FromClientLink", 25);
 
     Thread.sleep(1000);

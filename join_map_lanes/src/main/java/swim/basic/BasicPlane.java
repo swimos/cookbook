@@ -1,8 +1,6 @@
 package swim.basic;
 
 import swim.actor.ActorSpaceDef;
-import swim.api.SwimRoute;
-import swim.api.agent.AgentRoute;
 import swim.api.downlink.MapDownlink;
 import swim.api.plane.AbstractPlane;
 import swim.kernel.Kernel;
@@ -22,30 +20,24 @@ public class BasicPlane extends AbstractPlane {
 
   static final String HOST_URI = "warp://localhost:53556";
 
-  @SwimRoute("/state/:name")
-  private AgentRoute<StreetStatisticsAgent> mapRoute;
-
-  @SwimRoute("/join/state/:name")
-  private AgentRoute<AggregatedStatisticsAgent> joinMapRoute;
-
   /**
    * Returns a downlink map for a given plane and node URI using the 'state' lane URI
    */
   private static MapDownlink<String, Integer> initDownlink(BasicPlane plane, String uri) {
     return plane.downlinkMap()
-        .keyClass(String.class)
-        .valueClass(Integer.class)
-        .hostUri(HOST_URI)
-        .nodeUri(uri)
-        .laneUri("state")
-        .open();
+            .keyClass(String.class)
+            .valueClass(Integer.class)
+            .hostUri(HOST_URI)
+            .nodeUri(uri)
+            .laneUri("state")
+            .open();
   }
 
   public static void main(String[] args) throws InterruptedException {
-    final Kernel kernel = ServerLoader.loadServerStack();
+    final Kernel kernel = ServerLoader.loadServer();
     // Open a space to work with. This is instead of defining a server.recon file. Which one could also do
     final BasicPlane plane = kernel.openSpace(ActorSpaceDef.fromName("test"))
-        .openPlane("test", BasicPlane.class);
+            .openPlane("test", BasicPlane.class);
 
     kernel.openService(WebServiceDef.standard().port(53556).spaceName("test"));
     kernel.start();

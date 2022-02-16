@@ -1,8 +1,6 @@
 package swim.basic;
 
 import swim.actor.ActorSpace;
-import swim.api.SwimRoute;
-import swim.api.agent.AgentRoute;
 import swim.api.downlink.ValueDownlink;
 import swim.api.plane.AbstractPlane;
 import swim.kernel.Kernel;
@@ -22,43 +20,40 @@ import java.util.Base64;
  */
 public class BasicPlane extends AbstractPlane {
 
-    @SwimRoute("/unit")
-    AgentRoute<UnitAgent> unitAgentType;
+  public static void main(String[] args) throws InterruptedException {
+    final Kernel kernel = ServerLoader.loadServer();
+    final ActorSpace space = (ActorSpace) kernel.getSpace("basic");
 
-    public static void main(String[] args) throws InterruptedException {
-        final Kernel kernel = ServerLoader.loadServer();
-        final ActorSpace space = (ActorSpace) kernel.getSpace("basic");
+    System.out.println("Starting server...");
+    kernel.start();
+    kernel.run();
 
-        System.out.println("Starting server...");
-        kernel.start();
-        kernel.run();
+    final ValueDownlink<String> rawDownlink =
+            space.downlinkValue()
+                    .valueForm(Form.forString())
+                    .nodeUri("/unit").laneUri("raw")
+                    .didSet((n, o) -> {
+                      if (!n.equals(o)) System.out.println("raw updated from '" + o + "' to '" + n + "'");
+                    })
+                    .open();
 
-        final ValueDownlink<String> rawDownlink =
-                space.downlinkValue()
-                        .valueForm(Form.forString())
-                        .nodeUri("/unit").laneUri("raw")
-                        .didSet((n, o) -> {
-                            if (!n.equals(o)) System.out.println("raw updated from '" + o + "' to '" + n + "'");
-                        })
-                        .open();
-
-        //Incrementally change the raw lane so the client can observe changes
-        int messageNumber = 0;
-        while(true){
-            Thread.sleep(1000);
-            rawDownlink.set(encode("MESSAGE_" + messageNumber++));
-        }
+    //Incrementally change the raw lane so the client can observe changes
+    int messageNumber = 0;
+    while (true) {
+      Thread.sleep(1000);
+      rawDownlink.set(encode("MESSAGE_" + messageNumber++));
     }
+  }
 
-    private static String encode(final String rawMessage) {
-        return Base64.getEncoder().encodeToString(rawMessage.getBytes());
-    }
+  private static String encode(final String rawMessage) {
+    return Base64.getEncoder().encodeToString(rawMessage.getBytes());
+  }
 
-    @Override
-    public void didStart() {
-        super.didStart();
-        //Immediately wake up the Unit Agent on plane load
-        command("/unit", "wakeup", Value.absent());
-    }
+  @Override
+  public void didStart() {
+    super.didStart();
+    //Immediately wake up the Unit Agent on plane load
+    command("/unit", "wakeup", Value.absent());
+  }
 
 }

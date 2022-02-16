@@ -31,11 +31,11 @@ class CustomClient {
     swimClient.command(hostUri, nodeUri, "WAKEUP", Value.absent());
     // Link with a didSet() override
     final ValueDownlink<Value> link = swimClient.downlinkValue()
-        .hostUri(hostUri).nodeUri(nodeUri).laneUri("info")
-        .didSet((newValue, oldValue) -> {
-          System.out.println("link watched info change TO " + newValue + " FROM " + oldValue);
-        })
-        .open();
+            .hostUri(hostUri).nodeUri(nodeUri).laneUri("info")
+            .didSet((newValue, oldValue) -> {
+              System.out.println("link watched info change TO " + newValue + " FROM " + oldValue);
+            })
+            .open();
     // Send using either the proxy command lane...
     swimClient.command(hostUri, nodeUri, "publishInfo", Text.from("Hello from command, world!"));
     // ...or a downlink set()

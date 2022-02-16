@@ -19,7 +19,12 @@ import swim.api.agent.AbstractAgent;
 import swim.api.lane.ValueLane;
 
 public class SourceAgent extends AbstractAgent {
-
   @SwimLane("val")
   ValueLane<String> val = this.<String>valueLane();
+
+  @Override
+  public void didStart() {
+    System.out.println(nodeUri() + " didStart region");
+    close();
+  }
 }

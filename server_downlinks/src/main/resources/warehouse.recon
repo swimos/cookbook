@@ -1,12 +1,12 @@
-basic: @fabric {
-  @plane(class: "swim.basic.BasicPlane")
+warehouse: @fabric {
+  @plane(class: "swim.basic.WarehousePlane")
   @node {
-    uri: "/unit"
-    @agent(class: "swim.basic.UnitAgent")
+    pattern: "/warehouse/:location"
+    @agent(class: "swim.basic.WarehouseAgent")
   }
 }
 @web(port: 9001) {
-  space: "basic"
+  space: "warehouse"
   documentRoot: "./ui/"
   @websocket {
     serverCompressionLevel: 0

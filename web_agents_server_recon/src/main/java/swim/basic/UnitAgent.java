@@ -14,8 +14,8 @@
 
 package swim.basic;
 
-import swim.api.agent.AbstractAgent;
 import swim.api.SwimLane;
+import swim.api.agent.AbstractAgent;
 import swim.api.lane.ValueLane;
 import swim.structure.Value;
 

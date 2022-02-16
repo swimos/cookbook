@@ -47,10 +47,10 @@ public class IngressBridge {
         final Value structure = Recon.parse(msg);
         final String nodeUri = String.format("/unit/%d", structure.get("id").intValue());
         IngressBridge.this.swim.command(
-            swimHost, // hostUri
-            nodeUri, // nodeUri
-            "publish", // laneUri
-            structure.get("val") // value
+                swimHost, // hostUri
+                nodeUri, // nodeUri
+                "publish", // laneUri
+                structure.get("val") // value
         );
       }
 
@@ -61,7 +61,7 @@ public class IngressBridge {
   }
 
   public static void main(String[] args) throws MqttException {
-    final IngressBridge lis = new IngressBridge("warp://localhost:9001", "tcp://mqtt.eclipse.org:1883");
+    final IngressBridge lis = new IngressBridge("warp://localhost:9001", "tcp://mqtt.eclipseprojects.io:1883");
     lis.listen();
   }
 

@@ -15,6 +15,7 @@
 package swim.grade.db;
 
 import org.h2.tools.Server;
+
 import java.sql.SQLException;
 
 public class Database {
@@ -48,7 +49,7 @@ public class Database {
 
     // Ensure Database shutdown before exit
     Runtime.getRuntime()
-        .addShutdownHook(new Thread(Database::stop));
+            .addShutdownHook(new Thread(Database::stop));
 
     Database.start(9002);
 
