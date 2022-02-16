@@ -15,23 +15,23 @@ import swim.structure.Value;
  */
 public class BasicPlane extends AbstractPlane {
 
-    public BasicPlane() {
-        context.setPolicy(new BasicPolicy());
-    }
+  public BasicPlane() {
+    context.setPolicy(new BasicPolicy());
+  }
 
-    public static void main(String[] args) {
-        final Kernel kernel = ServerLoader.loadServer();
+  public static void main(String[] args) {
+    final Kernel kernel = ServerLoader.loadServer();
 
-        System.out.println("Starting server...");
-        kernel.start();
-        kernel.run();
-    }
+    System.out.println("Starting server...");
+    kernel.start();
+    kernel.run();
+  }
 
-    @Override
-    public void didStart() {
-        super.didStart();
-        command("/unit", "WAKEUP", Value.absent());
-        command("/control", "WAKEUP", Value.absent());
-    }
+  @Override
+  public void didStart() {
+    super.didStart();
+    command("/unit", "WAKEUP", Value.absent());
+    command("/control", "WAKEUP", Value.absent());
+  }
 
 }

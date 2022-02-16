@@ -1,22 +1,21 @@
 basic: @fabric {
   @plane(class: "swim.basic.BasicPlane")
   @node {
-      uri: "/building/:name"
-      @agent(class: "swim.basic.BuildingAgent") {
-      }
+    pattern: "/building/:name"
+    @agent(class: "swim.basic.BuildingAgent")
   }
   @node {
-      uri: "/:building/:room"
-      @agent(class: "swim.basic.RoomAgent") {
-      }
+    pattern: "/:building/:room"
+    @agent(class: "swim.basic.RoomAgent")
   }
 }
-
 @web(port: 9001) {
   space: "basic"
   documentRoot: "./ui/"
   @websocket {
-    serverCompressionLevel: 0# -1 = default; 0 = off; 1-9 = deflate level
-    clientCompressionLevel: 0# -1 = default; 0 = off; 1-9 = deflate level
+    serverCompressionLevel: 0
+    # -1 = default; 0 = off; 1-9 = deflate level
+    clientCompressionLevel: 0
+    # -1 = default; 0 = off; 1-9 = deflate level
   }
 }

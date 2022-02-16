@@ -15,19 +15,19 @@ import swim.structure.Value;
  */
 public class WarehousePlane extends AbstractPlane {
 
-    public static void main(String[] args) {
-        System.setProperty("swim.config", "warehouse.recon");
+  public static void main(String[] args) {
+    System.setProperty("swim.config", "warehouse.recon");
 
-        final Kernel kernel = ServerLoader.loadServer();
-        System.out.println("Starting Warehouse server...");
-        kernel.start();
-        kernel.run();
-    }
+    final Kernel kernel = ServerLoader.loadServer();
+    System.out.println("Starting Warehouse server...");
+    kernel.start();
+    kernel.run();
+  }
 
-    @Override
-    public void didStart() {
-        super.didStart();
-        // Immediately wake up Warehouse Agent upon plane load
-        context.command("/warehouse/cambridge", "wakeup", Value.absent());
-    }
+  @Override
+  public void didStart() {
+    super.didStart();
+    // Immediately wake up Warehouse Agent upon plane load
+    context.command("/warehouse/cambridge", "wakeup", Value.absent());
+  }
 }

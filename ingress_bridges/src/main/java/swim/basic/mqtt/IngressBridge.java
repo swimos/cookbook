@@ -47,10 +47,10 @@ public class IngressBridge {
         final Value structure = Recon.parse(msg);
         final String nodeUri = String.format("/unit/%d", structure.get("id").intValue());
         IngressBridge.this.swim.command(
-            swimHost, // hostUri
-            nodeUri, // nodeUri
-            "publish", // laneUri
-            structure.get("val") // value
+                swimHost, // hostUri
+                nodeUri, // nodeUri
+                "publish", // laneUri
+                structure.get("val") // value
         );
       }
 

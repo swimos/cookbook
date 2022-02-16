@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 public class GradePlane extends AbstractPlane {
 
   public static void main(String[] args)
-      throws ClassNotFoundException, SQLException {
+          throws ClassNotFoundException, SQLException {
 
     // Attempt to start driver
     BlockingStudentsDriver.start("tcp://localhost:9002", "~/test", "sa", "");
@@ -43,15 +43,15 @@ public class GradePlane extends AbstractPlane {
     space.command("/egress", "wakeup", Value.absent());
 
     Runtime.getRuntime().addShutdownHook(
-        new Thread(() -> {
-          System.out.println("Database sees:");
-          BlockingStudentsDriver.logGrade(1);
-          BlockingStudentsDriver.logGrade(2);
-          BlockingStudentsDriver.logGrade(3);
-          BlockingStudentsDriver.logGrade(4);
-          BlockingStudentsDriver.logGrade(5);
-          ForkJoinPool.commonPool().awaitQuiescence(1, TimeUnit.MINUTES);
-        })
+            new Thread(() -> {
+              System.out.println("Database sees:");
+              BlockingStudentsDriver.logGrade(1);
+              BlockingStudentsDriver.logGrade(2);
+              BlockingStudentsDriver.logGrade(3);
+              BlockingStudentsDriver.logGrade(4);
+              BlockingStudentsDriver.logGrade(5);
+              ForkJoinPool.commonPool().awaitQuiescence(1, TimeUnit.MINUTES);
+            })
 
     );
   }

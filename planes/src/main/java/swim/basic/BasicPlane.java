@@ -44,12 +44,12 @@ public class BasicPlane extends AbstractPlane {
 
     // observe the effects of our commands
     space.downlinkValue()
-        .nodeUri("/unit/master")
-        .laneUri("info")
-        .didSet((newValue, oldValue) -> {
-          System.out.println("observed info change to " + newValue + " from " + oldValue);
-        })
-        .open();
+            .nodeUri("/unit/master")
+            .laneUri("info")
+            .didSet((newValue, oldValue) -> {
+              System.out.println("observed info change to " + newValue + " from " + oldValue);
+            })
+            .open();
 
     // Swim handles don't reject their own messages, regardless of policy
     space.command("/unit/master", "publishInfo", Text.from("Without network"));

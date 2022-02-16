@@ -26,9 +26,9 @@ public class UnitAgent extends AbstractAgent {
 
   @SwimLane("publishInfo")
   CommandLane<String> publishInfo = this.<String>commandLane()
-      .onCommand(msg -> {
-        this.info.set("from publishInfo: " + msg);
-      });
+          .onCommand(msg -> {
+            this.info.set("from publishInfo: " + msg);
+          });
 
   private void logMessage(Object msg) {
     System.out.println(nodeUri() + ": " + msg);

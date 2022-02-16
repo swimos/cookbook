@@ -34,7 +34,7 @@ public class SourcePlane extends AbstractPlane {
     while (true) {
       for (int i = 0; i < 10; i++) {
         space.command("/source/" + i, "val",
-            Text.from("FromOtherSwimServer" + (count++)));
+                Text.from("FromOtherSwimServer" + (count++)));
         Thread.sleep(100);
       }
     }

@@ -32,12 +32,12 @@ class CustomClient {
     final String thirdRoomUri = "/swim/3";
 
     final MapDownlink<Integer, Boolean> link = swimClient.downlinkMap()
-        .keyForm(Form.forInteger()).valueForm(Form.forBoolean())
-        .hostUri(hostUri).nodeUri(buildingUri).laneUri("lights")
-        .didUpdate((key, newValue, oldValue) -> {
-          System.out.println("The lights in room " + key + " are " + (newValue ? "on" : "off"));
-        })
-        .open();
+            .keyForm(Form.forInteger()).valueForm(Form.forBoolean())
+            .hostUri(hostUri).nodeUri(buildingUri).laneUri("lights")
+            .didUpdate((key, newValue, oldValue) -> {
+              System.out.println("The lights in room " + key + " are " + (newValue ? "on" : "off"));
+            })
+            .open();
 
     Thread.sleep(2000);
 

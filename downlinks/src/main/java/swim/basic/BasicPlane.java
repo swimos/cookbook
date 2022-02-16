@@ -34,12 +34,12 @@ public class BasicPlane extends AbstractPlane {
 
     // Event downlink issued against plane context
     space.downlink()
-        .nodeUri("/unit/0")
-        .laneUri("addItem")
-        .onEvent(v -> {
-          System.out.println("event downlink saw " + Recon.toString(v));
-        })
-        .open();
+            .nodeUri("/unit/0")
+            .laneUri("addItem")
+            .onEvent(v -> {
+              System.out.println("event downlink saw " + Recon.toString(v));
+            })
+            .open();
   }
 
   @Override

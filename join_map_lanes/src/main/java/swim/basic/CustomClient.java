@@ -25,17 +25,17 @@ public class CustomClient {
     clientRuntime.start();
 
     final MapDownlink<String, Integer> mapDownlink = clientRuntime.downlinkMap()
-        .keyForm(Form.forString())
-        .valueForm(Form.forInteger())
-        .hostUri(BasicPlane.HOST_URI)
-        .nodeUri("/join/state/all")
-        .laneUri("join")
-        .didUpdate((key, newValue, oldValue) -> {
-          if (newValue > THRESHOLD) {
-            logStreet(key, newValue);
-          }
-        })
-        .open();
+            .keyForm(Form.forString())
+            .valueForm(Form.forInteger())
+            .hostUri(BasicPlane.HOST_URI)
+            .nodeUri("/join/state/all")
+            .laneUri("join")
+            .didUpdate((key, newValue, oldValue) -> {
+              if (newValue > THRESHOLD) {
+                logStreet(key, newValue);
+              }
+            })
+            .open();
 
     Thread.sleep(1000);
 

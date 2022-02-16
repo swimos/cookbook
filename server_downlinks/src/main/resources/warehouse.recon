@@ -1,17 +1,17 @@
 warehouse: @fabric {
   @plane(class: "swim.basic.WarehousePlane")
   @node {
-      uri: "/warehouse/:location"
-      @agent(class: "swim.basic.WarehouseAgent") {
-      }
+    pattern: "/warehouse/:location"
+    @agent(class: "swim.basic.WarehouseAgent")
   }
 }
-
 @web(port: 9001) {
   space: "warehouse"
   documentRoot: "./ui/"
   @websocket {
-    serverCompressionLevel: 0# -1 = default; 0 = off; 1-9 = deflate level
-    clientCompressionLevel: 0# -1 = default; 0 = off; 1-9 = deflate level
+    serverCompressionLevel: 0
+    # -1 = default; 0 = off; 1-9 = deflate level
+    clientCompressionLevel: 0
+    # -1 = default; 0 = off; 1-9 = deflate level
   }
 }

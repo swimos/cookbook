@@ -14,40 +14,40 @@ import swim.structure.Form;
  */
 public class CustomClient {
 
-    public static void main(String[] args) throws InterruptedException {
-        ClientRuntime swimClient = new ClientRuntime();
-        swimClient.start();
+  public static void main(String[] args) throws InterruptedException {
+    ClientRuntime swimClient = new ClientRuntime();
+    swimClient.start();
 
-        final String hostUri = "warp://localhost:9001";
+    final String hostUri = "warp://localhost:9001";
 
-        System.out.println("Opening downlink to data with no parameter. Raw will start to be decoded.");
-        final MapDownlink<String, String> dataDownlink =
-                swimClient.downlinkMap()
-                        .keyForm(Form.forString()).valueForm(Form.forString())
-                        .hostUri(hostUri)
-                        .nodeUri("/unit").laneUri("data")
-                        .didUpdate((key, newValue, oldValue) -> {
-                            System.out.println("data updated entry " + key + " : '" + newValue + "'");
-                        }).open();
+    System.out.println("Opening downlink to data with no parameter. Raw will start to be decoded.");
+    final MapDownlink<String, String> dataDownlink =
+            swimClient.downlinkMap()
+                    .keyForm(Form.forString()).valueForm(Form.forString())
+                    .hostUri(hostUri)
+                    .nodeUri("/unit").laneUri("data")
+                    .didUpdate((key, newValue, oldValue) -> {
+                      System.out.println("data updated entry " + key + " : '" + newValue + "'");
+                    }).open();
 
-        Thread.sleep(10000);
-        dataDownlink.close();
-        System.out.println("Closed downlink to data with no parameter. Raw will stop being decoded.");
+    Thread.sleep(10000);
+    dataDownlink.close();
+    System.out.println("Closed downlink to data with no parameter. Raw will stop being decoded.");
 
-        System.out.println("Opening downlink to data for key 'bar'. Raw will start to be decoded.");
-        final MapDownlink<String, String> dataDownlinkWithQueryParameter =
-                swimClient.downlinkMap()
-                        .keyForm(Form.forString()).valueForm(Form.forString())
-                        .hostUri(hostUri)
-                        .nodeUri("/unit").laneUri("data?name=bar")
-                        .didUpdate((key, newValue, oldValue) -> {
-                            System.out.println("data updated entry " + key + " : '" + newValue + "'");
-                        }).open();
+    System.out.println("Opening downlink to data for key 'bar'. Raw will start to be decoded.");
+    final MapDownlink<String, String> dataDownlinkWithQueryParameter =
+            swimClient.downlinkMap()
+                    .keyForm(Form.forString()).valueForm(Form.forString())
+                    .hostUri(hostUri)
+                    .nodeUri("/unit").laneUri("data?name=bar")
+                    .didUpdate((key, newValue, oldValue) -> {
+                      System.out.println("data updated entry " + key + " : '" + newValue + "'");
+                    }).open();
 
-        Thread.sleep(10000);
-        dataDownlinkWithQueryParameter.close();
-        swimClient.stop();
-        System.out.println("Closed downlink to data for key 'bar'. Raw will stop being decoded.");
-    }
+    Thread.sleep(10000);
+    dataDownlinkWithQueryParameter.close();
+    swimClient.stop();
+    System.out.println("Closed downlink to data for key 'bar'. Raw will stop being decoded.");
+  }
 
 }

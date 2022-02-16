@@ -67,10 +67,10 @@ class BarTypeForm extends Form<BarType> {
   @Override
   public Value mold(BarType barType) {
     return Record.create(3)
-        .attr(tag())
-        .slot("i", barType.getNumber1())
-        .slot("s", barType.getString())
-        .slot("j", barType.getNumber2());
+            .attr(tag())
+            .slot("i", barType.getNumber1())
+            .slot("s", barType.getString())
+            .slot("j", barType.getNumber2());
   }
 
   // the cast method is the inverse of mold, converts Value -> BarType object
@@ -83,8 +83,8 @@ class BarTypeForm extends Form<BarType> {
         return null;
       }
       BarType b = new BarType(value.get("i").intValue(0),
-          value.get("s").stringValue(""),
-          value.get("j").intValue(0));
+              value.get("s").stringValue(""),
+              value.get("j").intValue(0));
       return b;
     } catch (Exception e) {
       return null;

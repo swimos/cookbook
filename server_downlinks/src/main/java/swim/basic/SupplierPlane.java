@@ -22,57 +22,48 @@ import swim.structure.Value;
  */
 public class SupplierPlane extends AbstractPlane {
 
-    public final static String WAREHOUSE_HOST_URI = "warp://localhost:9001";
+  public final static String WAREHOUSE_HOST_URI = "warp://localhost:9001";
 
-    @SwimRoute("/supplier")
-    AgentRoute<SupplierAgent> supplierAgentType;
+  public static void main(String[] args) {
+    System.setProperty("swim.config", "supplier.recon");
 
-    @SwimRoute("/customer/:id")
-    AgentRoute<CustomerAgent> customerAgentType;
+    final Kernel kernel = ServerLoader.loadServer();
+    final ActorSpace space = (ActorSpace) kernel.getSpace("supplier");
+    kernel.start();
 
-    public static void main(String[] args) {
-        // System.setProperty("swim.config", "supplier.recon");
+    //Create a value downlink to a different Swim server directly from this plane
+    space.downlinkValue()
+            .valueForm(Form.forInteger())
+            .hostUri(WAREHOUSE_HOST_URI)
+            .nodeUri("/warehouse/cambridge").laneUri("lastResupplyId")
+            .didSet((newValue, oldValue) -> {
+              logMessage("latest supply id received at warehouse: " + newValue);
+            }).open();
 
-        final Kernel kernel = ServerLoader.loadServerStack();
-        final SupplierPlane plane = kernel.openSpace(ActorSpaceDef.fromName("supplier"))
-                .openPlane("supplier", SupplierPlane.class);
-        final ActorSpace space = (ActorSpace) kernel.getSpace("supplier");
-        kernel.openService(WebServiceDef.standard().port(9002).spaceName("supplier"));
-        kernel.start();
+    //Create a map downlink to a different Swim server directly from this plane
+    space.downlinkMap()
+            .keyForm(Form.forString()).valueForm(Form.forInteger())
+            .hostUri(WAREHOUSE_HOST_URI)
+            .nodeUri("/warehouse/cambridge").laneUri("stock")
+            .didUpdate(((key, newValue, oldValue) -> {
+              logMessage(key + " stock at cambridge warehouse changed to: " + newValue);
+            })).open();
+  }
 
-        //Create a value downlink to a different Swim server directly from this plane
-        plane.downlinkValue()
-                .valueForm(Form.forInteger())
-                .hostUri(WAREHOUSE_HOST_URI)
-                .nodeUri("/warehouse/cambridge").laneUri("lastResupplyId")
-                .didSet((newValue, oldValue) -> {
-                    logMessage("latest supply id received at warehouse: " + newValue);
-                }).open();
+  @Override
+  public void didStart() {
+    super.didStart();
+    // Immediately wake up SupplierAgent upon plane load
+    context.command("/supplier", "wakeup", Value.absent());
+    //Register the supplier to the warehouse
+    context.command("/supplier", "register", Text.from("cambridge"));
+    // Immediately wake up CustomerAgent upon plane load
+    context.command("/customer/1", "wakeup", Value.absent());
+    //Register the customer to the warehouse
+    context.command("/customer/1", "register", Text.from("cambridge"));
+  }
 
-        //Create a map downlink to a different Swim server directly from this plane
-        plane.downlinkMap()
-                .keyForm(Form.forString()).valueForm(Form.forInteger())
-                .hostUri(WAREHOUSE_HOST_URI)
-                .nodeUri("/warehouse/cambridge").laneUri("stock")
-                .didUpdate(((key, newValue, oldValue) -> {
-                    logMessage(key + " stock at cambridge warehouse changed to: " + newValue);
-                })).open();
-    }
-
-    @Override
-    public void didStart() {
-        super.didStart();
-        // Immediately wake up SupplierAgent upon plane load
-        context.command("/supplier", "wakeup", Value.absent());
-        //Register the supplier to the warehouse
-        context.command("/supplier", "register", Text.from("cambridge"));
-        // Immediately wake up CustomerAgent upon plane load
-        context.command("/customer/1", "wakeup", Value.absent());
-        //Register the customer to the warehouse
-        context.command("/customer/1", "register", Text.from("cambridge"));
-    }
-
-    private static void logMessage(final String message) {
-        System.out.println("plane: " + message);
-    }
+  private static void logMessage(final String message) {
+    System.out.println("plane: " + message);
+  }
 }

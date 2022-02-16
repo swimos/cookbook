@@ -33,7 +33,7 @@ public class BasicPlane extends AbstractPlane {
     space.command("/unit/1", "unusedForNow", Value.absent());
     space.command("/unit/foo", "unusedForNow", Value.absent());
     space.command("/unit/foo_1", "unusedForNow", Value.absent());
-    
+
     Thread.sleep(1000);
 
     System.out.println("Server will shut down in 3 seconds");

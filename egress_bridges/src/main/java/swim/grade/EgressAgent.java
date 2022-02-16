@@ -24,10 +24,10 @@ public class EgressAgent extends AbstractAgent {
 
   @SwimLane("write")
   CommandLane<Value> write = this.<Value>commandLane()
-      .onCommand(v -> {
-        BlockingStudentsDriver.updateGrade(
-            v.get("id").intValue(),
-            v.get("earned").intValue(),
-            v.get("possible").intValue());
-      });
+          .onCommand(v -> {
+            BlockingStudentsDriver.updateGrade(
+                    v.get("id").intValue(),
+                    v.get("earned").intValue(),
+                    v.get("possible").intValue());
+          });
 }

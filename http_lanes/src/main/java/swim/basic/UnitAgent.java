@@ -15,37 +15,37 @@ import swim.structure.Value;
 
 public class UnitAgent extends AbstractAgent {
 
-    @SwimLane("state")
-    ValueLane<Value> state = this.<Value>valueLane()
-            .didSet((newValue, oldValue) -> {
-                logMessage("State changed from " + Recon.toString(oldValue) + " to " + Recon.toString(newValue));
-            });
+  @SwimLane("state")
+  ValueLane<Value> state = this.<Value>valueLane()
+          .didSet((newValue, oldValue) -> {
+            logMessage("State changed from " + Recon.toString(oldValue) + " to " + Recon.toString(newValue));
+          });
 
-    @SwimLane("http")
-    HttpLane<Value> http = this.<Value>httpLane()
-            .doRespond(request -> {
-                if (HttpMethod.POST.equals(request.method())){
-                    state.set(request.entity().get());
-                }
-                return HttpResponse.from(HttpStatus.OK).body(Recon.toString(state.get()), MediaType.applicationXRecon());
-            });
+  @SwimLane("http")
+  HttpLane<Value> http = this.<Value>httpLane()
+          .doRespond(request -> {
+            if (HttpMethod.POST.equals(request.method())) {
+              state.set(request.entity().get());
+            }
+            return HttpResponse.from(HttpStatus.OK).body(Recon.toString(state.get()), MediaType.applicationXRecon());
+          });
 
-    @SwimLane("httpJson")
-    HttpLane<Value> httpJson = this.<Value>httpLane()
-            .doRespond(request ->
-                 HttpResponse.from(HttpStatus.OK).body(Json.toString(state.get()), MediaType.applicationJson()));
+  @SwimLane("httpJson")
+  HttpLane<Value> httpJson = this.<Value>httpLane()
+          .doRespond(request ->
+                  HttpResponse.from(HttpStatus.OK).body(Json.toString(state.get()), MediaType.applicationJson()));
 
-    @Override
-    public void didStart() {
-        logMessage("did start");
-        //Insert some dummy values into the state of the web agent
-        state.set(Record.create(2)
-                .slot("foo", 1)
-                .slot("bar", 2));
-    }
+  @Override
+  public void didStart() {
+    logMessage("did start");
+    //Insert some dummy values into the state of the web agent
+    state.set(Record.create(2)
+            .slot("foo", 1)
+            .slot("bar", 2));
+  }
 
-    private void logMessage(final String message) {
-        System.out.println(nodeUri() + ": " + message);
-    }
+  private void logMessage(final String message) {
+    System.out.println(nodeUri() + ": " + message);
+  }
 
 }

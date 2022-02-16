@@ -25,16 +25,16 @@ public class UnitAgent extends AbstractAgent {
 
   @SwimLane("minutesSincePublish")
   ValueLane<Integer> minutes = this.<Integer>valueLane()
-      .didSet((n, o) -> {
-        System.out.println((n * 1) + " seconds since last event");
-      });
+          .didSet((n, o) -> {
+            System.out.println((n * 1) + " seconds since last event");
+          });
   private TimerRef timer;
   @SwimLane("publish")
   CommandLane<Value> publish = this.<Value>commandLane()
-      .onCommand(v -> {
-        this.minutes.set(0);
-        resetTimer();
-      });
+          .onCommand(v -> {
+            this.minutes.set(0);
+            resetTimer();
+          });
 
   @Override
   public void didStart() {

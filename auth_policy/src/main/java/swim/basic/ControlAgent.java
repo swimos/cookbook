@@ -7,17 +7,17 @@ import swim.structure.Value;
 
 public class ControlAgent extends AbstractAgent {
 
-    @SwimLane("command")
-    CommandLane<Value> command = this.<Value>commandLane()
-            .onCommand(value -> logMessage("command: " + value.toString()));
+  @SwimLane("command")
+  CommandLane<Value> command = this.<Value>commandLane()
+          .onCommand(value -> logMessage("command: " + value.toString()));
 
-    @Override
-    public void didStart() {
-        super.didStart();
-        System.out.println(nodeUri() + " didStart");
-    }
+  @Override
+  public void didStart() {
+    super.didStart();
+    System.out.println(nodeUri() + " didStart");
+  }
 
-    private void logMessage(final String message) {
-        System.out.println(nodeUri() + ": " + message);
-    }
+  private void logMessage(final String message) {
+    System.out.println(nodeUri() + ": " + message);
+  }
 }

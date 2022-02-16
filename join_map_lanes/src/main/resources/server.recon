@@ -1,22 +1,21 @@
 @web(port: 9001) {
-    space: "basic"
-    documentRoot: "./ui/"
-    @websocket {
-        serverCompressionLevel: 0# -1 = default; 0 = off; 1-9 = deflate level
-        clientCompressionLevel: 0# -1 = default; 0 = off; 1-9 = deflate level
-    }
+  space: "basic"
+  documentRoot: "./ui/"
+  @websocket {
+    serverCompressionLevel: 0
+    # -1 = default; 0 = off; 1-9 = deflate level
+    clientCompressionLevel: 0
+    # -1 = default; 0 = off; 1-9 = deflate level
+  }
 }
-
 basic: @fabric {
-    @plane(class: "swim.basic.BasicPlane")
-    @node {
-        uri: "/state/:name"
-        @agent(class: "swim.basic.StreetStatisticsAgent") {
-        }
-    }
-    @node {
-        uri: "/join/state/:name"
-        @agent(class: "swim.basic.AggregatedStatisticsAgent") {
-        }
-    }
+  @plane(class: "swim.basic.BasicPlane")
+  @node {
+    pattern: "/state/:name"
+    @agent(class: "swim.basic.StreetStatisticsAgent")
+  }
+  @node {
+    pattern: "/join/state/:name"
+    @agent(class: "swim.basic.AggregatedStatisticsAgent")
+  }
 }
