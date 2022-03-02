@@ -11,6 +11,7 @@ import swim.structure.Tag;
 
 @Tag("fooType")
 public class FooType {
+
   @Member("int")
   private int i = 0;
   @Member("string")
@@ -25,11 +26,11 @@ public class FooType {
   }
 
   public int getNumber() {
-    return i;
+    return this.i;
   }
 
   public String getString() {
-    return s;
+    return this.s;
   }
 
   //@Kind-annotated static field and static accessor method
@@ -47,4 +48,5 @@ public class FooType {
   public String toString() {
     return Recon.toString(form().mold(this));
   }
+
 }

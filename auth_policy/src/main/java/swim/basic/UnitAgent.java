@@ -14,7 +14,7 @@ public class UnitAgent extends AbstractAgent {
 
   @SwimLane("setInfo")
   CommandLane<Value> setInfo = this.<Value>commandLane()
-          .onCommand(body -> info.set(body));
+          .onCommand(body -> this.info.set(body));
 
   @SwimLane("adminInfo")
   ValueLane<Value> adminInfo = this.<Value>valueLane()

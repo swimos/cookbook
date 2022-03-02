@@ -66,13 +66,15 @@ public class IngressBridge {
   }
 
   public void listen() throws MqttException {
-    MqttConnectOptions connOpts = new MqttConnectOptions();
+    final MqttConnectOptions connOpts = new MqttConnectOptions();
     connOpts.setCleanSession(true);
     this.mqtt.connect(connOpts);
-    // Spin until connected
+
     while (!this.mqtt.isConnected()) {
+      // Spin until connected
     }
     System.out.println("Connected!");
     this.mqtt.subscribe("swimSensors/all", 1);
   }
+
 }

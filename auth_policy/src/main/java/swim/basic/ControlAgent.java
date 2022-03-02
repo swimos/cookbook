@@ -20,4 +20,5 @@ public class ControlAgent extends AbstractAgent {
   private void logMessage(final String message) {
     System.out.println(nodeUri() + ": " + message);
   }
+
 }

@@ -32,33 +32,32 @@ public class StudentAgent extends AbstractAgent {
 
   @SwimLane("addAssignment")
   CommandLane<Value> publish = this.<Value>commandLane()
-          .onCommand(msg -> {
-            final Value current = this.grade.get();
-            this.grade.set(Record.create(2)
-                    .slot("earned", current.get("earned").intValue() + msg.get("earned").intValue())
-                    .slot("possible", current.get("possible").intValue() + msg.get("possible").intValue()));
-          });
+      .onCommand(msg -> {
+        final Value current = this.grade.get();
+        this.grade.set(Record.create(2)
+            .slot("earned", current.get("earned").intValue() + msg.get("earned").intValue())
+            .slot("possible", current.get("possible").intValue() + msg.get("possible").intValue()));
+      });
 
   @SwimLane("currentGrade")
   ValueLane<Value> grade = this.<Value>valueLane()
-          .didSet((n, o) -> {
-            logMessage("changed grade to " + Recon.toString(n));
-            // Don't naively make a database call. Delegate it to asyncStage() to
-            // avoid potentially-blocking functions within the agent context.
-            asyncStage().task(new AbstractTask() {
+      .didSet((n, o) -> {
+        logMessage("changed grade to " + Recon.toString(n));
+        // Don't naively make a database call. Delegate it to asyncStage() to
+        // avoid potentially-blocking functions within the agent context.
+        asyncStage().task(new AbstractTask() {
+            @Override
+            public void runTask() {
+              BlockingStudentsDriver.updateGrade(id(), n.get("earned").intValue(), n.get("possible").intValue());
+            }
 
-                      @Override
-                      public void runTask() {
-                        BlockingStudentsDriver.updateGrade(id(), n.get("earned").intValue(), n.get("possible").intValue());
-                      }
-
-                      @Override
-                      public boolean taskWillBlock() {
-                        return true;
-                      }
-                    })
-                    .cue();
-          });
+            @Override
+            public boolean taskWillBlock() {
+              return true;
+            }
+          })
+          .cue();
+      });
 
   private void logMessage(Object msg) {
     System.out.println(nodeUri() + ": " + msg);

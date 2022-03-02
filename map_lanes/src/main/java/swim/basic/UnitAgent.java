@@ -23,19 +23,19 @@ public class UnitAgent extends AbstractAgent {
 
   @SwimLane("shoppingCart")
   MapLane<String, Integer> shoppingCart = this.<String, Integer>mapLane()
-          .didUpdate((key, newValue, oldValue) -> {
-            logMessage(key + " count changed to " + newValue + " from " + oldValue);
-          })
-          .didRemove((key, oldValue) -> {
-            logMessage("removed <" + key + "," + oldValue + ">");
-          });
+      .didUpdate((key, newValue, oldValue) -> {
+        logMessage(key + " count changed to " + newValue + " from " + oldValue);
+      })
+      .didRemove((key, oldValue) -> {
+        logMessage("removed <" + key + "," + oldValue + ">");
+      });
 
   @SwimLane("addItem")
   CommandLane<String> publish = this.<String>commandLane()
-          .onCommand(msg -> {
-            final int n = this.shoppingCart.getOrDefault(msg, 0) + 1;
-            this.shoppingCart.put(msg, n);
-          });
+      .onCommand(msg -> {
+        final int n = this.shoppingCart.getOrDefault(msg, 0) + 1;
+        this.shoppingCart.put(msg, n);
+      });
 
   @Override
   public void didStart() {
@@ -46,4 +46,5 @@ public class UnitAgent extends AbstractAgent {
   private void logMessage(Object msg) {
     System.out.println(nodeUri() + ": " + msg);
   }
+
 }

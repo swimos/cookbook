@@ -1,5 +1,6 @@
 package swim.basic;
 
+import java.util.Base64;
 import swim.actor.ActorSpace;
 import swim.api.downlink.ValueDownlink;
 import swim.api.plane.AbstractPlane;
@@ -7,8 +8,6 @@ import swim.kernel.Kernel;
 import swim.server.ServerLoader;
 import swim.structure.Form;
 import swim.structure.Value;
-
-import java.util.Base64;
 
 /**
  * The complimentary code as part of the <a href="https://swimos.org/tutorials/demand-value-lanes/">Demand Value Lanes</a> cookbook.
@@ -28,14 +27,15 @@ public class BasicPlane extends AbstractPlane {
     kernel.start();
     kernel.run();
 
-    final ValueDownlink<String> rawDownlink =
-            space.downlinkValue()
-                    .valueForm(Form.forString())
-                    .nodeUri("/unit").laneUri("raw")
-                    .didSet((n, o) -> {
-                      if (!n.equals(o)) System.out.println("raw updated from '" + o + "' to '" + n + "'");
-                    })
-                    .open();
+    final ValueDownlink<String> rawDownlink = space.downlinkValue()
+        .valueForm(Form.forString())
+        .nodeUri("/unit").laneUri("raw")
+        .didSet((n, o) -> {
+          if (!n.equals(o)) {
+            System.out.println("raw updated from '" + o + "' to '" + n + "'");
+          }
+        })
+        .open();
 
     //Incrementally change the raw lane so the client can observe changes
     int messageNumber = 0;

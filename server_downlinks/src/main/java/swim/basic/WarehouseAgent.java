@@ -9,27 +9,29 @@ import swim.api.lane.ValueLane;
 public class WarehouseAgent extends AbstractAgent {
 
   @SwimLane("stock")
-  public MapLane<String, Integer> stock = this.<String, Integer>mapLane();
+  MapLane<String, Integer> stock = this.<String, Integer>mapLane();
 
   @SwimLane("takeItem")
-  public CommandLane<String> takeItem = this.<String>commandLane()
-          .onCommand(item -> {
-            int newValue = this.stock.getOrDefault(item, 1) - 1;
-            if (newValue < 0) newValue = 0;
-            this.stock.put(item, newValue);
-          });
+  CommandLane<String> takeItem = this.<String>commandLane()
+      .onCommand(item -> {
+        int newValue = this.stock.getOrDefault(item, 1) - 1;
+        if (newValue < 0) {
+          newValue = 0;
+        }
+        this.stock.put(item, newValue);
+      });
 
   @SwimLane("resupply")
-  public CommandLane<String> resupply = this.<String>commandLane()
-          .onCommand(item -> {
-            final int newValue = this.stock.getOrDefault(item, 0) + 5;
-            this.stock.put(item, newValue);
-            this.lastResupplyId.set(this.lastResupplyId.get() + 1);
-            logResupply(item, newValue);
-          });
+  CommandLane<String> resupply = this.<String>commandLane()
+      .onCommand(item -> {
+        final int newValue = this.stock.getOrDefault(item, 0) + 5;
+        this.stock.put(item, newValue);
+        this.lastResupplyId.set(this.lastResupplyId.get() + 1);
+        logResupply(item, newValue);
+      });
 
   @SwimLane("lastResupplyId")
-  public ValueLane<Integer> lastResupplyId = this.<Integer>valueLane();
+  ValueLane<Integer> lastResupplyId = this.<Integer>valueLane();
 
   @Override
   public void didStart() {

@@ -32,4 +32,5 @@ public class UnitAgent extends AbstractAgent {
   private void logMessage(Object msg) {
     System.out.println(nodeUri() + ": " + msg);
   }
+
 }

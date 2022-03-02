@@ -22,8 +22,8 @@ public class BasicPolicy extends AbstractPolicy {
       }
 
       //Admin tokens must be used for 'adminInfo' lanes or '/control' agents
-      if ("adminInfo".equals(envelope.laneUri().toString()) ||
-              envelope.nodeUri().toString().startsWith("/control")) {
+      if ("adminInfo".equals(envelope.laneUri().toString())
+          || envelope.nodeUri().toString().startsWith("/control")) {
         logRequest(false, envelope.nodeUri().toString(), envelope.laneUri().toString(), token);
         return forbid();
       }
@@ -41,5 +41,6 @@ public class BasicPolicy extends AbstractPolicy {
   private static void logRequest(final boolean accepted, final String nodeUri, final String laneUri, final String token) {
     System.out.println("policy: " + (accepted ? "Accepted " : "Rejected ") + "request to " + nodeUri + "/" + laneUri + " with token " + token);
   }
+
 }
 

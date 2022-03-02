@@ -30,4 +30,5 @@ public class WarehousePlane extends AbstractPlane {
     // Immediately wake up Warehouse Agent upon plane load
     context.command("/warehouse/cambridge", "wakeup", Value.absent());
   }
+
 }

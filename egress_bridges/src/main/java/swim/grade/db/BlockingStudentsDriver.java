@@ -21,7 +21,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class BlockingStudentsDriver {
+public final class BlockingStudentsDriver {
 
   private final Connection conn;
   private final String url;
@@ -58,8 +58,8 @@ public class BlockingStudentsDriver {
   }
 
   private static void createStudentsTable() throws SQLException {
-    ResultSet res = driver.conn.getMetaData()
-            .getTables(null, null, "STUDENTS", new String[]{"TABLE"});
+    final ResultSet res = driver.conn.getMetaData()
+        .getTables(null, null, "STUDENTS", new String[]{"TABLE"});
     if (res.next()) {
       System.out.println("[WARN] Skipping STUDENTS table creation, as it already exists");
       return;

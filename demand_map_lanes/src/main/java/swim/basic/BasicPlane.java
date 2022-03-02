@@ -1,5 +1,6 @@
 package swim.basic;
 
+import java.util.Base64;
 import swim.actor.ActorSpace;
 import swim.api.downlink.MapDownlink;
 import swim.api.plane.AbstractPlane;
@@ -7,8 +8,6 @@ import swim.kernel.Kernel;
 import swim.server.ServerLoader;
 import swim.structure.Form;
 import swim.structure.Value;
-
-import java.util.Base64;
 
 /**
  * The complimentary code as part of the <a href="https://swimos.org/tutorials/demand-map-lanes/">Demand Map Lanes</a> cookbook.
@@ -28,14 +27,15 @@ public class BasicPlane extends AbstractPlane {
     kernel.start();
     kernel.run();
 
-    final MapDownlink<String, String> rawDownlink =
-            space.downlinkMap()
-                    .keyForm(Form.forString()).valueForm(Form.forString())
-                    .nodeUri("/unit").laneUri("raw")
-                    .didUpdate((key, newValue, oldValue) -> {
-                      if (!oldValue.equals(newValue))
-                        System.out.println("raw updated entry " + key + " : '" + newValue + "'");
-                    }).open();
+    final MapDownlink<String, String> rawDownlink = space.downlinkMap()
+        .keyForm(Form.forString()).valueForm(Form.forString())
+        .nodeUri("/unit").laneUri("raw")
+        .didUpdate((key, newValue, oldValue) -> {
+          if (!oldValue.equals(newValue)) {
+            System.out.println("raw updated entry " + key + " : '" + newValue + "'");
+          }
+        })
+        .open();
 
     //Incrementally update raw lane so downlink can observe changes
     int messageNumber = 0;

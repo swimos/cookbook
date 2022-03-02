@@ -8,6 +8,7 @@ import swim.structure.Tag;
 
 @Tag("bazType")
 public class BazType {
+
   @Member("fooType")
   private FooType f = new FooType();
   @Member("barType")
@@ -22,11 +23,11 @@ public class BazType {
   }
 
   public FooType getFooType() {
-    return f;
+    return this.f;
   }
 
   public BarType getBarType() {
-    return b;
+    return this.b;
   }
 
   //@Kind-annotated static field and static accessor method
@@ -44,4 +45,5 @@ public class BazType {
   public String toString() {
     return Recon.toString(form().mold(this));
   }
+
 }

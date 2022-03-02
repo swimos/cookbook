@@ -14,6 +14,7 @@
 
 package swim.basic;
 
+import java.io.IOException;
 import swim.actor.ActorSpace;
 import swim.api.auth.Identity;
 import swim.api.plane.AbstractPlane;
@@ -25,9 +26,8 @@ import swim.structure.Text;
 import swim.structure.Value;
 import swim.warp.Envelope;
 
-import java.io.IOException;
-
 public class BasicPlane extends AbstractPlane {
+
   // Inject policy. Swim internally calls the no-argument constructor, which retains
   // its implicit call to super() in Java
   public BasicPlane() {
@@ -44,12 +44,12 @@ public class BasicPlane extends AbstractPlane {
 
     // observe the effects of our commands
     space.downlinkValue()
-            .nodeUri("/unit/master")
-            .laneUri("info")
-            .didSet((newValue, oldValue) -> {
-              System.out.println("observed info change to " + newValue + " from " + oldValue);
-            })
-            .open();
+        .nodeUri("/unit/master")
+        .laneUri("info")
+        .didSet((newValue, oldValue) -> {
+          System.out.println("observed info change to " + newValue + " from " + oldValue);
+        })
+        .open();
 
     // Swim handles don't reject their own messages, regardless of policy
     space.command("/unit/master", "publishInfo", Text.from("Without network"));
@@ -70,7 +70,7 @@ public class BasicPlane extends AbstractPlane {
   }
 
   // Define policy; doesn't have to be an inner class
-  class BasicPolicy extends AbstractPolicy {
+  static class BasicPolicy extends AbstractPolicy {
     @Override
     protected <T> PolicyDirective<T> authorize(Envelope envelope, Identity identity) {
       if (identity != null) {
@@ -82,4 +82,5 @@ public class BasicPlane extends AbstractPlane {
       return forbid();
     }
   }
+
 }

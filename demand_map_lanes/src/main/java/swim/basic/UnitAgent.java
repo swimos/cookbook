@@ -1,12 +1,11 @@
 package swim.basic;
 
+import java.util.Base64;
+import java.util.Collections;
 import swim.api.SwimLane;
 import swim.api.agent.AbstractAgent;
 import swim.api.lane.DemandMapLane;
 import swim.api.lane.MapLane;
-
-import java.util.Base64;
-import java.util.Collections;
 
 public class UnitAgent extends AbstractAgent {
 
@@ -28,7 +27,9 @@ public class UnitAgent extends AbstractAgent {
 
   private String decodeRaw(String key) {
     final String encoded = this.raw.get(key);
-    if (encoded == null) return "";
+    if (encoded == null) {
+      return "";
+    }
     final String decoded = new String(Base64.getDecoder().decode(encoded.getBytes()));
     System.out.println(nodeUri() + ": Decoded raw data to: " + decoded);
     return decoded;

@@ -55,7 +55,7 @@ public class UnitAgent extends AbstractAgent {
     logMessage("Boolean Property 'propBool' with value " + boolVal);
 
     // 5. Dynamic Agent Uri demonstration:
-    if (nodeUri().toString() == "/unit/dynamic") {
+    if ("/unit/dynamic".equals(nodeUri().toString())) {
       // n.b., "id" is dynamically declared.
       final String defaultID = getProp("id").stringValue(null);
       logMessage("The dynamically declared ID is : " + defaultID);
@@ -65,4 +65,5 @@ public class UnitAgent extends AbstractAgent {
   private void logMessage(Object msg) {
     System.out.println(nodeUri() + ": " + msg);
   }
+
 }

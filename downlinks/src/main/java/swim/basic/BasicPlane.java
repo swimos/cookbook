@@ -14,14 +14,13 @@
 
 package swim.basic;
 
+import java.io.IOException;
 import swim.actor.ActorSpace;
 import swim.api.plane.AbstractPlane;
 import swim.kernel.Kernel;
 import swim.recon.Recon;
 import swim.server.ServerLoader;
 import swim.structure.Value;
-
-import java.io.IOException;
 
 public class BasicPlane extends AbstractPlane {
 
@@ -34,12 +33,12 @@ public class BasicPlane extends AbstractPlane {
 
     // Event downlink issued against plane context
     space.downlink()
-            .nodeUri("/unit/0")
-            .laneUri("addItem")
-            .onEvent(v -> {
-              System.out.println("event downlink saw " + Recon.toString(v));
-            })
-            .open();
+        .nodeUri("/unit/0")
+        .laneUri("addItem")
+        .onEvent(v -> {
+          System.out.println("event downlink saw " + Recon.toString(v));
+        })
+        .open();
   }
 
   @Override
@@ -48,4 +47,5 @@ public class BasicPlane extends AbstractPlane {
     // Immediately wake up ListenerAgent upon plane load
     context.command("/listener", "wakeup", Value.absent());
   }
+
 }
