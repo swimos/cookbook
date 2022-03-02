@@ -29,19 +29,21 @@ public class ListenerAgent extends AbstractAgent {
 
   // Shopping cart data for *all* UnitAgents, aggregated into a single ListenerAgent
   @SwimLane("shoppingCarts")
-  public MapLane<String, Value> shoppingCarts = this.<String, Value>mapLane()
-          .didUpdate((k, n, o) -> {
-            logMessage("shoppingCarts updated " + k + ": " + Recon.toString(n));
-          });
+  MapLane<String, Value> shoppingCarts = this.<String, Value>mapLane()
+      .didUpdate((k, n, o) -> {
+        logMessage("shoppingCarts updated " + k + ": " + Recon.toString(n));
+      });
+
   // Immutable java.util.Map containing all downlink subscriptions
   private HashTrieMap<String, MapDownlink<String, Integer>> shoppingCartSubscribers;
+
   // Opens a subscription to the `UnitAgent` indicated by `v`
   @SwimLane("triggerListen")
-  public CommandLane<String> triggerListen = this.<String>commandLane()
-          .onCommand(v -> {
-            logMessage("will listen to " + v);
-            addSubscription(v);
-          });
+  CommandLane<String> triggerListen = this.<String>commandLane()
+      .onCommand(v -> {
+        logMessage("will listen to " + v);
+        addSubscription(v);
+      });
 
   private void logMessage(Object msg) {
     System.out.println(nodeUri() + ": " + msg);
@@ -49,20 +51,21 @@ public class ListenerAgent extends AbstractAgent {
 
   private void addSubscription(final String targetNode) {
     final MapDownlink<String, Integer> downlink = downlinkMap()
-            .keyForm(Form.forString()).valueForm(Form.forInteger())
-            .nodeUri(targetNode).laneUri("shoppingCart")
-            .didUpdate((k, n, o) -> {
-              // Update the correct entry in shoppingCarts on every downlink didUpdate()
-              final Value shoppingCart = this.shoppingCarts.get(targetNode);
-              final Record record = shoppingCart.isDefined() ? ((Record) shoppingCart).branch() : Record.create();
-              record.put(k, n);
-              this.shoppingCarts.put(targetNode, record);
-            })
-            .open();
+        .keyForm(Form.forString()).valueForm(Form.forInteger())
+        .nodeUri(targetNode).laneUri("shoppingCart")
+        .didUpdate((k, n, o) -> {
+          // Update the correct entry in shoppingCarts on every downlink didUpdate()
+          final Value shoppingCart = this.shoppingCarts.get(targetNode);
+          final Record record = shoppingCart.isDefined() ? ((Record) shoppingCart).branch() : Record.create();
+          record.put(k, n);
+          this.shoppingCarts.put(targetNode, record);
+        })
+        .open();
     // Make this downlink accessible by adding it to `shoppingCartSubscribers`
     if (this.shoppingCartSubscribers == null) {
       this.shoppingCartSubscribers = HashTrieMap.empty();
     }
     this.shoppingCartSubscribers = this.shoppingCartSubscribers.updated(targetNode, downlink);
   }
+
 }

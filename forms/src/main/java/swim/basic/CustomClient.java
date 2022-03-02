@@ -4,19 +4,22 @@ import swim.client.ClientRuntime;
 import swim.structure.Record;
 import swim.structure.Value;
 
-class CustomClient {
+final class CustomClient {
+
+  private CustomClient() {
+  }
 
   public static void main(String[] args) throws InterruptedException {
-    ClientRuntime swimClient = new ClientRuntime();
+    final ClientRuntime swimClient = new ClientRuntime();
     swimClient.start();
     final String hostUri = "warp://localhost:9001";
     final String fooNodeUri = "/unit/foo";
     final String barNodeUri = "/unit/bar";
 
-    Value fooVal = Record.create(3).attr("fooType").slot("i", 5).slot("s", "potato");
+    final Value fooVal = Record.create(3).attr("fooType").slot("i", 5).slot("s", "potato");
 
-    BarType barObj = new BarType(1, "two", 3);
-    Value barVal = (Value) BarType.form().mold(barObj);
+    final BarType barObj = new BarType(1, "two", 3);
+    final Value barVal = (Value) BarType.form().mold(barObj);
 
     for (int i = 0; i < 10; i++) {
       // Commands the addFoo lane of UnitAgent with some Record that is compatible with FooType.
@@ -34,4 +37,5 @@ class CustomClient {
     System.out.println("Will shut down client");
     swimClient.stop();
   }
+
 }

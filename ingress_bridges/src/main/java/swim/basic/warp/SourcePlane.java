@@ -21,6 +21,7 @@ import swim.server.ServerLoader;
 import swim.structure.Text;
 
 public class SourcePlane extends AbstractPlane {
+
   public static void main(String[] args) throws InterruptedException {
     System.setProperty("swim.config", "source.recon");
 
@@ -39,4 +40,5 @@ public class SourcePlane extends AbstractPlane {
       }
     }
   }
+
 }

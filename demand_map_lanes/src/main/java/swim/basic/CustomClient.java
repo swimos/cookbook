@@ -12,23 +12,26 @@ import swim.structure.Form;
  * <p>
  * See {@link BasicPlane}
  */
-public class CustomClient {
+public final class CustomClient {
+
+  private CustomClient() {
+  }
 
   public static void main(String[] args) throws InterruptedException {
-    ClientRuntime swimClient = new ClientRuntime();
+    final ClientRuntime swimClient = new ClientRuntime();
     swimClient.start();
 
     final String hostUri = "warp://localhost:9001";
 
     System.out.println("Opening downlink to data with no parameter. Raw will start to be decoded.");
-    final MapDownlink<String, String> dataDownlink =
-            swimClient.downlinkMap()
-                    .keyForm(Form.forString()).valueForm(Form.forString())
-                    .hostUri(hostUri)
-                    .nodeUri("/unit").laneUri("data")
-                    .didUpdate((key, newValue, oldValue) -> {
-                      System.out.println("data updated entry " + key + " : '" + newValue + "'");
-                    }).open();
+    final MapDownlink<String, String> dataDownlink = swimClient.downlinkMap()
+        .keyForm(Form.forString()).valueForm(Form.forString())
+        .hostUri(hostUri)
+        .nodeUri("/unit").laneUri("data")
+        .didUpdate((key, newValue, oldValue) -> {
+          System.out.println("data updated entry " + key + " : '" + newValue + "'");
+        })
+        .open();
 
     Thread.sleep(10000);
     dataDownlink.close();
@@ -36,13 +39,14 @@ public class CustomClient {
 
     System.out.println("Opening downlink to data for key 'bar'. Raw will start to be decoded.");
     final MapDownlink<String, String> dataDownlinkWithQueryParameter =
-            swimClient.downlinkMap()
-                    .keyForm(Form.forString()).valueForm(Form.forString())
-                    .hostUri(hostUri)
-                    .nodeUri("/unit").laneUri("data?name=bar")
-                    .didUpdate((key, newValue, oldValue) -> {
-                      System.out.println("data updated entry " + key + " : '" + newValue + "'");
-                    }).open();
+        swimClient.downlinkMap()
+            .keyForm(Form.forString()).valueForm(Form.forString())
+            .hostUri(hostUri)
+            .nodeUri("/unit").laneUri("data?name=bar")
+            .didUpdate((key, newValue, oldValue) -> {
+              System.out.println("data updated entry " + key + " : '" + newValue + "'");
+            })
+            .open();
 
     Thread.sleep(10000);
     dataDownlinkWithQueryParameter.close();

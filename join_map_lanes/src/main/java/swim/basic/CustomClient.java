@@ -14,7 +14,10 @@ import swim.structure.Form;
  * <p>
  * See {@link BasicPlane}
  */
-public class CustomClient {
+public final class CustomClient {
+
+  private CustomClient() {
+  }
 
   private static final int THRESHOLD = 1000;
 

@@ -32,4 +32,5 @@ public class BasicPlane extends AbstractPlane {
 
     space.command("/unit/foo", "wakeup", Value.absent());
   }
+
 }

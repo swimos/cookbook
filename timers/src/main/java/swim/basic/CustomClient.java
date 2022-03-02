@@ -17,10 +17,13 @@ package swim.basic;
 import swim.client.ClientRuntime;
 import swim.structure.Value;
 
-class CustomClient {
+final class CustomClient {
+
+  private CustomClient() {
+  }
 
   public static void main(String[] args) throws InterruptedException {
-    ClientRuntime swimClient = new ClientRuntime();
+    final ClientRuntime swimClient = new ClientRuntime();
     swimClient.start();
     final String hostUri = "warp://localhost:9001";
     final String nodeUri = "/unit/foo";
@@ -31,4 +34,5 @@ class CustomClient {
     System.out.println("Will shut down client");
     swimClient.stop();
   }
+
 }

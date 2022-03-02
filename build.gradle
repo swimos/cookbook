@@ -1,3 +1,0 @@
-gradle.projectsEvaluated {
-    apply plugin: 'java'
-}

@@ -17,7 +17,10 @@ package swim.grade;
 import swim.client.ClientRuntime;
 import swim.structure.Record;
 
-class Sim {
+final class Sim {
+
+  private Sim() {
+  }
 
   public static void main(String[] args) throws InterruptedException {
     final ClientRuntime client = new ClientRuntime();
@@ -33,4 +36,5 @@ class Sim {
       Thread.sleep(500);
     }
   }
+
 }

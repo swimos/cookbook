@@ -10,13 +10,13 @@ public class BasicPlane extends AbstractPlane {
 
   public static void pojoTransformations() {
     // FooType instance fooType
-    FooType fooType = new FooType(7, "cat");
+    final FooType fooType = new FooType(7, "cat");
 
     // BarType instance barType
-    BarType barType = new BarType(4, "dog", 2);
+    final BarType barType = new BarType(4, "dog", 2);
 
-    Value fooVal = (Value) FooType.form().mold(fooType);
-    Value barVal = (Value) BarType.form().mold(barType);
+    final Value fooVal = (Value) FooType.form().mold(fooType);
+    final Value barVal = (Value) BarType.form().mold(barType);
 
     System.out.println(FooType.form().cast(fooVal));
     System.out.println(BarType.form().cast(barVal));
@@ -28,9 +28,9 @@ public class BasicPlane extends AbstractPlane {
     // Consider why the following would fail to compile:
     // FooType.form().mold(barType);
 
-    // The following logic exercises introduces the somewhat advanced use for Forms that is mentioned in the cookbook: composability
-    BazType bazType = new BazType(fooType, barType);
-    Value bazVal = (Value) BazType.form().mold(bazType);
+    // The following logic exercises introduce the somewhat advanced use for Forms that is mentioned in the cookbook: composability
+    final BazType bazType = new BazType(fooType, barType);
+    final Value bazVal = (Value) BazType.form().mold(bazType);
     BazType.form().cast(bazVal);
   }
 
@@ -46,7 +46,7 @@ public class BasicPlane extends AbstractPlane {
 
   public static void main(String[] args) {
     // Switch the flag to tue to run the server only once you understand what happens in pojoTransformations()
-    boolean willRunServer = false;
+    final boolean willRunServer = false;
 
     pojoTransformations();
 
@@ -54,4 +54,5 @@ public class BasicPlane extends AbstractPlane {
       runServer();
     }
   }
+
 }

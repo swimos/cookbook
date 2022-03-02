@@ -26,15 +26,15 @@ public class BarType {
   }
 
   public int getNumber1() {
-    return i;
+    return this.i;
   }
 
   public String getString() {
-    return s;
+    return this.s;
   }
 
   public int getNumber2() {
-    return j;
+    return this.j;
   }
 
   private static Form<BarType> form = new BarTypeForm();
@@ -48,6 +48,7 @@ public class BarType {
   public String toString() {
     return Recon.toString(form().mold(this));
   }
+
 }
 
 // Auxiliary class to BarType with overridden methods
@@ -66,11 +67,11 @@ class BarTypeForm extends Form<BarType> {
   // mold method creates a Value from the fields of the BarType object argument
   @Override
   public Value mold(BarType barType) {
-    return Record.create(3)
-            .attr(tag())
-            .slot("i", barType.getNumber1())
-            .slot("s", barType.getString())
-            .slot("j", barType.getNumber2());
+    return Record.create(4)
+        .attr(tag())
+        .slot("i", barType.getNumber1())
+        .slot("s", barType.getString())
+        .slot("j", barType.getNumber2());
   }
 
   // the cast method is the inverse of mold, converts Value -> BarType object
@@ -82,12 +83,12 @@ class BarTypeForm extends Form<BarType> {
       if (!tag().equals(barType)) {
         return null;
       }
-      BarType b = new BarType(value.get("i").intValue(0),
+      return new BarType(value.get("i").intValue(0),
               value.get("s").stringValue(""),
               value.get("j").intValue(0));
-      return b;
     } catch (Exception e) {
       return null;
     }
   }
+
 }

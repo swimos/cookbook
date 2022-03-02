@@ -17,31 +17,33 @@ public class UnitAgent extends AbstractAgent {
 
   @SwimLane("state")
   ValueLane<Value> state = this.<Value>valueLane()
-          .didSet((newValue, oldValue) -> {
-            logMessage("State changed from " + Recon.toString(oldValue) + " to " + Recon.toString(newValue));
-          });
+      .didSet((newValue, oldValue) -> {
+        logMessage("State changed from " + Recon.toString(oldValue) + " to " + Recon.toString(newValue));
+      });
 
   @SwimLane("http")
   HttpLane<Value> http = this.<Value>httpLane()
-          .doRespond(request -> {
-            if (HttpMethod.POST.equals(request.method())) {
-              state.set(request.entity().get());
-            }
-            return HttpResponse.from(HttpStatus.OK).body(Recon.toString(state.get()), MediaType.applicationXRecon());
-          });
+      .doRespond(request -> {
+        if (HttpMethod.POST.equals(request.method())) {
+          this.state.set(request.entity().get());
+        }
+        return HttpResponse.from(HttpStatus.OK)
+            .body(Recon.toString(this.state.get()), MediaType.applicationXRecon());
+      });
 
   @SwimLane("httpJson")
   HttpLane<Value> httpJson = this.<Value>httpLane()
-          .doRespond(request ->
-                  HttpResponse.from(HttpStatus.OK).body(Json.toString(state.get()), MediaType.applicationJson()));
+      .doRespond(request ->
+          HttpResponse.from(HttpStatus.OK)
+              .body(Json.toString(this.state.get()), MediaType.applicationJson()));
 
   @Override
   public void didStart() {
     logMessage("did start");
     //Insert some dummy values into the state of the web agent
-    state.set(Record.create(2)
-            .slot("foo", 1)
-            .slot("bar", 2));
+    this.state.set(Record.create(2)
+        .slot("foo", 1)
+        .slot("bar", 2));
   }
 
   private void logMessage(final String message) {

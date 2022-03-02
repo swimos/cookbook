@@ -14,14 +14,16 @@
 
 package swim.grade.db;
 
+import java.sql.SQLException;
 import org.h2.tools.Server;
 
-import java.sql.SQLException;
-
-public class Database {
+public final class Database {
 
   private static Server server;
   private static String port;
+
+  private Database() {
+  }
 
   public static void start(int port) throws SQLException {
     System.out.println("[DEBUG] will start database on port " + port);
@@ -49,7 +51,7 @@ public class Database {
 
     // Ensure Database shutdown before exit
     Runtime.getRuntime()
-            .addShutdownHook(new Thread(Database::stop));
+        .addShutdownHook(new Thread(Database::stop));
 
     Database.start(9002);
 
@@ -62,4 +64,5 @@ public class Database {
       BlockingStudentsDriver.stop();
     }
   }
+
 }

@@ -25,10 +25,10 @@ public class DataSourcePopulator {
 
   public DataSourcePopulator(String broker) throws MqttException {
     this.mqtt = new MqttClient(broker, "Writer");
-    MqttConnectOptions connOpts = new MqttConnectOptions();
+    final MqttConnectOptions connOpts = new MqttConnectOptions();
     connOpts.setCleanSession(true);
     System.out.println("Populator connecting to " + broker);
-    mqtt.connect(connOpts);
+    this.mqtt.connect(connOpts);
     System.out.println("Populator connected!");
   }
 
@@ -44,10 +44,10 @@ public class DataSourcePopulator {
     while (true) {
       for (int i = 0; i < 10; i++) {
         final String content = String.format("@msg{id:%d,val:FromPopulator%d}", i, count++);
-        MqttMessage message = new MqttMessage(content.getBytes());
+        final MqttMessage message = new MqttMessage(content.getBytes());
         message.setQos(qos);
         try {
-          mqtt.publish(topic, message);
+          this.mqtt.publish(topic, message);
           // Don't lower this value unless you use a personal MQTT broker, or
           // you will get rate-limited!!
           Thread.sleep(10000);
@@ -59,4 +59,5 @@ public class DataSourcePopulator {
       }
     }
   }
+
 }

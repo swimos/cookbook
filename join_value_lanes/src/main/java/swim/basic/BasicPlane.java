@@ -43,5 +43,6 @@ public class BasicPlane extends AbstractPlane {
     // Immediately wake up BuildingAgent upon plane load
     context.command("/building/swim", "wakeup", Value.absent());
   }
+
 }
 

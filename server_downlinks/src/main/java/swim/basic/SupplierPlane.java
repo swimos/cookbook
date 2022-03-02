@@ -1,13 +1,9 @@
 package swim.basic;
 
 import swim.actor.ActorSpace;
-import swim.actor.ActorSpaceDef;
-import swim.api.SwimRoute;
-import swim.api.agent.AgentRoute;
 import swim.api.plane.AbstractPlane;
 import swim.kernel.Kernel;
 import swim.server.ServerLoader;
-import swim.service.web.WebServiceDef;
 import swim.structure.Form;
 import swim.structure.Text;
 import swim.structure.Value;
@@ -22,7 +18,7 @@ import swim.structure.Value;
  */
 public class SupplierPlane extends AbstractPlane {
 
-  public final static String WAREHOUSE_HOST_URI = "warp://localhost:9001";
+  public static final String WAREHOUSE_HOST_URI = "warp://localhost:9001";
 
   public static void main(String[] args) {
     System.setProperty("swim.config", "supplier.recon");
@@ -33,21 +29,23 @@ public class SupplierPlane extends AbstractPlane {
 
     //Create a value downlink to a different Swim server directly from this plane
     space.downlinkValue()
-            .valueForm(Form.forInteger())
-            .hostUri(WAREHOUSE_HOST_URI)
-            .nodeUri("/warehouse/cambridge").laneUri("lastResupplyId")
-            .didSet((newValue, oldValue) -> {
-              logMessage("latest supply id received at warehouse: " + newValue);
-            }).open();
+        .valueForm(Form.forInteger())
+        .hostUri(WAREHOUSE_HOST_URI)
+        .nodeUri("/warehouse/cambridge").laneUri("lastResupplyId")
+        .didSet((newValue, oldValue) -> {
+          logMessage("latest supply id received at warehouse: " + newValue);
+        })
+        .open();
 
     //Create a map downlink to a different Swim server directly from this plane
     space.downlinkMap()
-            .keyForm(Form.forString()).valueForm(Form.forInteger())
-            .hostUri(WAREHOUSE_HOST_URI)
-            .nodeUri("/warehouse/cambridge").laneUri("stock")
-            .didUpdate(((key, newValue, oldValue) -> {
-              logMessage(key + " stock at cambridge warehouse changed to: " + newValue);
-            })).open();
+        .keyForm(Form.forString()).valueForm(Form.forInteger())
+        .hostUri(WAREHOUSE_HOST_URI)
+        .nodeUri("/warehouse/cambridge").laneUri("stock")
+        .didUpdate(((key, newValue, oldValue) -> {
+          logMessage(key + " stock at cambridge warehouse changed to: " + newValue);
+        }))
+        .open();
   }
 
   @Override
@@ -66,4 +64,5 @@ public class SupplierPlane extends AbstractPlane {
   private static void logMessage(final String message) {
     System.out.println("plane: " + message);
   }
+
 }

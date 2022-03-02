@@ -14,7 +14,10 @@ import swim.structure.Value;
  * <p>
  * See {@link BasicPlane}
  */
-public class CustomClient {
+public final class CustomClient {
+
+  private CustomClient() {
+  }
 
   public static void main(String[] args) throws InterruptedException {
     final ClientRuntime swimClient = new ClientRuntime();
@@ -46,27 +49,28 @@ public class CustomClient {
     //The adminInfo lane requires an admin token
     //The first link will fail as no token is supplied
     final ValueDownlink<Value> adminInfoDownlink = swimClient.downlinkValue()
-            .valueForm(Form.forValue())
-            .hostUri(hostUri)
-            .nodeUri(nodeUri)
-            .laneUri(laneUri)
-            .didLink(() -> System.out.println("link to adminInfo successful with no token")) //This will not get printed as a token is required
-            .open();
+        .valueForm(Form.forValue())
+        .hostUri(hostUri)
+        .nodeUri(nodeUri)
+        .laneUri(laneUri)
+        .didLink(() -> System.out.println("link to adminInfo successful with no token")) //This will not get printed as a token is required
+        .open();
     adminInfoDownlink.set(Text.from("Setting adminInfo using link with no token"));
 
     Thread.sleep(500);
 
     //This link will be successful as an admin token has been used
     final ValueDownlink<Value> adminInfoDownlinkWithToken = swimClient.downlinkValue()
-            .valueForm(Form.forValue())
-            .hostUri(hostUri + "?token=abc123")
-            .nodeUri(nodeUri)
-            .laneUri(laneUri)
-            .didLink(() -> System.out.println("link to adminInfo successful with token 'abc123'"))
-            .open();
+        .valueForm(Form.forValue())
+        .hostUri(hostUri + "?token=abc123")
+        .nodeUri(nodeUri)
+        .laneUri(laneUri)
+        .didLink(() -> System.out.println("link to adminInfo successful with token 'abc123'"))
+        .open();
     adminInfoDownlinkWithToken.set(Text.from("Setting adminInfo using link with token abc123"));
 
     Thread.sleep(2000);
     swimClient.stop();
   }
+
 }

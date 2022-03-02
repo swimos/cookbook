@@ -19,11 +19,14 @@ import swim.client.ClientRuntime;
 import swim.structure.Form;
 import swim.structure.Text;
 
-class CustomClient {
+final class CustomClient {
+
+  private CustomClient() {
+  }
 
   public static void main(String[] args) throws InterruptedException {
 
-    ClientRuntime swimClient = new ClientRuntime();
+    final ClientRuntime swimClient = new ClientRuntime();
     swimClient.start();
 
     final String hostUri = "warp://localhost:9001";
@@ -31,10 +34,10 @@ class CustomClient {
 
     // Write-only downlink; note keepLinked is false
     final MapDownlink<String, Integer> link = swimClient.downlinkMap()
-            .keyForm(Form.forString()).valueForm(Form.forInteger())
-            .hostUri(hostUri).nodeUri(nodeUriPrefix + "0").laneUri("shoppingCart")
-            .keepLinked(false)
-            .open();
+        .keyForm(Form.forString()).valueForm(Form.forInteger())
+        .hostUri(hostUri).nodeUri(nodeUriPrefix + "0").laneUri("shoppingCart")
+        .keepLinked(false)
+        .open();
     link.put("FromClientLink", 25);
 
     Thread.sleep(1000);
@@ -51,4 +54,5 @@ class CustomClient {
     Thread.sleep(2000);
     swimClient.stop();
   }
+
 }

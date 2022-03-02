@@ -12,22 +12,24 @@ import swim.structure.Form;
  * <p>
  * See {@link BasicPlane}
  */
-public class CustomClient {
+public final class CustomClient {
+
+  private CustomClient() {
+  }
 
   public static void main(String[] args) throws InterruptedException {
-    ClientRuntime swimClient = new ClientRuntime();
+    final ClientRuntime swimClient = new ClientRuntime();
     swimClient.start();
 
     final String hostUri = "warp://localhost:9001";
 
     System.out.println("Opening downlink to data, raw will start being decoded");
-    final ValueDownlink<String> dataDownlnink =
-            swimClient.downlinkValue()
-                    .valueForm(Form.forString())
-                    .hostUri(hostUri)
-                    .nodeUri("/unit").laneUri("data")
-                    .didSet((n, o) -> System.out.println("data updated from '" + o + "' to '" + n + "'"))
-                    .open();
+    final ValueDownlink<String> dataDownlnink = swimClient.downlinkValue()
+        .valueForm(Form.forString())
+        .hostUri(hostUri)
+        .nodeUri("/unit").laneUri("data")
+        .didSet((n, o) -> System.out.println("data updated from '" + o + "' to '" + n + "'"))
+        .open();
 
     Thread.sleep(10000);
     System.out.println("Closing downlink to data, raw will stop being decoded");
