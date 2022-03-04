@@ -15,11 +15,9 @@
 package swim.forex;
 
 import java.io.IOException;
-import swim.actor.ActorSpace;
 import swim.api.plane.AbstractPlane;
 import swim.kernel.Kernel;
 import swim.server.ServerLoader;
-import swim.structure.Value;
 
 public class ForexPlane extends AbstractPlane {
 

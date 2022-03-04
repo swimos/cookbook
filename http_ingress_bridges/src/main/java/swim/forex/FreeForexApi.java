@@ -24,7 +24,7 @@ import swim.json.Json;
 import swim.structure.Item;
 import swim.structure.Value;
 
-public class FreeForexApi {
+public final class FreeForexApi {
 
   private HttpsURLConnection conn;
 
@@ -80,11 +80,13 @@ public class FreeForexApi {
   private static final String[] NON_STD_CURRENCIES = {"EUR", "JPY", "GBP", "CHF",
       "CAD", "AUD", "NZD", "ZAR"};
   private static final String[] CURRENCY_PAIRS = new String[NON_STD_CURRENCIES.length];
+
   static {
     for (int i = 0; i < CURRENCY_PAIRS.length; i++) {
       CURRENCY_PAIRS[i] = STANDARD + NON_STD_CURRENCIES[i];
     }
   }
+
   private static final String FREE_FOREX_API_URI = "https://www.freeforexapi.com/api/live"
       + "?pairs=" + String.join(",", CURRENCY_PAIRS);
 
