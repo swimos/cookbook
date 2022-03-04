@@ -9,8 +9,8 @@ project(':downlinks').projectDir = file('downlinks')
 include 'egress-bridges'
 project(':egress-bridges').projectDir = file('egress_bridges')
 
-//include 'http-ingress-bridges'
-//project(':http-ingress-bridges').projectDir = file('http_ingress_bridges')
+include 'http-ingress-bridges'
+project(':http-ingress-bridges').projectDir = file('http_ingress_bridges')
 
 include 'ingress-bridges'
 project(':ingress-bridges').projectDir = file('ingress_bridges')
