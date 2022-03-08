@@ -56,3 +56,6 @@ project(':auth-policy').projectDir = file('auth_policy')
 
 include 'web-agents-server-recon'
 project(':web-agents-server-recon').projectDir = file('web_agents_server_recon')
+
+include 'static-traits'
+project(':static-traits').projectDir = file('static_traits')

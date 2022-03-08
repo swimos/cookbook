@@ -1,0 +1,23 @@
+@kernel(class: "swim.store.db.DbStoreKernel", optional: true)
+@web(port: 9001) {
+  space: "liquid"
+  documentRoot: "./ui/"
+  @websocket {
+    serverCompressionLevel: 0
+    # -1 = default; 0 = off; 1-9 = deflate level
+    clientCompressionLevel: 0
+    # -1 = default; 0 = off; 1-9 = deflate level
+  }
+}
+liquid: @fabric {
+  @plane(class: "swim.liquid.LiquidPlane")
+  @node {
+    uri: "/liquid"
+    @agent(class: "swim.liquid.agent.WaterAgent") {
+      pour: "pour/water.recon"
+    }
+    @agent(class: "swim.liquid.agent.JuiceAgent") {
+      pour: "pour/juice.recon"
+    }
+  }
+}
