@@ -18,10 +18,13 @@ import swim.api.SwimLane;
 import swim.api.agent.AbstractAgent;
 import swim.api.lane.ValueLane;
 
-public class WaterAgent extends AbstractAgent {
+public class LiquidAgent extends AbstractAgent {
 
   @SwimLane("sharedWaterInfo")
   ValueLane<String> sharedWaterInfo;
+
+  @SwimLane("sharedJuiceInfo")
+  ValueLane<String> sharedJuiceInfo;
 
   @Override
   public void didStart() {
@@ -35,16 +38,13 @@ public class WaterAgent extends AbstractAgent {
     logMessage("willStop");
   }
 
-  // Fetch value of property belonging to the /water uri.
+  // Fetch info shared with other agents.
   void pour() {
-    final String waterInfo = getProp("waterType").stringValue(null);
-    if (waterInfo != null) {
-      logMessage("Water Property '" + waterInfo + "'");
-
-      // Set Value for the sharedWaterInfo SwimLane which is shared by Liquid
-      // and Water Agent
-      this.sharedWaterInfo.set("Shared liquid is " + waterInfo);
-    }
+    // Fetching shared info from WaterAgent
+    final String waterMsg = this.sharedWaterInfo.get();
+    // Fetching shared info from JuiceAgent
+    final String juiceMsg = this.sharedJuiceInfo.get();
+    logMessage(waterMsg + juiceMsg);
   }
 
   private void logMessage(Object msg) {

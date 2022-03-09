@@ -12,12 +12,21 @@
 liquid: @fabric {
   @plane(class: "swim.liquid.LiquidPlane")
   @node {
-    uri: "/liquid"
+    uri: "/water"
     @agent(class: "swim.liquid.agent.WaterAgent") {
-      pour: "pour/water.recon"
+      waterType: "Sparkling Water"
     }
+    @agent(class: "swim.liquid.agent.LiquidAgent") {
+      liquidType: "Water"
+    }
+  }
+  @node {
+    uri: "/juice"
     @agent(class: "swim.liquid.agent.JuiceAgent") {
-      pour: "pour/juice.recon"
+      juiceType: "Orange Juice"
+    }
+    @agent(class: "swim.liquid.agent.LiquidAgent") {
+      liquidType: "Juice"
     }
   }
 }
