@@ -20,11 +20,8 @@ import swim.api.lane.ValueLane;
 
 public class LiquidAgent extends AbstractAgent {
 
-  @SwimLane("sharedWaterInfo")
-  ValueLane<String> sharedWaterInfo;
-
-  @SwimLane("sharedJuiceInfo")
-  ValueLane<String> sharedJuiceInfo;
+  @SwimLane("sharedInfo")
+  ValueLane<String> sharedInfo;
 
   @Override
   public void didStart() {
@@ -40,11 +37,9 @@ public class LiquidAgent extends AbstractAgent {
 
   // Fetch info shared with other agents.
   void pour() {
-    // Fetching shared info from WaterAgent
-    final String waterMsg = this.sharedWaterInfo.get();
-    // Fetching shared info from JuiceAgent
-    final String juiceMsg = this.sharedJuiceInfo.get();
-    logMessage(waterMsg + juiceMsg);
+    // Fetching message via sharedInfo SwimLane.
+    final String msg = this.sharedInfo.get();
+    logMessage(msg);
   }
 
   private void logMessage(Object msg) {
