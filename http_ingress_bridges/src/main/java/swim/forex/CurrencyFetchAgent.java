@@ -14,6 +14,7 @@
 
 package swim.forex;
 
+import java.io.IOException;
 import swim.api.agent.AbstractAgent;
 import swim.concurrent.AbstractTask;
 import swim.concurrent.TaskRef;
@@ -29,7 +30,11 @@ public class CurrencyFetchAgent extends AbstractAgent {
 
       @Override
       public void runTask() {
-        FreeForexApi.relayExchangeRates(agentContext());
+        try {
+          FreeForexApi.relayExchangeRates(agentContext());
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
       }
 
       @Override
@@ -48,7 +53,7 @@ public class CurrencyFetchAgent extends AbstractAgent {
         initPoll();
       }
       this.poll.cue();
-      this.timer.reschedule(60 * 1000);
+      this.timer.reschedule(POLL_DELAY_MS);
     });
   }
 
@@ -57,5 +62,7 @@ public class CurrencyFetchAgent extends AbstractAgent {
     System.out.println(nodeUri() + ": didStart");
     scheduleTimer();
   }
+
+  private static final long POLL_DELAY_MS = 20L * 1000;
 
 }
