@@ -14,20 +14,34 @@
 
 package swim.liquid;
 
+import java.util.Random;
+import swim.actor.ActorSpace;
 import swim.api.plane.AbstractPlane;
 import swim.kernel.Kernel;
 import swim.server.ServerLoader;
+import swim.structure.Value;
+import swim.uri.Uri;
 
 public class LiquidPlane extends AbstractPlane {
 
   public static void main(String[] args) throws InterruptedException {
     final Kernel kernel = ServerLoader.loadServer();
+    final ActorSpace space = (ActorSpace) kernel.getSpace("liquid");
 
     kernel.start();
-    System.out.println("Running Liquid server...");
+    System.out.println("Running Basic server...");
     kernel.run();
 
-    Thread.sleep(1000);
+    // Dynamic Agent
+    int n = 0;
+    Random rand = new Random();
+    while (n < 4) {
+      int rand_int = rand.nextInt(1000);
+      String node = "/liquid/" + rand_int;
+      space.command(node, "sharedDynInfo", Value.absent());
+      n++;
+      Thread.sleep(5000);
+    }
 
     System.out.println("Server will shut down in 3 seconds");
     Thread.sleep(3000);

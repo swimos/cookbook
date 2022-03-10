@@ -1,5 +1,5 @@
 apply from: '../project.gradle'
 
-description = 'Code corresponding to the Static Traits cookbook'
+description = 'Code corresponding to the Traits cookbook'
 ext.moduleName = 'swim.liquid'
 mainClassName = 'swim.liquid.LiquidPlane'

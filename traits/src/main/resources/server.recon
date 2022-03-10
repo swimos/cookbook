@@ -29,4 +29,11 @@ liquid: @fabric {
       liquidType: "Juice"
     }
   }
+  @node {
+    pattern: "/liquid/:id"
+    @agent(class: "swim.liquid.agent.LiquidAgent") {
+      waterDynType: "Distilled Water"
+      juiceDynType: "Grape Juice"
+    }
+  }
 }
