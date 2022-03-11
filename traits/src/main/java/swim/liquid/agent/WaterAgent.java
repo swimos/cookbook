@@ -17,10 +17,6 @@ package swim.liquid.agent;
 import swim.api.SwimLane;
 import swim.api.agent.AbstractAgent;
 import swim.api.lane.ValueLane;
-import swim.observable.function.DidSet;
-import swim.structure.Form;
-import swim.structure.Value;
-import swim.uri.Uri;
 
 public class WaterAgent extends AbstractAgent {
 
@@ -59,7 +55,7 @@ public class WaterAgent extends AbstractAgent {
 
   // Fetch value of the sharedDynInfo lane belonging to the /liquid/:id pattern.
   void pourDynamic() {
-    if(!this.sharedDynInfo.get().isEmpty()) {
+    if (!this.sharedDynInfo.get().isEmpty()) {
       logMessage("Dynamically shared liquid is '" + this.sharedDynInfo.get() + "'");
     }
   }

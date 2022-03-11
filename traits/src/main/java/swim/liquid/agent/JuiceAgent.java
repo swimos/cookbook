@@ -55,7 +55,7 @@ public class JuiceAgent extends AbstractAgent {
 
   // Fetch value of the sharedDynInfo lane belonging to the /liquid/:id pattern.
   void pourDynamic() {
-    if(!this.sharedDynInfo.get().isEmpty()) {
+    if (!this.sharedDynInfo.get().isEmpty()) {
       logMessage("Dynamically shared liquid is '" + this.sharedDynInfo.get() + "'");
     }
   }

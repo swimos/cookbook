@@ -14,13 +14,13 @@
 
 package swim.liquid;
 
-import java.util.Random;
 import swim.actor.ActorSpace;
 import swim.api.plane.AbstractPlane;
 import swim.kernel.Kernel;
 import swim.server.ServerLoader;
 import swim.structure.Value;
-import swim.uri.Uri;
+
+import java.util.Random;
 
 public class LiquidPlane extends AbstractPlane {
 

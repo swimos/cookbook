@@ -17,8 +17,6 @@ package swim.liquid.agent;
 import swim.api.SwimLane;
 import swim.api.agent.AbstractAgent;
 import swim.api.lane.ValueLane;
-import swim.structure.Form;
-import swim.structure.Value;
 
 public class LiquidAgent extends AbstractAgent {
 
@@ -67,11 +65,10 @@ public class LiquidAgent extends AbstractAgent {
     }
 
     // Dynamically open either Water or Juice Agent at runtime.
-    if(c%2 == 0) {
+    if (c % 2 == 0) {
       this.sharedDynInfo.set(waterDynInfo);
       openAgent("wAgent", WaterAgent.class);
-    }
-    else {
+    } else {
       this.sharedDynInfo.set(juiceDynInfo);
       openAgent("jAgent", JuiceAgent.class);
     }
