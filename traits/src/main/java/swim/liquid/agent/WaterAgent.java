@@ -30,7 +30,7 @@ public class WaterAgent extends AbstractAgent {
 
   @Override
   public void didStart() {
-    System.out.println(nodeUri() + " didStart region");
+    System.out.println(nodeUri() + " didStart");
     pourStatic();
     pourDynamic();
     close();
@@ -41,7 +41,7 @@ public class WaterAgent extends AbstractAgent {
     logMessage("willStop");
   }
 
-  // Fetch value of property belonging to the /water/sparkling uri.
+  // Fetch value of property belonging to the /liquid/static/water/sparkling uri.
   void pourStatic() {
     final String waterInfo = getProp("waterType").stringValue(null);
     if (waterInfo != null) {
@@ -53,7 +53,7 @@ public class WaterAgent extends AbstractAgent {
     }
   }
 
-  // Fetch value of the sharedDynInfo lane belonging to the /liquid/:id pattern.
+  // Fetch value of the sharedDynInfo lane belonging to the /liquid/dynamic/:id/:id pattern.
   void pourDynamic() {
     if (!this.sharedDynInfo.get().isEmpty()) {
       logMessage("Dynamically shared liquid is '" + this.sharedDynInfo.get() + "'");

@@ -20,8 +20,6 @@ import swim.kernel.Kernel;
 import swim.server.ServerLoader;
 import swim.structure.Value;
 
-import java.util.Random;
-
 public class LiquidPlane extends AbstractPlane {
 
   public static void main(String[] args) throws InterruptedException {
@@ -32,15 +30,19 @@ public class LiquidPlane extends AbstractPlane {
     System.out.println("Running Basic server...");
     kernel.run();
 
-    // Dynamic Agent
+    // Dynamic Agent(s)
     int n = 0;
-    Random rand = new Random();
+    String nodeString = "";
+    String[] listOfLiquid = new String[]{"black", "pineapple", "tap", "mango"};
     while (n < 4) {
-      int rand_int = rand.nextInt(1000);
-      String node = "/liquid/" + rand_int;
-      space.command(node, "sharedDynInfo", Value.absent());
+      if (n % 2 == 0) {
+        nodeString = "/liquid/dynamic/water/" + listOfLiquid[n];
+      } else {
+        nodeString = "/liquid/dynamic/juice/" + listOfLiquid[n];
+      }
+      space.command(nodeString, "unusedForNow", Value.absent());
       n++;
-      Thread.sleep(5000);
+      Thread.sleep(2000);
     }
 
     System.out.println("Server will shut down in 3 seconds");

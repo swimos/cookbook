@@ -30,7 +30,7 @@ public class JuiceAgent extends AbstractAgent {
 
   @Override
   public void didStart() {
-    System.out.println(nodeUri() + " didStart region");
+    System.out.println(nodeUri() + " didStart");
     pourStatic();
     pourDynamic();
     close();
@@ -41,7 +41,7 @@ public class JuiceAgent extends AbstractAgent {
     logMessage("willStop");
   }
 
-  // Fetch value of property belonging to the /juice/orange uri.
+  // Fetch value of property belonging to the /liquid/static/juice/orange uri.
   void pourStatic() {
     final String juiceInfo = getProp("juiceType").stringValue(null);
     if (juiceInfo != null) {
@@ -53,7 +53,7 @@ public class JuiceAgent extends AbstractAgent {
     }
   }
 
-  // Fetch value of the sharedDynInfo lane belonging to the /liquid/:id pattern.
+  // Fetch value of the sharedDynInfo lane belonging to the /liquid/dynamic/:id/:id pattern.
   void pourDynamic() {
     if (!this.sharedDynInfo.get().isEmpty()) {
       logMessage("Dynamically shared liquid is '" + this.sharedDynInfo.get() + "'");

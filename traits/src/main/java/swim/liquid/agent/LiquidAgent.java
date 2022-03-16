@@ -30,9 +30,12 @@ public class LiquidAgent extends AbstractAgent {
 
   @Override
   public void didStart() {
-    System.out.println(nodeUri() + " didStart region");
+    System.out.println(nodeUri() + " didStart");
     pourStatic();
-    pourDynamic();
+    String[] tokens = nodeUri().toString().split("/");
+    if (tokens[2].equals("dynamic")) {
+      pourDynamic(tokens);
+    }
     close();
   }
 
@@ -48,28 +51,15 @@ public class LiquidAgent extends AbstractAgent {
     logMessage(msg);
   }
 
-  // 1. Fetch value of properties belonging to the /liquid/:id pattern.
+  // 1. Fetch value of properties belonging to the /liquid/dynamic/:id/:id pattern.
   // 2. Dynamically set value of sharedDynInfo lane for the opened agents.
-  void pourDynamic() {
-    String nodeString = nodeUri().toString();
-    int c = nodeString.charAt(nodeString.length() - 1);
-
-    final String waterDynInfo = getProp("waterDynType").stringValue(null);
-    if (waterDynInfo != null) {
-      logMessage("Dynamic Water Property '" + waterDynInfo + "'");
-    }
-
-    final String juiceDynInfo = getProp("juiceDynType").stringValue(null);
-    if (juiceDynInfo != null) {
-      logMessage("Dynamic Juice Property '" + juiceDynInfo + "'");
-    }
-
+  void pourDynamic(String[] sp) {
     // Dynamically open either Water or Juice Agent at runtime.
-    if (c % 2 == 0) {
-      this.sharedDynInfo.set(waterDynInfo);
+    if (sp[3].equals("water")) {
+      this.sharedDynInfo.set(sp[4] + " " + sp[3]);
       openAgent("wAgent", WaterAgent.class);
     } else {
-      this.sharedDynInfo.set(juiceDynInfo);
+      this.sharedDynInfo.set(sp[4] + " " + sp[3]);
       openAgent("jAgent", JuiceAgent.class);
     }
   }
