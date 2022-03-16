@@ -59,8 +59,8 @@ public class WaterAgent extends AbstractAgent {
       logMessage("Dynamically shared liquid is '" + this.sharedDynInfo.get() + "'");
     }
   }
-
   private void logMessage(Object msg) {
     System.out.println(nodeUri() + ": " + msg);
   }
+
 }

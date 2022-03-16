@@ -32,7 +32,7 @@ public class LiquidAgent extends AbstractAgent {
   public void didStart() {
     System.out.println(nodeUri() + " didStart");
     pourStatic();
-    String[] tokens = nodeUri().toString().split("/");
+    final String[] tokens = nodeUri().toString().split("/");
     if (tokens[2].equals("dynamic")) {
       pourDynamic(tokens);
     }
@@ -63,8 +63,8 @@ public class LiquidAgent extends AbstractAgent {
       openAgent("jAgent", JuiceAgent.class);
     }
   }
-
   private void logMessage(Object msg) {
     System.out.println(nodeUri() + ": " + msg);
   }
+
 }
