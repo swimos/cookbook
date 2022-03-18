@@ -1,4 +1,4 @@
-// Copyright 2015-2019 SWIM.AI inc.
+// Copyright 2015-2022 SWIM.AI inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,6 +21,8 @@ import swim.concurrent.TaskRef;
 import swim.concurrent.TimerRef;
 
 public class CurrencyFetchAgent extends AbstractAgent {
+
+  private static final long POLL_DELAY_MS = 20L * 1000;
 
   private TimerRef timer;
   private TaskRef poll;
@@ -62,7 +64,5 @@ public class CurrencyFetchAgent extends AbstractAgent {
     System.out.println(nodeUri() + ": didStart");
     scheduleTimer();
   }
-
-  private static final long POLL_DELAY_MS = 20L * 1000;
 
 }

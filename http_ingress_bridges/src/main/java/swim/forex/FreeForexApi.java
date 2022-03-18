@@ -1,4 +1,4 @@
-// Copyright 2015-2019 SWIM.AI inc.
+// Copyright 2015-2022 SWIM.AI inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,6 +25,22 @@ import swim.structure.Item;
 import swim.structure.Value;
 
 public final class FreeForexApi {
+
+  private static final String STANDARD = "USD";
+  private static final String[] NON_STD_CURRENCIES = {"EUR", "JPY", "GBP", "CHF",
+      "CAD", "AUD", "NZD", "ZAR"};
+  private static final String[] CURRENCY_PAIRS = new String[NON_STD_CURRENCIES.length];
+
+  static {
+    for (int i = 0; i < CURRENCY_PAIRS.length; i++) {
+      CURRENCY_PAIRS[i] = STANDARD + NON_STD_CURRENCIES[i];
+    }
+  }
+
+  private static final String FREE_FOREX_API_URI = "https://www.freeforexapi.com/api/live"
+      + "?pairs=" + String.join(",", CURRENCY_PAIRS);
+
+  private static final FreeForexApi INSTANCE = new FreeForexApi();
 
   private HttpsURLConnection conn;
 
@@ -82,21 +98,5 @@ public final class FreeForexApi {
       INSTANCE.closeConn();
     }
   }
-
-  private static final String STANDARD = "USD";
-  private static final String[] NON_STD_CURRENCIES = {"EUR", "JPY", "GBP", "CHF",
-      "CAD", "AUD", "NZD", "ZAR"};
-  private static final String[] CURRENCY_PAIRS = new String[NON_STD_CURRENCIES.length];
-
-  static {
-    for (int i = 0; i < CURRENCY_PAIRS.length; i++) {
-      CURRENCY_PAIRS[i] = STANDARD + NON_STD_CURRENCIES[i];
-    }
-  }
-
-  private static final String FREE_FOREX_API_URI = "https://www.freeforexapi.com/api/live"
-      + "?pairs=" + String.join(",", CURRENCY_PAIRS);
-
-  private static final FreeForexApi INSTANCE = new FreeForexApi();
 
 }
