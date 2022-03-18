@@ -12,25 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package swim.basic;
+open module swim.forex {
+  requires transitive swim.api;
+  requires swim.server;
+  requires swim.client;
 
-import swim.api.agent.AbstractAgent;
-
-public class UnitAgent extends AbstractAgent {
-
-  @Override
-  public void didStart() {
-    logMessage("didStart");
-    close();
-  }
-
-  @Override
-  public void willStop() {
-    logMessage("willStop");
-  }
-
-  private void logMessage(Object msg) {
-    System.out.println(nodeUri() + ": " + msg);
-  }
-
+  exports swim.forex;
 }

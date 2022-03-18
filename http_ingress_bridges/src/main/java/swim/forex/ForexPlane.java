@@ -12,25 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package swim.basic;
+package swim.forex;
 
-import swim.api.agent.AbstractAgent;
+import swim.api.plane.AbstractPlane;
+import swim.kernel.Kernel;
+import swim.server.ServerLoader;
 
-public class UnitAgent extends AbstractAgent {
+public class ForexPlane extends AbstractPlane {
 
-  @Override
-  public void didStart() {
-    logMessage("didStart");
-    close();
-  }
-
-  @Override
-  public void willStop() {
-    logMessage("willStop");
-  }
-
-  private void logMessage(Object msg) {
-    System.out.println(nodeUri() + ": " + msg);
+  public static void main(String[] args) {
+    final Kernel kernel = ServerLoader.loadServer();
+    kernel.start();
+    System.out.println("Running Forex server...");
+    kernel.run();
   }
 
 }

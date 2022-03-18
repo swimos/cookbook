@@ -12,34 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package swim.basic;
+package swim.forex;
 
 import swim.api.SwimLane;
 import swim.api.agent.AbstractAgent;
 import swim.api.lane.CommandLane;
-import swim.api.lane.ValueLane;
+import swim.api.lane.MapLane;
 import swim.structure.Value;
 
-public class RoomAgent extends AbstractAgent {
+public class CurrencyAgent extends AbstractAgent {
 
-  @SwimLane("lights")
-  ValueLane<Boolean> lights = this.valueLane();
+  @SwimLane("rateFromUSD")
+  MapLane<Long, Double> rateFromUSD = this.<Long, Double>mapLane()
+      .didUpdate((k, n, o) -> {
+        logMessage("added entry <" + k + ", " + n + ">");
+      });
 
-  @SwimLane("toggleLights")
-  CommandLane<String> toggleLights = this.<String>commandLane().onCommand(msg -> {
-    this.lights.set(!this.lights.get());
-  });
+  @SwimLane("addEntry")
+  CommandLane<Value> addEntry = this.<Value>commandLane()
+      .onCommand(v -> {
+        this.rateFromUSD.put(v.get("timestamp").longValue(), v.get("rate").doubleValue());
+      });
 
-  @Override
-  public void didStart() {
-    this.lights.set(false);
-    register();
-  }
-
-  private void register() {
-    final String buildingUri = "/building/" + this.getProp("building").stringValue();
-    final Value roomId = getProp("room");
-    command(buildingUri, "registerRoom", roomId);
+  private void logMessage(Object msg) {
+    System.out.println(nodeUri() + ": " + msg);
   }
 
 }
