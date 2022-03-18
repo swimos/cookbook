@@ -28,7 +28,7 @@ public final class FreeForexApi {
 
   private static final String STANDARD = "USD";
   private static final String[] NON_STD_CURRENCIES = {"EUR", "JPY", "GBP", "CHF",
-      "CAD", "AUD", "NZD", "ZAR"};
+      "CAD", "AUD", "NZD", "ZAR", "INR"};
   private static final String[] CURRENCY_PAIRS = new String[NON_STD_CURRENCIES.length];
 
   static {
