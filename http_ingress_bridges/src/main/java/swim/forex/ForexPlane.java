@@ -21,7 +21,7 @@ import swim.server.ServerLoader;
 
 public class ForexPlane extends AbstractPlane {
 
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args) {
     final Kernel kernel = ServerLoader.loadServer();
     kernel.start();
     System.out.println("Running Forex server...");
