@@ -20,21 +20,17 @@ import swim.api.lane.ValueLane;
 
 public class LiquidAgent extends AbstractAgent {
 
-  // Lane utilized for static traits.
+  // Lane utilized for static and dynamic traits.
   @SwimLane("sharedInfo")
   ValueLane<String> sharedInfo;
-
-  // Lane utilized for dynamic traits.
-  @SwimLane("sharedDynInfo")
-  ValueLane<String> sharedDynInfo;
 
   @Override
   public void didStart() {
     System.out.println(nodeUri() + " didStart");
-    pourStatic();
-    final String[] tokens = nodeUri().toString().split("/");
-    if (tokens[2].equals("dynamic")) {
-      pourDynamic(tokens);
+    if (nodeUri().toString().contains("dynamic")) {
+      pourDynamic();
+    } else {
+      pourStatic();
     }
     close();
   }
@@ -51,18 +47,19 @@ public class LiquidAgent extends AbstractAgent {
     logMessage(msg);
   }
 
-  // 1. Fetch value of properties belonging to the /liquid/dynamic/:id/:id pattern.
-  // 2. Dynamically set value of sharedDynInfo lane for the opened agents.
-  void pourDynamic(String[] sp) {
+  // 1. Fetch value of properties belonging to the /liquid/:trait/:id/:id pattern.
+  // 2. Open agents dynamically.
+  // 2. Fetch value of sharedInfo lane for the opened agents.
+  void pourDynamic() {
     // Dynamically open either Water or Juice Agent at runtime.
-    if (sp[3].equals("water")) {
-      this.sharedDynInfo.set(sp[4] + " " + sp[3]);
+    if (getProp("id1").stringValue().equals("water")) {
       openAgent("wAgent", WaterAgent.class);
-    } else {
-      this.sharedDynInfo.set(sp[4] + " " + sp[3]);
+    } else if (getProp("id1").stringValue().equals("juice")) {
       openAgent("jAgent", JuiceAgent.class);
     }
+    logMessage(this.sharedInfo.get());
   }
+
   private void logMessage(Object msg) {
     System.out.println(nodeUri() + ": " + msg);
   }

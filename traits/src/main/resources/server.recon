@@ -30,7 +30,11 @@ liquid: @fabric {
     }
   }
   @node {
-    pattern: "/liquid/dynamic/:id/:id"
+    pattern: "/liquid/:trait/:id1/:id2"
+    @agent(class: "swim.liquid.agent.WaterAgent") {
+    }
+    @agent(class: "swim.liquid.agent.JuiceAgent") {
+    }
     @agent(class: "swim.liquid.agent.LiquidAgent") {
     }
   }
