@@ -12,7 +12,7 @@
 liquid: @fabric {
   @plane(class: "swim.liquid.LiquidPlane")
   @node {
-    uri: "/water/sparkling"
+    uri: "/liquid/static/water/sparkling"
     @agent(class: "swim.liquid.agent.WaterAgent") {
       waterType: "Sparkling Water"
     }
@@ -21,12 +21,21 @@ liquid: @fabric {
     }
   }
   @node {
-    uri: "/juice/orange"
+    uri: "/liquid/static/juice/orange"
     @agent(class: "swim.liquid.agent.JuiceAgent") {
       juiceType: "Orange Juice"
     }
     @agent(class: "swim.liquid.agent.LiquidAgent") {
       liquidType: "Juice"
+    }
+  }
+  @node {
+    pattern: "/liquid/:trait/:id1/:id2"
+    @agent(class: "swim.liquid.agent.WaterAgent") {
+    }
+    @agent(class: "swim.liquid.agent.JuiceAgent") {
+    }
+    @agent(class: "swim.liquid.agent.LiquidAgent") {
     }
   }
 }

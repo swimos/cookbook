@@ -14,24 +14,41 @@
 
 package swim.liquid;
 
+import swim.actor.ActorSpace;
 import swim.api.plane.AbstractPlane;
 import swim.kernel.Kernel;
 import swim.server.ServerLoader;
+import swim.structure.Value;
 
 public class LiquidPlane extends AbstractPlane {
 
   public static void main(String[] args) throws InterruptedException {
     final Kernel kernel = ServerLoader.loadServer();
+    final ActorSpace space = (ActorSpace) kernel.getSpace("liquid");
 
     kernel.start();
-    System.out.println("Running Liquid server...");
+    System.out.println("Running Basic server...");
     kernel.run();
 
-    Thread.sleep(1000);
+    // Dynamic Agent(s)
+    int n = 0;
+    String nodeString = "";
+    final String[] listOfLiquid = new String[]{"black", "pineapple", "tap", "mango"};
+    while (n < 4) {
+      if (n % 2 == 0) {
+        nodeString = "/liquid/dynamic/water/" + listOfLiquid[n];
+      } else {
+        nodeString = "/liquid/dynamic/juice/" + listOfLiquid[n];
+      }
+      space.command(nodeString, "unusedForNow", Value.absent());
+      n++;
+      Thread.sleep(2000);
+    }
 
     System.out.println("Server will shut down in 3 seconds");
     Thread.sleep(3000);
     System.out.println("Sent shutdown signal to server");
     kernel.stop();
   }
+
 }

@@ -20,13 +20,15 @@ import swim.api.lane.ValueLane;
 
 public class WaterAgent extends AbstractAgent {
 
+  // Lane utilized for static and dynamic traits.
   @SwimLane("sharedInfo")
   ValueLane<String> sharedInfo;
 
   @Override
   public void didStart() {
-    System.out.println(nodeUri() + " didStart region");
-    pour();
+    System.out.println(nodeUri() + " didStart");
+    pourStatic();
+    pourDynamic();
     close();
   }
 
@@ -35,19 +37,34 @@ public class WaterAgent extends AbstractAgent {
     logMessage("willStop");
   }
 
-  // Fetch value of property belonging to the /water/sparkling uri.
-  void pour() {
+  // Fetch value of property belonging to the /liquid/static/water/sparkling uri.
+  void pourStatic() {
     final String waterInfo = getProp("waterType").stringValue(null);
     if (waterInfo != null) {
-      logMessage("Water Property '" + waterInfo + "'");
+      logMessage("Static Water Property '" + waterInfo + "'");
 
       // Set Value for the sharedInfo SwimLane which is shared by Liquid,
       // Water and Juice Agent.
-      this.sharedInfo.set("Shared liquid is " + waterInfo);
+      this.sharedInfo.set("Statically shared liquid is '" + waterInfo + "'");
+    }
+  }
+
+  // Set value of the sharedInfo lane belonging to the /liquid/:trait/:id1/:id2 pattern.
+  void pourDynamic() {
+    final String liquidType = getProp("id1").stringValue(null);
+    final String liquidName = getProp("id2").stringValue(null);
+    if (liquidType != null && liquidName != null) {
+      logMessage("Dynamic Water Property '" + liquidName + "'");
+
+      // Set Value for the sharedInfo SwimLane which is shared by Liquid,
+      // Water and Juice Agent.
+      this.sharedInfo.set("Dynamically shared liquid is '" + liquidName + " "
+              + liquidType + "'");
     }
   }
 
   private void logMessage(Object msg) {
     System.out.println(nodeUri() + ": " + msg);
   }
+
 }
