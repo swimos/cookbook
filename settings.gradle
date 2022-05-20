@@ -15,6 +15,9 @@ project(':http-ingress-bridges').projectDir = file('http_ingress_bridges')
 include 'ingress-bridges'
 project(':ingress-bridges').projectDir = file('ingress_bridges')
 
+include 'kafka-ingress-bridges'
+project(':kafka-ingress-bridges').projectDir = file('kafka_ingress_bridges')
+
 include 'map-lanes'
 project(':map-lanes').projectDir = file('map_lanes')
 
