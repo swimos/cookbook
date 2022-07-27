@@ -48,7 +48,7 @@ afterEvaluate {
                                 '--patch-module', "$moduleName=" + files(sourceSets.main.resources.srcDirs).asPath]
         options.encoding = 'UTF-8'
         source = sourceSets.main.allJava
-        sourceCompatibility = JavaVersion.VERSION_1_9
-        targetCompatibility = JavaVersion.VERSION_1_9
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 }

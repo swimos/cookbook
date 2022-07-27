@@ -25,16 +25,16 @@ public class UnitAgent extends AbstractAgent {
   HttpLane<Value> http = this.<Value>httpLane()
       .doRespond(request -> {
         if (HttpMethod.POST.equals(request.method())) {
-          this.state.set(request.entity().get());
+          this.state.set(request.payload().get());
         }
-        return HttpResponse.from(HttpStatus.OK)
+        return HttpResponse.create(HttpStatus.OK)
             .body(Recon.toString(this.state.get()), MediaType.applicationXRecon());
       });
 
   @SwimLane("httpJson")
   HttpLane<Value> httpJson = this.<Value>httpLane()
       .doRespond(request ->
-          HttpResponse.from(HttpStatus.OK)
+          HttpResponse.create(HttpStatus.OK)
               .body(Json.toString(this.state.get()), MediaType.applicationJson()));
 
   @Override
