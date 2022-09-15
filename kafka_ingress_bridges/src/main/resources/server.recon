@@ -8,7 +8,7 @@ basic: @fabric {
     uri: "/kafka"
     @agent(class: "swim.basic.KafkaConsumerAgent") {
       ingressConf: {
-        topic: "WhatsThisBird",
+        topic: "AskReddit",
         kafkaProps: "/consumer.properties"
       }
     }

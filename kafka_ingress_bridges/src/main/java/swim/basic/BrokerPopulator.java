@@ -109,7 +109,7 @@ public class BrokerPopulator {
 
   private Value fetchComments() {
     try (InputStream is = this.conn.getInputStream()) {
-      return trimRawResponse(Utf8.read(Json.structureParser().documentParser(), is));
+      return trimRawResponse(Utf8.read(is, Json.structureParser().documentParser()));
     } catch (IOException e) {
       System.out.println("Failed to fetch comments. Cause:");
       e.printStackTrace();
@@ -151,7 +151,7 @@ public class BrokerPopulator {
 
   private static final BrokerPopulator INSTANCE = new BrokerPopulator();
 
-  private static final String SUBREDDIT = "WhatsThisBird";
+  private static final String SUBREDDIT = "AskReddit";
   private static final String INITIAL_ENDPOINT = String.format("https://old.reddit.com/r/%s/comments.json?limit=100", SUBREDDIT);
   private static final String SUBSEQUENT_FORMAT = "https://old.reddit.com/r/%s/comments.json?before=%s&limit=100";
 
