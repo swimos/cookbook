@@ -26,5 +26,4 @@ public class ForexPlane extends AbstractPlane {
     System.out.println("Running Forex server...");
     kernel.run();
   }
-
 }

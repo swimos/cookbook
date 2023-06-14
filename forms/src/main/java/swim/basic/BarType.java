@@ -12,17 +12,22 @@ import swim.structure.Value;
 
 public class BarType {
 
+  private static Form<BarType> form = new BarTypeForm();
   private int i = 0;
   private String s = "";
   private int j = 0;
 
-  public BarType() {
-  }
+  public BarType() {}
 
   public BarType(int i, String s, int j) {
     this.i = i;
     this.s = s;
     this.j = j;
+  }
+
+  @Kind
+  public static Form<BarType> form() {
+    return form;
   }
 
   public int getNumber1() {
@@ -37,18 +42,10 @@ public class BarType {
     return this.j;
   }
 
-  private static Form<BarType> form = new BarTypeForm();
-
-  @Kind
-  public static Form<BarType> form() {
-    return form;
-  }
-
   @Override
   public String toString() {
     return Recon.toString(form().mold(this));
   }
-
 }
 
 // Auxiliary class to BarType with overridden methods
@@ -83,12 +80,10 @@ class BarTypeForm extends Form<BarType> {
       if (!tag().equals(barType)) {
         return null;
       }
-      return new BarType(value.get("i").intValue(0),
-              value.get("s").stringValue(""),
-              value.get("j").intValue(0));
+      return new BarType(
+          value.get("i").intValue(0), value.get("s").stringValue(""), value.get("j").intValue(0));
     } catch (Exception e) {
       return null;
     }
   }
-
 }

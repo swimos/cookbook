@@ -28,5 +28,4 @@ public class SourceAgent extends AbstractAgent {
     System.out.println(nodeUri() + " didStart region");
     close();
   }
-
 }

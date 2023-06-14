@@ -43,20 +43,30 @@ public class BasicPlane extends AbstractPlane {
     kernel.run();
 
     // observe the effects of our commands
-    space.downlinkValue()
+    space
+        .downlinkValue()
         .nodeUri("/unit/master")
         .laneUri("info")
-        .didSet((newValue, oldValue) -> {
-          System.out.println("observed info change to " + newValue + " from " + oldValue);
-        })
+        .didSet(
+            (newValue, oldValue) -> {
+              System.out.println("observed info change to " + newValue + " from " + oldValue);
+            })
         .open();
 
     // Swim handles don't reject their own messages, regardless of policy
     space.command("/unit/master", "publishInfo", Text.from("Without network"));
     // Network events without tokens get rejected
-    space.command("warp://localhost:9001", "/unit/master", "publishInfo", Text.from("With network, no token"));
+    space.command(
+        "warp://localhost:9001",
+        "/unit/master",
+        "publishInfo",
+        Text.from("With network, no token"));
     // Network events with the right token are accepted
-    space.command("warp://localhost:9001?token=abcd", "/unit/master", "publishInfo", Text.from("With network, token"));
+    space.command(
+        "warp://localhost:9001?token=abcd",
+        "/unit/master",
+        "publishInfo",
+        Text.from("With network, token"));
   }
 
   @Override
@@ -82,5 +92,4 @@ public class BasicPlane extends AbstractPlane {
       return forbid();
     }
   }
-
 }

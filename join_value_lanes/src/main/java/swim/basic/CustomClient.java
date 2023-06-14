@@ -21,8 +21,7 @@ import swim.structure.Value;
 
 final class CustomClient {
 
-  private CustomClient() {
-  }
+  private CustomClient() {}
 
   public static void main(String[] args) throws InterruptedException {
     final ClientRuntime swimClient = new ClientRuntime();
@@ -34,13 +33,20 @@ final class CustomClient {
     final String secondRoomUri = "/swim/2";
     final String thirdRoomUri = "/swim/3";
 
-    final MapDownlink<Integer, Boolean> link = swimClient.downlinkMap()
-        .keyForm(Form.forInteger()).valueForm(Form.forBoolean())
-        .hostUri(hostUri).nodeUri(buildingUri).laneUri("lights")
-        .didUpdate((key, newValue, oldValue) -> {
-          System.out.println("The lights in room " + key + " are " + (newValue ? "on" : "off"));
-        })
-        .open();
+    final MapDownlink<Integer, Boolean> link =
+        swimClient
+            .downlinkMap()
+            .keyForm(Form.forInteger())
+            .valueForm(Form.forBoolean())
+            .hostUri(hostUri)
+            .nodeUri(buildingUri)
+            .laneUri("lights")
+            .didUpdate(
+                (key, newValue, oldValue) -> {
+                  System.out.println(
+                      "The lights in room " + key + " are " + (newValue ? "on" : "off"));
+                })
+            .open();
 
     Thread.sleep(2000);
 
@@ -57,5 +63,4 @@ final class CustomClient {
 
     swimClient.stop();
   }
-
 }

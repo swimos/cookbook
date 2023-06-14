@@ -28,35 +28,41 @@ public class CurrencyFetchAgent extends AbstractAgent {
   private TaskRef poll;
 
   private void initPoll() {
-    this.poll = asyncStage().task(new AbstractTask() {
+    this.poll =
+        asyncStage()
+            .task(
+                new AbstractTask() {
 
-      @Override
-      public void runTask() {
-        try {
-          FreeForexApi.relayExchangeRates(agentContext());
-        } catch (IOException e) {
-          e.printStackTrace();
-        }
-      }
+                  @Override
+                  public void runTask() {
+                    try {
+                      FreeForexApi.relayExchangeRates(agentContext());
+                    } catch (IOException e) {
+                      e.printStackTrace();
+                    }
+                  }
 
-      @Override
-      public boolean taskWillBlock() {
-        return true;
-      }
-    });
+                  @Override
+                  public boolean taskWillBlock() {
+                    return true;
+                  }
+                });
   }
 
   private void scheduleTimer() {
     if (this.timer != null) {
       return;
     }
-    this.timer = setTimer(0L, () -> {
-      if (this.poll == null) {
-        initPoll();
-      }
-      this.poll.cue();
-      this.timer.reschedule(POLL_DELAY_MS);
-    });
+    this.timer =
+        setTimer(
+            0L,
+            () -> {
+              if (this.poll == null) {
+                initPoll();
+              }
+              this.poll.cue();
+              this.timer.reschedule(POLL_DELAY_MS);
+            });
   }
 
   @Override
@@ -64,5 +70,4 @@ public class CurrencyFetchAgent extends AbstractAgent {
     System.out.println(nodeUri() + ": didStart");
     scheduleTimer();
   }
-
 }

@@ -8,29 +8,29 @@ import swim.kernel.Kernel;
 import swim.server.ServerLoader;
 
 /**
- * The complimentary code as part of the <a href="https://swimos.org/tutorials/join-map-lanes/">Join Map Lane</a> cookbook.
- * <p>
- * In this cookbook, three map lanes are created to hold information pertaining to state statistics and is aggregated
- * into a Join Map Lane. This join map lane checks entries that are added to see if they exceed a threshold. If it is,
- * then the data is logged.
- * <p>
- * See {@link CustomClient}
+ * The complimentary code as part of the <a href="https://swimos.org/tutorials/join-map-lanes/">Join
+ * Map Lane</a> cookbook.
+ *
+ * <p>In this cookbook, three map lanes are created to hold information pertaining to state
+ * statistics and is aggregated into a Join Map Lane. This join map lane checks entries that are
+ * added to see if they exceed a threshold. If it is, then the data is logged.
+ *
+ * <p>See {@link CustomClient}
  */
 public class BasicPlane extends AbstractPlane {
 
   static final String HOST_URI = "warp://localhost:9001";
 
-  /**
-   * Returns a downlink map for a given plane and node URI using the 'state' lane URI
-   */
+  /** Returns a downlink map for a given plane and node URI using the 'state' lane URI */
   private static MapDownlink<String, Integer> initDownlink(Space space, String uri) {
-    return space.downlinkMap()
-            .keyClass(String.class)
-            .valueClass(Integer.class)
-            .hostUri(HOST_URI)
-            .nodeUri(uri)
-            .laneUri("state")
-            .open();
+    return space
+        .downlinkMap()
+        .keyClass(String.class)
+        .valueClass(Integer.class)
+        .hostUri(HOST_URI)
+        .nodeUri(uri)
+        .laneUri("state")
+        .open();
   }
 
   public static void main(String[] args) throws InterruptedException {
@@ -38,7 +38,8 @@ public class BasicPlane extends AbstractPlane {
     final ActorSpace space = (ActorSpace) kernel.getSpace("basic");
     kernel.start();
 
-    final MapDownlink<String, Integer> californiaDownlink = initDownlink(space, "/state/california");
+    final MapDownlink<String, Integer> californiaDownlink =
+        initDownlink(space, "/state/california");
     final MapDownlink<String, Integer> texasDownlink = initDownlink(space, "/state/texas");
     final MapDownlink<String, Integer> floridaDownlink = initDownlink(space, "/state/florida");
 
@@ -54,6 +55,4 @@ public class BasicPlane extends AbstractPlane {
 
     System.out.println("Started plane...");
   }
-
 }
-

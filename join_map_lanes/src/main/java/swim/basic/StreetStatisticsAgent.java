@@ -7,10 +7,9 @@ import swim.api.lane.MapLane;
 class StreetStatisticsAgent extends AbstractAgent {
 
   /*
-      - Key: Street name
-      - Value: Street population
-   */
+     - Key: Street name
+     - Value: Street population
+  */
   @SwimLane("state")
   MapLane<String, Integer> streetStatistics = this.mapLane();
-
 }

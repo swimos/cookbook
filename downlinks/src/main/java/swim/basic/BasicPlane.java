@@ -32,12 +32,14 @@ public class BasicPlane extends AbstractPlane {
     kernel.run();
 
     // Event downlink issued against plane context
-    space.downlink()
+    space
+        .downlink()
         .nodeUri("/unit/0")
         .laneUri("addItem")
-        .onEvent(v -> {
-          System.out.println("event downlink saw " + Recon.toString(v));
-        })
+        .onEvent(
+            v -> {
+              System.out.println("event downlink saw " + Recon.toString(v));
+            })
         .open();
   }
 
@@ -47,5 +49,4 @@ public class BasicPlane extends AbstractPlane {
     // Immediately wake up ListenerAgent upon plane load
     context.command("/listener", "wakeup", Value.absent());
   }
-
 }

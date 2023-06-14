@@ -27,9 +27,13 @@ import swim.structure.Value;
 public final class FreeForexApi {
 
   private static final String STANDARD = "USD";
-  private static final String[] NON_STD_CURRENCIES = {"EUR", "JPY", "GBP", "CHF",
-      "CAD", "AUD", "NZD", "ZAR", "INR"};
+  private static final String[] NON_STD_CURRENCIES = {
+    "EUR", "JPY", "GBP", "CHF", "CAD", "AUD", "NZD", "ZAR", "INR"
+  };
   private static final String[] CURRENCY_PAIRS = new String[NON_STD_CURRENCIES.length];
+  private static final String FREE_FOREX_API_URI =
+      "https://www.freeforexapi.com/api/live" + "?pairs=" + String.join(",", CURRENCY_PAIRS);
+  private static final FreeForexApi INSTANCE = new FreeForexApi();
 
   static {
     for (int i = 0; i < CURRENCY_PAIRS.length; i++) {
@@ -37,14 +41,30 @@ public final class FreeForexApi {
     }
   }
 
-  private static final String FREE_FOREX_API_URI = "https://www.freeforexapi.com/api/live"
-      + "?pairs=" + String.join(",", CURRENCY_PAIRS);
-
-  private static final FreeForexApi INSTANCE = new FreeForexApi();
-
   private HttpsURLConnection conn;
 
-  private FreeForexApi() {
+  private FreeForexApi() {}
+
+  public static void relayExchangeRates(AgentContext swim) throws IOException {
+    INSTANCE.openConn();
+    try {
+      // Receive a payload from the source server
+      final Value response = INSTANCE.fetchExchangeRates();
+      // Partition this payload by currencies. Each partition will look like:
+      //   {"USDEUR":{"rate":0.91943,"timestamp":1646639942}}
+      for (Item i : response.get("rates")) {
+        // Identify the "destination" currency, which maps to a Web Agent.
+        // The above input will yield "EUR".
+        final String currency = i.key().stringValue().substring(3);
+        // Identify the payload we wish to send to that Web Agent. The above
+        // input will yield "{"rate":0.91943,"timestamp":1646639942}".
+        final Value agentPayload = i.toValue();
+        // Send the message via the Swim API.
+        swim.command("/currency/" + currency, "addEntry", agentPayload);
+      }
+    } finally {
+      INSTANCE.closeConn();
+    }
   }
 
   private void openConn() {
@@ -72,31 +92,8 @@ public final class FreeForexApi {
 
   private Value fetchExchangeRates() throws IOException {
     try (InputStreamReader is = new InputStreamReader(this.conn.getInputStream());
-         BufferedReader br = new BufferedReader(is)) {
+        BufferedReader br = new BufferedReader(is)) {
       return Json.parse(br.readLine());
     }
   }
-
-  public static void relayExchangeRates(AgentContext swim) throws IOException {
-    INSTANCE.openConn();
-    try {
-      // Receive a payload from the source server
-      final Value response = INSTANCE.fetchExchangeRates();
-      // Partition this payload by currencies. Each partition will look like:
-      //   {"USDEUR":{"rate":0.91943,"timestamp":1646639942}}
-      for (Item i : response.get("rates")) {
-        // Identify the "destination" currency, which maps to a Web Agent.
-        // The above input will yield "EUR".
-        final String currency = i.key().stringValue().substring(3);
-        // Identify the payload we wish to send to that Web Agent. The above
-        // input will yield "{"rate":0.91943,"timestamp":1646639942}".
-        final Value agentPayload = i.toValue();
-        // Send the message via the Swim API.
-        swim.command("/currency/" + currency, "addEntry", agentPayload);
-      }
-    } finally {
-      INSTANCE.closeConn();
-    }
-  }
-
 }

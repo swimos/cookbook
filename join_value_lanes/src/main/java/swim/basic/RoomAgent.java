@@ -26,9 +26,12 @@ public class RoomAgent extends AbstractAgent {
   ValueLane<Boolean> lights = this.valueLane();
 
   @SwimLane("toggleLights")
-  CommandLane<String> toggleLights = this.<String>commandLane().onCommand(msg -> {
-    this.lights.set(!this.lights.get());
-  });
+  CommandLane<String> toggleLights =
+      this.<String>commandLane()
+          .onCommand(
+              msg -> {
+                this.lights.set(!this.lights.get());
+              });
 
   @Override
   public void didStart() {
@@ -41,5 +44,4 @@ public class RoomAgent extends AbstractAgent {
     final Value roomId = getProp("room");
     command(buildingUri, "registerRoom", roomId);
   }
-
 }

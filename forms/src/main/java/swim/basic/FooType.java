@@ -12,17 +12,25 @@ import swim.structure.Tag;
 @Tag("fooType")
 public class FooType {
 
+  // @Kind-annotated static field and static accessor method
+  @Kind private static Form<FooType> form;
   @Member("int")
   private int i = 0;
   @Member("string")
   private String s = "";
 
-  public FooType() {
-  }
+  public FooType() {}
 
   public FooType(int i, String s) {
     this.i = i;
     this.s = s;
+  }
+
+  public static Form<FooType> form() {
+    if (form == null) {
+      form = Form.forClass(FooType.class);
+    }
+    return form;
   }
 
   public int getNumber() {
@@ -33,20 +41,8 @@ public class FooType {
     return this.s;
   }
 
-  //@Kind-annotated static field and static accessor method
-  @Kind
-  private static Form<FooType> form;
-
-  public static Form<FooType> form() {
-    if (form == null) {
-      form = Form.forClass(FooType.class);
-    }
-    return form;
-  }
-
   @Override
   public String toString() {
     return Recon.toString(form().mold(this));
   }
-
 }

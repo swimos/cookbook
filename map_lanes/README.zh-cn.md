@@ -6,4 +6,5 @@
 
 ## 运行 Map Lanes 展示
 
-该演示需要按照顺序依次运行 `swim.basic.BasicPlane` 类和 `swim.basic.CustomClient` 类。回顾[`父目录中的README.zh-cn.md`](../README.zh-cn.md)教程可知如何进行运行。对于选择了选项2的用户，`gradle` task中对应 `swim.basic.CustomClient` 的名称为 `runClient`。
+该演示需要按照顺序依次运行 `swim.basic.BasicPlane` 类和 `swim.basic.CustomClient` 类。回顾[`父目录中的README.zh-cn.md`](../README.zh-cn.md)
+教程可知如何进行运行。对于选择了选项2的用户，`gradle` task中对应 `swim.basic.CustomClient` 的名称为 `runClient`。

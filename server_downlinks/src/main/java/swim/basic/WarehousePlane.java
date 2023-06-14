@@ -6,12 +6,14 @@ import swim.server.ServerLoader;
 import swim.structure.Value;
 
 /**
- * The complimentary code as part of the <a href="https://swimos.org/tutorials/server-downlinks/">Server Downlinks</a> cookbook.
- * <p>
- * In this cookbook, two Swim servers create two different agents simulating a warehouse and a supplier. A downlink is created
- * between them so that the supplier can resupply any stock that falls below a given threshold.
- * <p>
- * See {@link SupplierPlane}
+ * The complimentary code as part of the <a
+ * href="https://swimos.org/tutorials/server-downlinks/">Server Downlinks</a> cookbook.
+ *
+ * <p>In this cookbook, two Swim servers create two different agents simulating a warehouse and a
+ * supplier. A downlink is created between them so that the supplier can resupply any stock that
+ * falls below a given threshold.
+ *
+ * <p>See {@link SupplierPlane}
  */
 public class WarehousePlane extends AbstractPlane {
 
@@ -30,5 +32,4 @@ public class WarehousePlane extends AbstractPlane {
     // Immediately wake up Warehouse Agent upon plane load
     context.command("/warehouse/cambridge", "wakeup", Value.absent());
   }
-
 }

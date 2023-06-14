@@ -21,8 +21,7 @@ import swim.structure.Value;
 
 final class CustomClient {
 
-  private CustomClient() {
-  }
+  private CustomClient() {}
 
   public static void main(String[] args) throws InterruptedException {
     final ClientRuntime swimClient = new ClientRuntime();
@@ -34,20 +33,24 @@ final class CustomClient {
     // with proper synchronization just yet
     swimClient.command(hostUri, nodeUri, "WAKEUP", Value.absent());
 
-    final EventDownlink<Value> link = swimClient.downlink()
-        .hostUri(hostUri).nodeUri(nodeUri).laneUri("publishValue")
-        .onEvent((Value event) -> {
-          System.out.println("link received event: " + event);
-        })
-        .open();
+    final EventDownlink<Value> link =
+        swimClient
+            .downlink()
+            .hostUri(hostUri)
+            .nodeUri(nodeUri)
+            .laneUri("publishValue")
+            .onEvent(
+                (Value event) -> {
+                  System.out.println("link received event: " + event);
+                })
+            .open();
     final Value msg = Num.from(9035768);
     // command() `msg` TO
     // the "publish" lane OF
     // the agent addressable by `/unit/foo` RUNNING ON
-    // the plane with hostUri "warp://localhost:9001"    
+    // the plane with hostUri "warp://localhost:9001"
     swimClient.command(hostUri, nodeUri, "publish", msg);
     Thread.sleep(2000);
     swimClient.stop();
   }
-
 }

@@ -29,5 +29,4 @@ public class UnitAgent extends AbstractAgent {
   public void didStart() {
     System.out.println(nodeUri() + " did start");
   }
-
 }

@@ -21,8 +21,7 @@ import swim.structure.Text;
 
 final class CustomClient {
 
-  private CustomClient() {
-  }
+  private CustomClient() {}
 
   public static void main(String[] args) throws InterruptedException {
 
@@ -33,11 +32,16 @@ final class CustomClient {
     final String nodeUriPrefix = "/unit/";
 
     // Write-only downlink; note keepLinked is false
-    final MapDownlink<String, Integer> link = swimClient.downlinkMap()
-        .keyForm(Form.forString()).valueForm(Form.forInteger())
-        .hostUri(hostUri).nodeUri(nodeUriPrefix + "0").laneUri("shoppingCart")
-        .keepLinked(false)
-        .open();
+    final MapDownlink<String, Integer> link =
+        swimClient
+            .downlinkMap()
+            .keyForm(Form.forString())
+            .valueForm(Form.forInteger())
+            .hostUri(hostUri)
+            .nodeUri(nodeUriPrefix + "0")
+            .laneUri("shoppingCart")
+            .keepLinked(false)
+            .open();
     link.put("FromClientLink", 25);
 
     Thread.sleep(1000);
@@ -46,13 +50,14 @@ final class CustomClient {
 
     final String[] items = {"bat", "cat", "rat"};
     for (int i = 0; i < 50; i++) {
-      // randomly add an item from `items` to the shopping carts of /unit/0, /unit/1, /unit/2 via commands
-      swimClient.command(hostUri, nodeUriPrefix + (i % 3), "addItem", Text.from(items[(int) (Math.random() * 3)]));
+      // randomly add an item from `items` to the shopping carts of /unit/0, /unit/1, /unit/2 via
+      // commands
+      swimClient.command(
+          hostUri, nodeUriPrefix + (i % 3), "addItem", Text.from(items[(int) (Math.random() * 3)]));
     }
 
     System.out.println("Will shut down client in 2 seconds");
     Thread.sleep(2000);
     swimClient.stop();
   }
-
 }

@@ -23,16 +23,21 @@ import swim.structure.Value;
 public class BuildingAgent extends AbstractAgent {
 
   @SwimLane("lights")
-  JoinValueLane<Integer, Boolean> lights = this.<Integer, Boolean>joinValueLane()
-      .didUpdate((Integer key, Boolean newValue, Boolean oldValue) -> {
-        System.out.println("The lights in room " + key + " are " + (newValue ? "on." : "off."));
-      });
+  JoinValueLane<Integer, Boolean> lights =
+      this.<Integer, Boolean>joinValueLane()
+          .didUpdate(
+              (Integer key, Boolean newValue, Boolean oldValue) -> {
+                System.out.println(
+                    "The lights in room " + key + " are " + (newValue ? "on." : "off."));
+              });
 
   @SwimLane("registerRoom")
-  CommandLane<Value> registerRoom = this.<Value>commandLane()
-      .onCommand(room -> {
-        final String roomUri = "/" + this.getProp("name").stringValue() + "/" + room.stringValue();
-        this.lights.downlink(room.intValue()).nodeUri(roomUri).laneUri("lights").open();
-      });
-
+  CommandLane<Value> registerRoom =
+      this.<Value>commandLane()
+          .onCommand(
+              room -> {
+                final String roomUri =
+                    "/" + this.getProp("name").stringValue() + "/" + room.stringValue();
+                this.lights.downlink(room.intValue()).nodeUri(roomUri).laneUri("lights").open();
+              });
 }

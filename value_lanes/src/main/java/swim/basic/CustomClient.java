@@ -21,8 +21,7 @@ import swim.structure.Value;
 
 final class CustomClient {
 
-  private CustomClient() {
-  }
+  private CustomClient() {}
 
   public static void main(String[] args) throws InterruptedException {
     final ClientRuntime swimClient = new ClientRuntime();
@@ -33,12 +32,18 @@ final class CustomClient {
     // with proper synchronization just yet
     swimClient.command(hostUri, nodeUri, "WAKEUP", Value.absent());
     // Link with a didSet() override
-    final ValueDownlink<Value> link = swimClient.downlinkValue()
-        .hostUri(hostUri).nodeUri(nodeUri).laneUri("info")
-        .didSet((newValue, oldValue) -> {
-          System.out.println("link watched info change TO " + newValue + " FROM " + oldValue);
-        })
-        .open();
+    final ValueDownlink<Value> link =
+        swimClient
+            .downlinkValue()
+            .hostUri(hostUri)
+            .nodeUri(nodeUri)
+            .laneUri("info")
+            .didSet(
+                (newValue, oldValue) -> {
+                  System.out.println(
+                      "link watched info change TO " + newValue + " FROM " + oldValue);
+                })
+            .open();
     // Send using either the proxy command lane...
     swimClient.command(hostUri, nodeUri, "publishInfo", Text.from("Hello from command, world!"));
     // ...or a downlink set()
@@ -49,5 +54,4 @@ final class CustomClient {
     Thread.sleep(2000);
     swimClient.stop();
   }
-
 }

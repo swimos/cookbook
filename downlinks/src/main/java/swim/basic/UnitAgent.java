@@ -23,17 +23,21 @@ import swim.structure.Text;
 public class UnitAgent extends AbstractAgent {
 
   @SwimLane("shoppingCart")
-  MapLane<String, Integer> shoppingCart = this.<String, Integer>mapLane()
-          .didUpdate((key, newValue, oldValue) -> {
-            logMessage(key + " count changed to " + newValue + " from " + oldValue);
-          });
+  MapLane<String, Integer> shoppingCart =
+      this.<String, Integer>mapLane()
+          .didUpdate(
+              (key, newValue, oldValue) -> {
+                logMessage(key + " count changed to " + newValue + " from " + oldValue);
+              });
 
   @SwimLane("addItem")
-  CommandLane<String> publish = this.<String>commandLane()
-          .onCommand(msg -> {
-            final int n = this.shoppingCart.getOrDefault(msg, 0) + 1;
-            this.shoppingCart.put(msg, n);
-          });
+  CommandLane<String> publish =
+      this.<String>commandLane()
+          .onCommand(
+              msg -> {
+                final int n = this.shoppingCart.getOrDefault(msg, 0) + 1;
+                this.shoppingCart.put(msg, n);
+              });
 
   private void logMessage(Object msg) {
     System.out.println(nodeUri() + ": " + msg);
@@ -43,5 +47,4 @@ public class UnitAgent extends AbstractAgent {
   public void didStart() {
     command("/listener", "triggerListen", Text.from(nodeUri().toString()));
   }
-
 }

@@ -23,19 +23,22 @@ import swim.structure.Value;
 public class CurrencyAgent extends AbstractAgent {
 
   @SwimLane("rateFromUSD")
-  MapLane<Long, Double> rateFromUSD = this.<Long, Double>mapLane()
-      .didUpdate((k, n, o) -> {
-        logMessage("added entry <" + k + ", " + n + ">");
-      });
+  MapLane<Long, Double> rateFromUSD =
+      this.<Long, Double>mapLane()
+          .didUpdate(
+              (k, n, o) -> {
+                logMessage("added entry <" + k + ", " + n + ">");
+              });
 
   @SwimLane("addEntry")
-  CommandLane<Value> addEntry = this.<Value>commandLane()
-      .onCommand(v -> {
-        this.rateFromUSD.put(v.get("timestamp").longValue(), v.get("rate").doubleValue());
-      });
+  CommandLane<Value> addEntry =
+      this.<Value>commandLane()
+          .onCommand(
+              v -> {
+                this.rateFromUSD.put(v.get("timestamp").longValue(), v.get("rate").doubleValue());
+              });
 
   private void logMessage(Object msg) {
     System.out.println(nodeUri() + ": " + msg);
   }
-
 }

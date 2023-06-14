@@ -33,7 +33,7 @@ public class LiquidPlane extends AbstractPlane {
     // Dynamic Agent(s)
     int n = 0;
     String nodeString = "";
-    final String[] listOfLiquid = new String[]{"black", "pineapple", "tap", "mango"};
+    final String[] listOfLiquid = new String[] {"black", "pineapple", "tap", "mango"};
     while (n < 4) {
       if (n % 2 == 0) {
         nodeString = "/liquid/dynamic/water/" + listOfLiquid[n];
@@ -50,5 +50,4 @@ public class LiquidPlane extends AbstractPlane {
     System.out.println("Sent shutdown signal to server");
     kernel.stop();
   }
-
 }

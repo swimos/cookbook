@@ -12,18 +12,23 @@ class AggregatedStatisticsAgent extends AbstractAgent {
 
   @Override
   public void didStart() {
-    this.stateStreetStats.downlink("california")
+    this.stateStreetStats
+        .downlink("california")
         .hostUri(BasicPlane.HOST_URI)
-        .nodeUri("/state/california").laneUri("state")
+        .nodeUri("/state/california")
+        .laneUri("state")
         .open();
-    this.stateStreetStats.downlink("texas")
+    this.stateStreetStats
+        .downlink("texas")
         .hostUri(BasicPlane.HOST_URI)
-        .nodeUri("/state/texas").laneUri("state")
+        .nodeUri("/state/texas")
+        .laneUri("state")
         .open();
-    this.stateStreetStats.downlink("florida")
+    this.stateStreetStats
+        .downlink("florida")
         .hostUri(BasicPlane.HOST_URI)
-        .nodeUri("/state/florida").laneUri("state")
+        .nodeUri("/state/florida")
+        .laneUri("state")
         .open();
   }
-
 }

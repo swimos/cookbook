@@ -37,5 +37,4 @@ public class BasicPlane extends AbstractPlane {
     // solve this chicken-and-egg problem by jump-starting one `UnitAgent`.
     space.command("/unit/0", "wakeup", Value.absent());
   }
-
 }

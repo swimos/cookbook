@@ -19,8 +19,7 @@ import swim.structure.Value;
 
 final class CustomClient {
 
-  private CustomClient() {
-  }
+  private CustomClient() {}
 
   public static void main(String[] args) throws InterruptedException {
     final ClientRuntime swimClient = new ClientRuntime();
@@ -34,5 +33,4 @@ final class CustomClient {
     System.out.println("Will shut down client");
     swimClient.stop();
   }
-
 }

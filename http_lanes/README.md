@@ -4,7 +4,8 @@ Code corresponding to the [Http Lanes cookbook](https://swimos.org/tutorials/htt
 
 ## Running This Demo
 
-This demo requires running the `swim.basic.BasicPlane` class followed by the below curl commands. Review [`README.md` from the parent directory](../README.md) for instructions on how to do this.
+This demo requires running the `swim.basic.BasicPlane` class followed by the below curl commands.
+Review [`README.md` from the parent directory](../README.md) for instructions on how to do this.
 
 ### Curl Commands
 

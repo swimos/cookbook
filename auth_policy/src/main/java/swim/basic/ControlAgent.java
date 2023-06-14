@@ -8,8 +8,8 @@ import swim.structure.Value;
 public class ControlAgent extends AbstractAgent {
 
   @SwimLane("command")
-  CommandLane<Value> command = this.<Value>commandLane()
-          .onCommand(value -> logMessage("command: " + value.toString()));
+  CommandLane<Value> command =
+      this.<Value>commandLane().onCommand(value -> logMessage("command: " + value.toString()));
 
   @Override
   public void didStart() {
@@ -20,5 +20,4 @@ public class ControlAgent extends AbstractAgent {
   private void logMessage(final String message) {
     System.out.println(nodeUri() + ": " + message);
   }
-
 }

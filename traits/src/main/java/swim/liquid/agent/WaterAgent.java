@@ -58,13 +58,11 @@ public class WaterAgent extends AbstractAgent {
 
       // Set Value for the sharedInfo SwimLane which is shared by Liquid,
       // Water and Juice Agent.
-      this.sharedInfo.set("Dynamically shared liquid is '" + liquidName + " "
-              + liquidType + "'");
+      this.sharedInfo.set("Dynamically shared liquid is '" + liquidName + " " + liquidType + "'");
     }
   }
 
   private void logMessage(Object msg) {
     System.out.println(nodeUri() + ": " + msg);
   }
-
 }

@@ -24,16 +24,20 @@ import swim.structure.Form;
 public class UnitAgent extends AbstractAgent {
 
   @SwimLane("history")
-  MapLane<Long, String> history = this.<Long, String>mapLane()
-      .didUpdate((k, n, o) -> {
-        logMessage(String.format("history update: <%d, %s>", k, n));
-      });
+  MapLane<Long, String> history =
+      this.<Long, String>mapLane()
+          .didUpdate(
+              (k, n, o) -> {
+                logMessage(String.format("history update: <%d, %s>", k, n));
+              });
 
   @SwimLane("publish")
-  CommandLane<String> publish = this.<String>commandLane()
-      .onCommand(msg -> {
-        this.history.put(System.currentTimeMillis(), msg);
-      });
+  CommandLane<String> publish =
+      this.<String>commandLane()
+          .onCommand(
+              msg -> {
+                this.history.put(System.currentTimeMillis(), msg);
+              });
 
   private ValueDownlink<String> toDataSource;
 
@@ -57,18 +61,21 @@ public class UnitAgent extends AbstractAgent {
     if (this.toDataSource != null) {
       this.toDataSource.close();
     }
-    this.toDataSource = downlinkValue()
-        .valueForm(Form.forString())
-        .hostUri(host).nodeUri(node).laneUri(lane)
-        .keepSynced(true)
-        .didSet((n, o) -> {
-          this.history.put(System.currentTimeMillis(), n);
-        })
-        .open();
+    this.toDataSource =
+        downlinkValue()
+            .valueForm(Form.forString())
+            .hostUri(host)
+            .nodeUri(node)
+            .laneUri(lane)
+            .keepSynced(true)
+            .didSet(
+                (n, o) -> {
+                  this.history.put(System.currentTimeMillis(), n);
+                })
+            .open();
   }
 
   private void logMessage(Object msg) {
     System.out.println(nodeUri() + ": " + msg);
   }
-
 }

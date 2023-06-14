@@ -22,8 +22,7 @@ public final class Database {
   private static Server server;
   private static String port;
 
-  private Database() {
-  }
+  private Database() {}
 
   public static void start(int port) throws SQLException {
     System.out.println("[DEBUG] will start database on port " + port);
@@ -50,8 +49,7 @@ public final class Database {
   public static void main(String[] args) throws SQLException {
 
     // Ensure Database shutdown before exit
-    Runtime.getRuntime()
-        .addShutdownHook(new Thread(Database::stop));
+    Runtime.getRuntime().addShutdownHook(new Thread(Database::stop));
 
     Database.start(9002);
 
@@ -64,5 +62,4 @@ public final class Database {
       BlockingStudentsDriver.stop();
     }
   }
-
 }

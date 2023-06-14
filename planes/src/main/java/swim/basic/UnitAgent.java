@@ -25,9 +25,10 @@ public class UnitAgent extends AbstractAgent {
   ValueLane<String> info = this.<String>valueLane();
 
   @SwimLane("publishInfo")
-  CommandLane<String> publishInfo = this.<String>commandLane()
-      .onCommand(msg -> {
-        this.info.set("from publishInfo: " + msg);
-      });
-
+  CommandLane<String> publishInfo =
+      this.<String>commandLane()
+          .onCommand(
+              msg -> {
+                this.info.set("from publishInfo: " + msg);
+              });
 }

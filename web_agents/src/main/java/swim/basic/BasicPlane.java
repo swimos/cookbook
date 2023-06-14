@@ -41,5 +41,4 @@ public class BasicPlane extends AbstractPlane {
     System.out.println("Sent shutdown signal to server");
     kernel.stop();
   }
-
 }

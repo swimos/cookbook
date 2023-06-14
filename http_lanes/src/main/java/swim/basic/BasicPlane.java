@@ -18,8 +18,7 @@ public class BasicPlane extends AbstractPlane {
   @Override
   public void didStart() {
     super.didStart();
-    //Immediately wake up the Unit Agent on plane load
+    // Immediately wake up the Unit Agent on plane load
     command("/unit", "wakeup", Value.absent());
   }
-
 }

@@ -10,12 +10,13 @@ import swim.structure.Form;
 import swim.structure.Value;
 
 /**
- * The complimentary code as part of the <a href="https://swimos.org/tutorials/demand-value-lanes/">Demand Value Lanes</a> cookbook.
- * <p>
- * In this cookbook, an agent is created with a Demand Lane. This Demand Lane will only transform data when there is a downlink
- * that is subscribed to it.
- * <p>
- * See {@link CustomClient}
+ * The complimentary code as part of the <a
+ * href="https://swimos.org/tutorials/demand-value-lanes/">Demand Value Lanes</a> cookbook.
+ *
+ * <p>In this cookbook, an agent is created with a Demand Lane. This Demand Lane will only transform
+ * data when there is a downlink that is subscribed to it.
+ *
+ * <p>See {@link CustomClient}
  */
 public class BasicPlane extends AbstractPlane {
 
@@ -27,17 +28,21 @@ public class BasicPlane extends AbstractPlane {
     kernel.start();
     kernel.run();
 
-    final ValueDownlink<String> rawDownlink = space.downlinkValue()
-        .valueForm(Form.forString())
-        .nodeUri("/unit").laneUri("raw")
-        .didSet((n, o) -> {
-          if (!n.equals(o)) {
-            System.out.println("raw updated from '" + o + "' to '" + n + "'");
-          }
-        })
-        .open();
+    final ValueDownlink<String> rawDownlink =
+        space
+            .downlinkValue()
+            .valueForm(Form.forString())
+            .nodeUri("/unit")
+            .laneUri("raw")
+            .didSet(
+                (n, o) -> {
+                  if (!n.equals(o)) {
+                    System.out.println("raw updated from '" + o + "' to '" + n + "'");
+                  }
+                })
+            .open();
 
-    //Incrementally change the raw lane so the client can observe changes
+    // Incrementally change the raw lane so the client can observe changes
     int messageNumber = 0;
     while (true) {
       Thread.sleep(1000);
@@ -52,8 +57,7 @@ public class BasicPlane extends AbstractPlane {
   @Override
   public void didStart() {
     super.didStart();
-    //Immediately wake up the Unit Agent on plane load
+    // Immediately wake up the Unit Agent on plane load
     command("/unit", "wakeup", Value.absent());
   }
-
 }

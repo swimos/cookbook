@@ -34,34 +34,35 @@ public class IngressBridge {
     this.swim.start();
 
     this.mqtt = new MqttAsyncClient(broker, "Listener");
-    this.mqtt.setCallback(new MqttCallback() {
-      @Override
-      public void connectionLost(Throwable cause) {
-        System.err.println("connection lost");
-      }
+    this.mqtt.setCallback(
+        new MqttCallback() {
+          @Override
+          public void connectionLost(Throwable cause) {
+            System.err.println("connection lost");
+          }
 
-      @Override
-      public void messageArrived(String topic, MqttMessage message) throws Exception {
-        final String msg = new String(message.getPayload());
-        System.out.printf("MQTT Ingress Bridge received '%s'\n", msg);
-        final Value structure = Recon.parse(msg);
-        final String nodeUri = String.format("/unit/%d", structure.get("id").intValue());
-        IngressBridge.this.swim.command(
+          @Override
+          public void messageArrived(String topic, MqttMessage message) throws Exception {
+            final String msg = new String(message.getPayload());
+            System.out.printf("MQTT Ingress Bridge received '%s'\n", msg);
+            final Value structure = Recon.parse(msg);
+            final String nodeUri = String.format("/unit/%d", structure.get("id").intValue());
+            IngressBridge.this.swim.command(
                 swimHost, // hostUri
                 nodeUri, // nodeUri
                 "publish", // laneUri
                 structure.get("val") // value
-        );
-      }
+                );
+          }
 
-      @Override
-      public void deliveryComplete(IMqttDeliveryToken token) {
-      }
-    });
+          @Override
+          public void deliveryComplete(IMqttDeliveryToken token) {}
+        });
   }
 
   public static void main(String[] args) throws MqttException {
-    final IngressBridge lis = new IngressBridge("warp://localhost:9001", "tcp://mqtt.eclipseprojects.io:1883");
+    final IngressBridge lis =
+        new IngressBridge("warp://localhost:9001", "tcp://mqtt.eclipseprojects.io:1883");
     lis.listen();
   }
 
@@ -76,5 +77,4 @@ public class IngressBridge {
     System.out.println("Connected!");
     this.mqtt.subscribe("swimSensors/all", 1);
   }
-
 }

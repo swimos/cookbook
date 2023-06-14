@@ -23,11 +23,10 @@ import java.sql.Statement;
 
 public final class BlockingStudentsDriver {
 
-  private final Connection conn;
-  private final String url;
-
   // singleton pattern
   private static BlockingStudentsDriver driver;
+  private final Connection conn;
+  private final String url;
 
   private BlockingStudentsDriver(Connection conn, String url) {
     this.conn = conn;
@@ -35,7 +34,7 @@ public final class BlockingStudentsDriver {
   }
 
   public static void start(String host, String path, String usr, String pw)
-          throws ClassNotFoundException, SQLException {
+      throws ClassNotFoundException, SQLException {
     // start() becomes restart() if BlockingDriver.driver already exists
     if (driver != null) {
       stop();
@@ -43,14 +42,14 @@ public final class BlockingStudentsDriver {
 
     // Set up connection
     Class.forName("org.h2.Driver");
-    final String url = "jdbc:h2:"
-            + host
-            + ((!host.endsWith("/") && !path.startsWith("/")) ? "/" : "")
-            + path;
+    final String url =
+        "jdbc:h2:" + host + ((!host.endsWith("/") && !path.startsWith("/")) ? "/" : "") + path;
     System.out.println("[DEBUG] will start driver at " + url);
     driver = new BlockingStudentsDriver(DriverManager.getConnection(url, usr, pw), url);
-    System.out.println("[INFO] Connection Established: "
-            + driver.conn.getMetaData().getDatabaseProductName() + "/"
+    System.out.println(
+        "[INFO] Connection Established: "
+            + driver.conn.getMetaData().getDatabaseProductName()
+            + "/"
             + driver.conn.getCatalog());
 
     // Initialize table
@@ -58,28 +57,29 @@ public final class BlockingStudentsDriver {
   }
 
   private static void createStudentsTable() throws SQLException {
-    final ResultSet res = driver.conn.getMetaData()
-        .getTables(null, null, "STUDENTS", new String[]{"TABLE"});
+    final ResultSet res =
+        driver.conn.getMetaData().getTables(null, null, "STUDENTS", new String[] {"TABLE"});
     if (res.next()) {
       System.out.println("[WARN] Skipping STUDENTS table creation, as it already exists");
       return;
     }
     // Create STUDENTS table
     final String createMsg =
-            "CREATE TABLE Students (" // database uppercases table name by default
-                    + "id INT, "
-                    + "f_name VARCHAR(20), "
-                    + "l_name VARCHAR(20), "
-                    + "points_earned INT, "
-                    + "points_possible INT, " // to handle dropped assignments
-                    + "PRIMARY KEY (id)"
-                    + ");";
+        "CREATE TABLE Students (" // database uppercases table name by default
+            + "id INT, "
+            + "f_name VARCHAR(20), "
+            + "l_name VARCHAR(20), "
+            + "points_earned INT, "
+            + "points_possible INT, " // to handle dropped assignments
+            + "PRIMARY KEY (id)"
+            + ");";
     final Statement createStmnt = driver.conn.createStatement();
     createStmnt.execute(createMsg);
     createStmnt.close();
 
     // Seed STUDENTS with values
-    final PreparedStatement seed = driver.conn.prepareStatement("INSERT INTO STUDENTS VALUES (?, ?, ?, ?, ?)");
+    final PreparedStatement seed =
+        driver.conn.prepareStatement("INSERT INTO STUDENTS VALUES (?, ?, ?, ?, ?)");
     seed(seed, 1, "Eilert", "Bronislav");
     seed(seed, 2, "Karolina", "Ilyas");
     seed(seed, 3, "Mitsuko", "Maryam");
@@ -88,8 +88,7 @@ public final class BlockingStudentsDriver {
     seed.close();
   }
 
-  private static void seed(PreparedStatement seed,
-                           int id, String f, String l) throws SQLException {
+  private static void seed(PreparedStatement seed, int id, String f, String l) throws SQLException {
     seed.setInt(1, id);
     seed.setString(2, f);
     seed.setString(3, l);
@@ -99,10 +98,10 @@ public final class BlockingStudentsDriver {
   }
 
   public static void updateGrade(int id, int earned, int possible) {
-    final String baseSql = String.format(
-            "UPDATE STUDENTS "
-                    + "SET points_earned = %d, points_possible = %d "
-                    + "WHERE id = %d;", earned, possible, id);
+    final String baseSql =
+        String.format(
+            "UPDATE STUDENTS " + "SET points_earned = %d, points_possible = %d " + "WHERE id = %d;",
+            earned, possible, id);
     try (Statement stmt = driver.conn.createStatement()) {
       stmt.executeUpdate(baseSql);
     } catch (SQLException e) {
@@ -111,9 +110,10 @@ public final class BlockingStudentsDriver {
   }
 
   public static void logGrade(final int id) {
-    final String sql = String.format("SELECT points_earned, points_possible FROM STUDENTS WHERE id = %d;", id);
+    final String sql =
+        String.format("SELECT points_earned, points_possible FROM STUDENTS WHERE id = %d;", id);
     try (Statement stmt = driver.conn.createStatement();
-         ResultSet rs = stmt.executeQuery(sql)) {
+        ResultSet rs = stmt.executeQuery(sql)) {
       while (rs.next()) {
         System.out.println(rs.getInt("points_earned"));
         System.out.println(rs.getInt("points_possible"));
@@ -131,5 +131,4 @@ public final class BlockingStudentsDriver {
       System.out.println("[DEBUG] Did stop driver");
     }
   }
-
 }
