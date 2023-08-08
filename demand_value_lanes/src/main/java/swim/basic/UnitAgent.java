@@ -14,31 +14,10 @@ public class UnitAgent extends AbstractAgent {
 
   @SwimLane("data")
   DemandLane<String> data = this.<String>demandLane()
-      .willUplink(uplink -> {
-        System.out.println("willUplink start: " + uplink);
-        uplink.onUnlink(plink -> {
-          System.out.println("onUnlink: " + uplink);
-        });
-        uplink.onUnlinked(plink -> {
-          System.out.println("onUnlinked: " + uplink);
-        });
-        System.out.println("willUplink finish: " + uplink);
-      })
-      .didUplink(uplink -> {
-        System.out.println("didUplink start: " + uplink);
-        uplink.onUnlink(plink -> {
-          System.out.println("onUnlink: " + uplink);
-        });
-        uplink.onUnlink(plink -> {
-          System.out.println("onUnlinked: " + uplink);
-        });
-        System.out.println("didUplink finish: " + uplink);
-      })
       .onCue(this::decodeRaw);
 
   // Transform raw data to the desired format
   private String decodeRaw(WarpUplink uplink) {
-    System.out.println("onCue: " + uplink);
     final String encoded = this.raw.get();
     if (encoded == null) {
       return "";
