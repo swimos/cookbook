@@ -39,9 +39,4 @@ public final class NextBusApi {
     }
   }
 
-  public static void main(String[] args) {
-    System.out.println(swim.recon.Recon.toString(getVehiclesForAgency(Main.httpClient(), "portland-sc")));
-    System.out.println(getVehiclesForAgency(Main.httpClient(), "reno"));
-  }
-
 }
