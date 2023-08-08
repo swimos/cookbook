@@ -1,5 +1,7 @@
 package swim.vehicle;
 
+import java.util.ArrayList;
+import java.util.List;
 import swim.api.agent.AbstractAgent;
 import swim.concurrent.AbstractTask;
 import swim.concurrent.TaskRef;
@@ -16,13 +18,26 @@ public class AgencyAgent extends AbstractAgent {
     @Override
     public void runTask() {
       final String aid = agencyId();
+      // Make API call
       final Value payload = NextBusApi.getVehiclesForAgency(Main.httpClient(), aid);
+      // Extract information for all vehicles and the API-provided timestamp
+      final List<Value> vehicleInfos = new ArrayList<>(payload.length());
+      long lastTime = -1L;
       for (Item i : payload) {
-        if (i.head() instanceof Attr && "vehicle".equals(i.head().key().stringValue(null))) {
-          final Value vehicleInfo = i.head().toValue();
-          final String vid = vehicleInfo.get("id").stringValue();
-          command("/vehicle/" + aid + "/" + vid, "addMessage", vehicleInfo);
+        if (i.head() instanceof Attr) {
+          final String label = i.head().key().stringValue(null);
+          if ("vehicle".equals(label)) {
+            vehicleInfos.add(i.head().toValue());
+          } else if ("lastTime".equals(label)) {
+            lastTime = i.head().toValue().get("time").longValue();
+          }
         }
+      }
+      // Relay each (vehicleInfo UNION timestamp) to the appropriate VehicleAgent
+      for (Value vehicleInfo : vehicleInfos) {
+        command("/vehicle/" + aid + "/" + vehicleInfo.get("id").stringValue(),
+            "addMessage",
+            vehicleInfo.updatedSlot("timestamp", lastTime));
       }
     }
 
