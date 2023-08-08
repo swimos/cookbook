@@ -20,7 +20,7 @@ public class AgencyAgent extends AbstractAgent {
       final String aid = agencyId();
       // Make API call
       final Value payload = NextBusApi.getVehiclesForAgency(Main.httpClient(), aid);
-      // Extract information for all vehicles and the API-provided timestamp
+      // Extract information for all vehicles and the payload's timestamp
       final List<Value> vehicleInfos = new ArrayList<>(payload.length());
       long lastTime = -1L;
       for (Item i : payload) {
