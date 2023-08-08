@@ -12,10 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-open module swim.forex {
+open module swim.vehicle {
+  requires java.net.http;
   requires transitive swim.api;
   requires swim.server;
   requires swim.client;
+  requires swim.xml;
 
-  exports swim.forex;
+  exports swim.vehicle;
 }

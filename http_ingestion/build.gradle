@@ -1,0 +1,9 @@
+apply from: '../project.gradle'
+
+description = 'Code corresponding to the HTTP Ingestion guide'
+ext.moduleName = 'swim.vehicle'
+mainClassName = 'swim.vehicle.Main'
+
+dependencies {
+  implementation group: 'org.swimos', name: 'swim-xml', version: version
+}

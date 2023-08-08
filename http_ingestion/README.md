@@ -1,6 +1,6 @@
-# Ingress Bridges
+# HTTP Ingestion
 
-Code corresponding to the [Ingress Bridges cookbook](https://swimos.org/tutorials/http-ingress-bridges/).
+Code corresponding to the [HTTP Ingestion Guide](/FIXME).
 
 ## Running This Demo
 
