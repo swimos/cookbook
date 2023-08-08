@@ -13,7 +13,7 @@
 // limitations under the License.
 
 open module swim.vehicle {
-  requires java.net.http;
+  requires transitive java.net.http;
   requires transitive swim.api;
   requires swim.server;
   requires swim.client;

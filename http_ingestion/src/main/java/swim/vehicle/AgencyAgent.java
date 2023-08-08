@@ -15,13 +15,13 @@ public class AgencyAgent extends AbstractAgent {
   private TimerRef timer;
   private final TaskRef agencyPollTask = asyncStage().task(new AbstractTask() {
 
-    private long lastTime = 0L;
+    private long lastTime = 0L; // This will update via API responses
 
     @Override
     public void runTask() {
       final String aid = agencyId();
       // Make API call
-      final Value payload = NextBusApi.getVehiclesForAgency(Main.httpClient(), aid, this.lastTime);
+      final Value payload = NextBusApi.getVehiclesForAgency(Assets.httpClient(), aid, this.lastTime);
       // Extract information for all vehicles and the payload's timestamp
       final List<Value> vehicleInfos = new ArrayList<>(payload.length());
       for (Item i : payload) {
@@ -40,7 +40,7 @@ public class AgencyAgent extends AbstractAgent {
         command("/vehicle/" + aid + "/" + vehicleInfo.get("id").stringValue(),
             "addMessage",
             // lastTime came separately, manually add it to each vehicleInfo
-            vehicleInfo.updatedSlot("timestamp", lastTime));
+            vehicleInfo.updatedSlot("timestamp", this.lastTime));
         i++;
       }
       System.out.println(nodeUri() + ": relayed info for " + i + " vehicles");
@@ -52,6 +52,9 @@ public class AgencyAgent extends AbstractAgent {
     }
 
   });
+
+  public AgencyAgent() {
+  }
 
   private String agencyId() {
     final String nodeUri = nodeUri().toString();

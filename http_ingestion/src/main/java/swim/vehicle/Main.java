@@ -1,6 +1,5 @@
 package swim.vehicle;
 
-import java.net.http.HttpClient;
 import swim.kernel.Kernel;
 import swim.server.ServerLoader;
 
@@ -9,10 +8,8 @@ public final class Main {
   private Main() {
   }
 
-  private static final HttpClient HTTP_CLIENT = HttpClient.newHttpClient();
-
-  public static HttpClient httpClient() {
-    return HTTP_CLIENT;
+  public static void main(String[] args) {
+    startServer();
   }
 
   private static void startServer() {
@@ -20,10 +17,6 @@ public final class Main {
     kernel.start();
     System.out.println("Running Http-ingesting server...");
     kernel.run();
-  }
-
-  public static void main(String[] args) {
-    startServer();
   }
 
 }
