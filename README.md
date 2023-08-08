@@ -14,9 +14,13 @@ Simply navigate to your desired class(es), and run them through your IDE.
 
 ### Option 2: Build and Run With Gradle
 
-Every cookbook stands up a Swim server. To run this server for a given cookbook, simply issue `./gradlew $COOKBOOK-NAME:run` (or `.\gradlew.bat $COOKBOOK-NAME:run on Windows`) from your command line. For example, `./gradlew web-agents:run` runs the Web Agents cookbook.
+Every cookbook stands up a Swim server. To run this server for a given cookbook, simply issue `./gradlew $COOKBOOK-NAME:run` (or `.\gradlew.bat $COOKBOOK-NAME:run on Windows`) from your command line.
 
-For a cookbook demonstration that requires running multiple classes, you will find a separate Gradle run task corresponding to each of these classes. All cookbook-specific READMEs, found in their appropriate child directories, outline how to run these tasks. For example, to fully run the Command Lanes cookbook, you must issue both a `./gradlew command-lanes:run` and a `./gradlew command-lanes:runClient` from this directory.
+- For example, `./gradlew web-agents:run` runs the Web Agents cookbook.
+
+For a cookbook demonstration that requires running multiple classes, you will find a separate Gradle run task corresponding to each of these classes. All cookbook-specific READMEs, found in their appropriate child directories, outline how to run these tasks.
+
+- For example, to fully run the Command Lanes cookbook, you must issue both a `./gradlew command-lanes:run` and a `./gradlew command-lanes:runClient` from this directory.
 
 ### Option 3: Build With Gradle, Run With Shell
 
