@@ -14,23 +14,13 @@ Simply navigate to your desired class(es), and run them through your IDE.
 
 ### Option 2: Build and Run With Gradle
 
-Every cookbook stands up a Swim server. To run this server for a given cookbook, simply issue `gradle $COOKBOOK-NAME:run` (or one of its variations, outlined below) from your command line. For example, `gradle web-agents:run` runs the Web Agents cookbook.
+Every cookbook stands up a Swim server. To run this server for a given cookbook, simply issue `./gradlew $COOKBOOK-NAME:run` (or `.\gradlew.bat $COOKBOOK-NAME:run on Windows`) from your command line. For example, `./gradlew web-agents:run` runs the Web Agents cookbook.
 
-For a cookbook demonstration that requires running multiple classes, you will find a separate Gradle run task corresponding to each of these classes. All cookbook-specific READMEs, found in their appropriate child directories, outline how to run these tasks. For example, to fully run the Command Lanes cookbook, you must issue both a `gradle command-lanes:run` and a `gradle command-lanes:runClient` from this directory.
+For a cookbook demonstration that requires running multiple classes, you will find a separate Gradle run task corresponding to each of these classes. All cookbook-specific READMEs, found in their appropriate child directories, outline how to run these tasks. For example, to fully run the Command Lanes cookbook, you must issue both a `./gradlew command-lanes:run` and a `./gradlew command-lanes:runClient` from this directory.
 
-#### Variations on `gradle`
+### Option 3: Build With Gradle, Run With Shell
 
-You may only use `gradle` as a command if you have it installed on your machine. Additionally, the cookbooks only support Gradle versions 5.2 onwards.
-
-If you do not wish to install or upgrade your local Gradle distribution, replace any `gradle` command with one of the following:
-
-- `./gradlew` in most non-Windows environments
-
-- `.\gradlew.bat` on Windows
-
-### Option 3: Build With Gradle, Run With Java
-
-To build and package a cookbook, simply run `gradle $COOKBOOK-NAME:build` (or one of its aforementioned variations in terms of the `gradle` command).
+To build and package a cookbook, simply run `./gradlew $COOKBOOK-NAME:build`.
 
 This will generate both a `.tar` and a `.zip` file in the `$COOKBOOK_NAME/build/distributions/` directory. Unpackaging either one of these files exposes scripts in the `bin` directory.
 
@@ -38,7 +28,7 @@ By default, the generated script will only run the primary Swim server of the gi
 
 For example recall that the [Egress bridges cookbook](/egress_bridges) requires running the `swim.grade.db.Database`, `swim.grade.GradePlane`, and `swim.grade.Sim` classes in that order. The following steps will set up your environment to enable running these classes; the instructions assume a *nix environment, but the Windows equivalents should be self-explanatory:
 
-1. `gradle egress-bridges:build` (or one of the aforementioned `gradle` variations)
+1. `./gradlew egress-bridges:build`
 
 2. `cd egress_bridges/build/distributions/`
 

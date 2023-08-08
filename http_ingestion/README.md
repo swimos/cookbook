@@ -1,11 +1,13 @@
 # HTTP Ingestion
 
-Code corresponding to the [HTTP Ingestion Guide](/FIXME).
+Code corresponding to the [HTTP Ingestion Guide](https://www.swimos.org/guides/http-ingestion.html).
 
 ## Running This Demo
 
-This demo only requires running the `swim.forex.ForexPlane` class.
+_All commands should be executed from the parent directory._
 
-Thus, `gradle http-ingress-bridges:run` is sufficient for those who pick Option 2 in [`README.md` from the parent directory](../README.md).
+This demo only requires running the `swim.vehicle.Main` class.
 
-For those who pick Option 3, simply execute `http-ingress-bridges:build`, unpackage either artifact in `http-ingress-bridges/build/distributions`, and run the appropriate script in `bin/`; no file copying/editing is required.
+Thus, `./gradlew http-ingestion:run` is sufficient for those who pick Option 2 in [`README.md` from the parent directory](../README.md).
+
+For those who pick Option 3, simply execute `./gradlew http-ingestion:build`, unpackage either artifact in `http-ingestion/build/distributions`, and run the appropriate script in `bin/`; no file copying/editing is required.
