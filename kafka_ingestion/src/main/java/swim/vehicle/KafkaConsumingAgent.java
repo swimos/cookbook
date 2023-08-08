@@ -16,7 +16,7 @@ public class KafkaConsumingAgent extends AbstractAgent {
         @Override
         public void runTask() {
           while (true) {
-            final ConsumerRecords<String, String> records = Main.kafkaConsumer0()
+            final ConsumerRecords<String, String> records = Assets.kafkaConsumer()
                 .poll(Duration.ofMillis(100));
             for (ConsumerRecord<String, String> record : records) {
               final String nodeUri = "/vehicle/" + record.key();
@@ -32,6 +32,9 @@ public class KafkaConsumingAgent extends AbstractAgent {
         }
 
       });
+
+  public KafkaConsumingAgent() {
+  }
 
   @Override
   public void didStart() {

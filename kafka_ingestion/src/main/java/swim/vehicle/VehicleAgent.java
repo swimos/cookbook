@@ -20,4 +20,7 @@ public class VehicleAgent extends AbstractAgent {
         System.out.println(nodeUri() + ": received " + n);
       });
 
+  public VehicleAgent() {
+  }
+
 }
