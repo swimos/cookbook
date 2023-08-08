@@ -15,10 +15,10 @@ public final class NextBusApi {
   private NextBusApi() {
   }
 
-  private static final String ENDPOINT_FMT = "https://retro.umoiq.com/service/publicXMLFeed?command=vehicleLocations&a=%s&t=0";
+  private static final String ENDPOINT_FMT = "https://retro.umoiq.com/service/publicXMLFeed?command=vehicleLocations&a=%s&t=%d";
 
-  private static String endpointForAgency(String agency) {
-    return String.format(ENDPOINT_FMT, agency);
+  private static String endpointForAgency(String agency, long since) {
+    return String.format(ENDPOINT_FMT, agency, since);
   }
 
   private static HttpRequest requestForEndpoint(String endpoint) {
@@ -28,11 +28,12 @@ public final class NextBusApi {
         .build();
   }
 
-  public static Value getVehiclesForAgency(HttpClient executor, String agency) {
-    final HttpRequest request = requestForEndpoint(endpointForAgency(agency));
+  public static Value getVehiclesForAgency(HttpClient executor, String agency, long since) {
+    final HttpRequest request = requestForEndpoint(endpointForAgency(agency, since));
     try {
       final HttpResponse<InputStream> response = executor.send(request, HttpResponse.BodyHandlers.ofInputStream());
       return Utf8.read(new GZIPInputStream(response.body()), Xml.structureParser().documentParser());
+      // Alternatively: convert GZIPInputStream to String, then invoke the more familiar Xml.parse()
     } catch (Exception e) {
       e.printStackTrace();
       return Value.absent();
