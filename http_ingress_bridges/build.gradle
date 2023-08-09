@@ -1,5 +1,0 @@
-apply from: '../project.gradle'
-
-description = 'Code corresponding to the HTTP Ingress Bridges cookbook'
-ext.moduleName = 'swim.forex'
-mainClassName = 'swim.forex.ForexPlane'

@@ -1,0 +1,18 @@
+vehicle: @fabric {
+  @plane(class: "swim.api.plane.AbstractPlane")
+  @node {
+    pattern: "/vehicle/:id"
+    @agent(class: "swim.vehicle.VehicleAgent")
+  }
+  @node {
+    uri: "/kafka"
+    @agent(class: "swim.vehicle.KafkaConsumingAgent")
+  }
+}
+@web(port: 9001) {
+  space: "vehicle"
+  @websocket {
+    serverCompressionLevel: 0
+    clientCompressionLevel: 0
+  }
+}

@@ -1,0 +1,22 @@
+vehicle: @fabric {
+  @plane(class: "swim.api.plane.AbstractPlane")
+  @node {
+    uri: "/agency/portland-sc"
+    @agent(class: "swim.vehicle.AgencyAgent")
+  }
+  @node {
+    uri: "/agency/reno"
+    @agent(class: "swim.vehicle.AgencyAgent")
+  }
+  @node {
+    pattern: "/vehicle/:aid/:vid"
+    @agent(class: "swim.vehicle.VehicleAgent")
+  }
+}
+@web(port: 9001) {
+  space: "vehicle"
+  @websocket {
+    serverCompressionLevel: 0
+    clientCompressionLevel: 0
+  }
+}

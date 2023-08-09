@@ -9,11 +9,14 @@ project(':downlinks').projectDir = file('downlinks')
 include 'egress-bridges'
 project(':egress-bridges').projectDir = file('egress_bridges')
 
-include 'http-ingress-bridges'
-project(':http-ingress-bridges').projectDir = file('http_ingress_bridges')
+include 'http-ingestion'
+project(':http-ingestion').projectDir = file('http_ingestion')
 
 include 'ingress-bridges'
 project(':ingress-bridges').projectDir = file('ingress_bridges')
+
+include 'kafka-ingestion'
+project(':kafka-ingestion').projectDir = file('kafka_ingestion')
 
 include 'map-lanes'
 project(':map-lanes').projectDir = file('map_lanes')
