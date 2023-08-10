@@ -24,6 +24,9 @@ project(':map-lanes').projectDir = file('map_lanes')
 include 'planes'
 project(':planes').projectDir = file('planes')
 
+include 'time-series'
+project(':time-series').projectDir = file('time_series')
+
 include 'timers'
 project(':timers').projectDir = file('timers')
 
