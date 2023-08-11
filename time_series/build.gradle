@@ -1,0 +1,5 @@
+apply from: '../project.gradle'
+
+description = 'Code corresponding to the Time Series guide'
+ext.moduleName = 'swim.timeseries'
+mainClassName = 'swim.timeseries.BasicPlane'
