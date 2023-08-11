@@ -13,6 +13,12 @@ timeseries: @fabric {
         @agent(class: "swim.timeseries.HistoryLoggingAgent")
     }
 
+    @node {
+        pattern: "/timeseries/window/by-recency"
+        @agent(class: "swim.timeseries.RecencyWindowAgent")
+        @agent(class: "swim.timeseries.HistoryLoggingAgent")
+    }
+
 }
 @web(port: 9001) {
     space: "timeseries"

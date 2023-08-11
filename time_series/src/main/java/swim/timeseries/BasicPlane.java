@@ -28,11 +28,13 @@ public class BasicPlane extends AbstractPlane {
 
     kernel.start();
     System.out.println("Running Basic server...");
+    System.out.println("Waiting for time series agents to start dropping records...");
     kernel.run();
 
     for (int i = 0; i < 20; i++) {
       space.command("/timeseries/window/by-time", "addEvent", Record.create().slot("id", i));
       space.command("/timeseries/window/by-count", "addEvent", Record.create().slot("id", i));
+      space.command("/timeseries/window/by-recency", "addEvent", Record.create().slot("id", i));
       Thread.sleep(5000);
     }
 
