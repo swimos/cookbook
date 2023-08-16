@@ -1,0 +1,5 @@
+apply from: '../project.gradle'
+
+description = 'Code corresponding to the Aggregations guide'
+ext.moduleName = 'swim.aggregations'
+mainClassName = 'swim.aggregations.BasicPlane'

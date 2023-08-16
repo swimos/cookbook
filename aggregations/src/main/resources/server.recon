@@ -1,0 +1,25 @@
+aggregations: @fabric {
+    @plane(class: "swim.aggregations.BasicPlane")
+
+    @node {
+        pattern: "/state/:name"
+        @agent(class: "swim.aggregations.StateAgent")
+        @agent(class: "swim.aggregations.StateLoggingAgent")
+    }
+
+    @node {
+        pattern: "/vehicle/:id"
+        @agent(class: "swim.aggregations.VehicleAgent")
+        @agent(class: "swim.aggregations.VehicleSimulatorAgent")
+    }
+
+}
+@web(port: 9001) {
+    space: "aggregations"
+    @websocket {
+        serverCompressionLevel: 0
+        # -1 = default; 0 = off; 1-9 = deflate level
+        clientCompressionLevel: 0
+        # -1 = default; 0 = off; 1-9 = deflate level
+    }
+}
