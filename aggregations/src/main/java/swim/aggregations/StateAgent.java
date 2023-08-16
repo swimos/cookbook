@@ -61,7 +61,7 @@ public class StateAgent extends AbstractAgent {
         maxSpeed = vehicleSpeed;
       }
 
-      if (this.vehicles.get(vehicleUri).get("isMoving").booleanValue(false)) {
+      if (vehicleStatus.get("isMoving").booleanValue(false)) {
         movingVehicles++;
       }
 
