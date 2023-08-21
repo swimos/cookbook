@@ -1,12 +1,16 @@
 tower: @fabric {
   @plane(class: "swim.api.plane.AbstractPlane")
   @node {
-    uri: "/refined/:id"
+    uri: "/tower/:id"
     @agent(class: "swim.tower.TowerAgent")
   }
   @node {
-    pattern: "/sampled/:id"
+    pattern: "/bucketed/:id"
     @agent(class: "swim.tower.BucketedTowerAgent")
+  }
+  @node {
+    pattern: "/windowed/:id"
+    @agent(class: "swim.tower.WindowedTowerAgent")
   }
 }
 @web(port: 9001) {

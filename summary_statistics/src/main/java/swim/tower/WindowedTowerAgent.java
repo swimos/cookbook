@@ -1,17 +1,16 @@
 package swim.tower;
 
-import java.util.HashMap;
-import java.util.Map;
 import swim.api.SwimLane;
 import swim.api.lane.MapLane;
 import swim.recon.Recon;
 import swim.structure.Value;
 
-public class BucketedTowerAgent extends AbstractTowerAgent {
+public class WindowedTowerAgent extends AbstractTowerAgent {
 
   private static final long SAMPLE_PERIOD_MS = 60000L;
 
-  private Map<Long, TowerSummaryState> summaryStates;
+  private TowerSummaryState currentState;
+  private long currentBucket;
 
   @SwimLane("summaries")
   MapLane<Long, Value> summaries = this.<Long, Value>mapLane()
@@ -19,13 +18,24 @@ public class BucketedTowerAgent extends AbstractTowerAgent {
           System.out.println(nodeUri() + ": updated summary under " + k + " to " + Recon.toString(n)));
 
   @Override
+  protected long messageTimestamp(Value v) {
+    return System.currentTimeMillis();
+  }
+
+  @Override
   protected void updateSummary(long timestamp, Value v) {
     final long key = bucket(timestamp);
-    final TowerSummaryState state = this.summaryStates.getOrDefault(key, new TowerSummaryState());
-    state.addValue(v.get("mean_ul_sinr").doubleValue(),
+    if (key != this.currentBucket) {
+      resetState(timestamp);
+    }
+    this.currentState.addValue(v.get("mean_ul_sinr").doubleValue(),
         v.get("rrc_re_establishment_failures").intValue());
-    this.summaries.put(key, state.getSummary());
-    this.summaryStates.put(key, state);
+    this.summaries.put(key, this.currentState.getSummary());
+  }
+
+  private void resetState(long now) {
+    this.currentState = new TowerSummaryState();
+    this.currentBucket = bucket(now);
   }
 
   private static long bucket(long timestamp) {
@@ -34,10 +44,7 @@ public class BucketedTowerAgent extends AbstractTowerAgent {
 
   @Override
   public void didStart() {
-    if (this.summaryStates != null) {
-      this.summaryStates.clear();
-    }
-    this.summaryStates = new HashMap<>();
+    resetState(System.currentTimeMillis());
   }
 
 }

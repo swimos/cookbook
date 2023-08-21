@@ -13,7 +13,7 @@ public final class Simulation {
                                    long now) {
     final double val = center + (Math.random() * spread) - (spread / 2.0);
     final int failures = Math.random() < 0.3 ? Math.random() < 0.3 ? 2 : 1 : 0;
-    final String[] nodeUris = {"/naive/" + id, "/refined/" + id, "/sampled/" + id};
+    final String[] nodeUris = {"/tower/" + id, "/bucketed/" + id, "/windowed/" + id};
     final Value payload = Record.create(3).slot("mean_ul_sinr", val)
         .slot("rrc_re_establishment_failures", failures)
         .slot("timestamp", now);
