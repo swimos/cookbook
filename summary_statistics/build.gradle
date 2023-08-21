@@ -1,0 +1,5 @@
+apply from: '../project.gradle'
+
+description = 'Code corresponding to the Summary Statistics guide'
+ext.moduleName = 'swim.tower'
+mainClassName = 'swim.tower.Main'

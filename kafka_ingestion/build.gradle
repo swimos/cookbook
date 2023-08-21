@@ -4,6 +4,10 @@ description = 'Code corresponding to the Kafka Ingestion guide'
 ext.moduleName = 'swim.vehicle'
 mainClassName = 'swim.vehicle.Main'
 
+repositories {
+  maven { url 'https://packages.confluent.io/maven/' }
+}
+
 dependencies {
   api group: 'org.apache.kafka', name: 'kafka-clients', version: '3.2.0'
 }

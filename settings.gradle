@@ -3,8 +3,17 @@ rootProject.name = 'cookbook'
 include 'aggregations'
 project(':aggregations').projectDir = file('aggregations')
 
+include 'auth-policy'
+project(':auth-policy').projectDir = file('auth_policy')
+
 include 'command-lanes'
 project(':command-lanes').projectDir = file('command_lanes')
+
+include 'demand-value-lanes'
+project(':demand-value-lanes').projectDir = file('demand_value_lanes')
+
+include 'demand-map-lanes'
+project(':demand-map-lanes').projectDir = file('demand_map_lanes')
 
 include 'downlinks'
 project(':downlinks').projectDir = file('downlinks')
@@ -12,11 +21,23 @@ project(':downlinks').projectDir = file('downlinks')
 include 'egress-bridges'
 project(':egress-bridges').projectDir = file('egress_bridges')
 
+include 'forms'
+project(':forms').projectDir = file('forms')
+
 include 'http-ingestion'
 project(':http-ingestion').projectDir = file('http_ingestion')
 
+include 'http-lanes'
+project(':http-lanes').projectDir = file('http_lanes')
+
 include 'ingress-bridges'
 project(':ingress-bridges').projectDir = file('ingress_bridges')
+
+include 'join-map-lanes'
+project(':join-map-lanes').projectDir = file('join_map_lanes')
+
+include 'join-value-lanes'
+project(':join-value-lanes').projectDir = file('join_value_lanes')
 
 include 'kafka-ingestion'
 project(':kafka-ingestion').projectDir = file('kafka_ingestion')
@@ -27,11 +48,20 @@ project(':map-lanes').projectDir = file('map_lanes')
 include 'planes'
 project(':planes').projectDir = file('planes')
 
+include 'server-downlinks'
+project(':server-downlinks').projectDir = file('server_downlinks')
+
+include 'summary-statistics'
+project(':summary-statistics').projectDir = file('summary_statistics')
+
 include 'time-series'
 project(':time-series').projectDir = file('time_series')
 
 include 'timers'
 project(':timers').projectDir = file('timers')
+
+include 'traits'
+project(':traits').projectDir = file('traits')
 
 include 'value-lanes'
 project(':value-lanes').projectDir = file('value_lanes')
@@ -39,32 +69,5 @@ project(':value-lanes').projectDir = file('value_lanes')
 include 'web-agents'
 project(':web-agents').projectDir = file('web_agents')
 
-include 'join-value-lanes'
-project(':join-value-lanes').projectDir = file('join_value_lanes')
-
-include 'join-map-lanes'
-project(':join-map-lanes').projectDir = file('join_map_lanes')
-
-include 'forms'
-project(':forms').projectDir = file('forms')
-
-include 'server-downlinks'
-project(':server-downlinks').projectDir = file('server_downlinks')
-
-include 'demand-value-lanes'
-project(':demand-value-lanes').projectDir = file('demand_value_lanes')
-
-include 'demand-map-lanes'
-project(':demand-map-lanes').projectDir = file('demand_map_lanes')
-
-include 'http-lanes'
-project(':http-lanes').projectDir = file('http_lanes')
-
-include 'auth-policy'
-project(':auth-policy').projectDir = file('auth_policy')
-
 include 'web-agents-server-recon'
 project(':web-agents-server-recon').projectDir = file('web_agents_server_recon')
-
-include 'traits'
-project(':traits').projectDir = file('traits')
