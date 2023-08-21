@@ -6,6 +6,9 @@ import swim.server.ServerLoader;
 
 public final class Main {
 
+  private Main() {
+  }
+
   public static void main(String[] args) {
     final Space space = startServer();
     // Occupies main thread until process termination

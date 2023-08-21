@@ -7,7 +7,7 @@ import swim.api.lane.MapLane;
 import swim.recon.Recon;
 import swim.structure.Value;
 
-public class SampledTowerAgent extends AbstractTowerAgent {
+public class BucketedTowerAgent extends AbstractTowerAgent {
 
   private static final long SAMPLE_PERIOD_MS = 60000L;
 
@@ -20,10 +20,10 @@ public class SampledTowerAgent extends AbstractTowerAgent {
 
   @Override
   protected void updateSummary(long timestamp, Value v) {
-    final double newValue = v.get("mean_ul_sinr").doubleValue();
     final long key = statesKey(timestamp);
     final TowerSummaryState state = this.summaryStates.getOrDefault(key, new TowerSummaryState());
-    state.addValue(newValue);
+    state.addValue(v.get("mean_ul_sinr").doubleValue(),
+        v.get("rrc_re_establishment_failures").intValue());
     this.summaries.put(key, state.getSummary());
     this.summaryStates.put(key, state);
   }

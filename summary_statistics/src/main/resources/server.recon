@@ -6,7 +6,7 @@ tower: @fabric {
   }
   @node {
     pattern: "/sampled/:id"
-    @agent(class: "swim.tower.SampledTowerAgent")
+    @agent(class: "swim.tower.BucketedTowerAgent")
   }
 }
 @web(port: 9001) {

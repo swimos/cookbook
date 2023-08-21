@@ -16,7 +16,8 @@ public class TowerAgent extends AbstractTowerAgent {
 
   @Override
   protected void updateSummary(long timestamp, Value v) {
-    this.state.addValue(v.get("mean_ul_sinr").doubleValue());
+    this.state.addValue(v.get("mean_ul_sinr").doubleValue(),
+        v.get("rrc_re_establishment_failures").intValue());
     this.summary.set(this.state.getSummary());
   }
 
