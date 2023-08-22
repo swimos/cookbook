@@ -1,5 +1,8 @@
 rootProject.name = 'cookbook'
 
+include 'aggregations'
+project(':aggregations').projectDir = file('aggregations')
+
 include 'command-lanes'
 project(':command-lanes').projectDir = file('command_lanes')
 
