@@ -5,11 +5,11 @@ tower: @fabric {
     @agent(class: "swim.tower.TowerAgent")
   }
   @node {
-    pattern: "/bucketed/:id"
+    pattern: "/towerB/:id"
     @agent(class: "swim.tower.BucketedTowerAgent")
   }
   @node {
-    pattern: "/windowed/:id"
+    pattern: "/towerW/:id"
     @agent(class: "swim.tower.WindowedTowerAgent")
   }
 }

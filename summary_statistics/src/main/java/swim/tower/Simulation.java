@@ -14,9 +14,9 @@ public final class Simulation {
     final double val = center + (Math.random() * spread) - (spread / 2.0);
     // 9% chance for 2, 21% for 1, 70% for 0
     final int failures = Math.random() < 0.3 ? Math.random() < 0.3 ? 2 : 1 : 0;
-    final String[] nodeUris = {"/tower/" + id, "/bucketed/" + id, "/windowed/" + id};
-    final Value payload = Record.create(3).slot("mean_ul_sinr", val)
-        .slot("rrc_re_establishment_failures", failures)
+    final String[] nodeUris = {"/tower/" + id, "/towerB/" + id, "/towerW/" + id};
+    final Value payload = Record.create(3).slot("s_n_ratio", val)
+        .slot("disconnects", failures)
         .slot("timestamp", now);
     for (String nodeUri : nodeUris) {
       space.command(nodeUri, "addMessage", payload);

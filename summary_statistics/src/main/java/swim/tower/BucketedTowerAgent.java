@@ -22,8 +22,8 @@ public class BucketedTowerAgent extends AbstractTowerAgent {
   protected void updateSummary(long timestamp, Value v) {
     final long key = bucket(timestamp);
     final TowerSummaryState state = this.summaryStates.getOrDefault(key, new TowerSummaryState());
-    state.addValue(v.get("mean_ul_sinr").doubleValue(),
-        v.get("rrc_re_establishment_failures").intValue());
+    state.addValue(v.get("s_n_ratio").doubleValue(),
+        v.get("disconnects").intValue());
     this.summaries.put(key, state.getSummary());
     this.summaryStates.put(key, state);
   }

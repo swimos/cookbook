@@ -28,8 +28,8 @@ public class WindowedTowerAgent extends AbstractTowerAgent {
     if (key != this.currentBucket) {
       resetState(timestamp);
     }
-    this.currentState.addValue(v.get("mean_ul_sinr").doubleValue(),
-        v.get("rrc_re_establishment_failures").intValue());
+    this.currentState.addValue(v.get("s_n_ratio").doubleValue(),
+        v.get("disconnects").intValue());
     this.summaries.put(key, this.currentState.getSummary());
   }
 
