@@ -9,9 +9,7 @@ public abstract class AbstractTowerAgent extends AbstractAgent {
 
   @SwimLane("addMessage")
   CommandLane<Value> addMessage = this.<Value>commandLane()
-      .onCommand(v -> {
-        updateSummary(messageTimestamp(v), v);
-      });
+      .onCommand(v -> updateSummary(messageTimestamp(v), v));
 
   protected long messageTimestamp(Value v) {
     return v.get("timestamp").longValue();

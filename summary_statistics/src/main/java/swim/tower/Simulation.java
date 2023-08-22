@@ -12,6 +12,7 @@ public final class Simulation {
   private static void simulateOnce(Space space, String id, double center, int spread,
                                    long now) {
     final double val = center + (Math.random() * spread) - (spread / 2.0);
+    // 9% chance for 2, 21% for 1, 70% for 0
     final int failures = Math.random() < 0.3 ? Math.random() < 0.3 ? 2 : 1 : 0;
     final String[] nodeUris = {"/tower/" + id, "/bucketed/" + id, "/windowed/" + id};
     final Value payload = Record.create(3).slot("mean_ul_sinr", val)
