@@ -1,0 +1,22 @@
+tower: @fabric {
+  @plane(class: "swim.api.plane.AbstractPlane")
+  @node {
+    uri: "/tower/:id"
+    @agent(class: "swim.tower.TowerAgent")
+  }
+  @node {
+    pattern: "/towerB/:id"
+    @agent(class: "swim.tower.BucketedTowerAgent")
+  }
+  @node {
+    pattern: "/towerW/:id"
+    @agent(class: "swim.tower.WindowedTowerAgent")
+  }
+}
+@web(port: 9001) {
+  space: "tower"
+  @websocket {
+    serverCompressionLevel: 0
+    clientCompressionLevel: 0
+  }
+}
