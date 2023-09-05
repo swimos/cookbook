@@ -1,0 +1,9 @@
+apply from: '../project.gradle'
+
+description = 'Code corresponding to the Introspection guide'
+ext.moduleName = 'swim.introspection'
+mainClassName = 'swim.introspection.BasicPlane'
+
+dependencies {
+    api group: 'org.swimos', name: 'swim-meta', version: version
+}

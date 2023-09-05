@@ -1,0 +1,26 @@
+@kernel(class: "swim.meta.MetaKernel")
+
+introspection: @fabric {
+    @plane(class: "swim.introspection.BasicPlane")
+
+    @node {
+        pattern: "/building/:buildingId"
+        @agent(class: "swim.introspection.BuildingAgent")
+    }
+
+    @node {
+        pattern: "/building/:buildingId/room/:roomId"
+        @agent(class: "swim.introspection.RoomAgent")
+        @agent(class: "swim.introspection.RoomSimulatorAgent")
+    }
+
+}
+@web(port: 9001) {
+    space: "introspection"
+    @websocket {
+        serverCompressionLevel: 0
+        # -1 = default; 0 = off; 1-9 = deflate level
+        clientCompressionLevel: 0
+        # -1 = default; 0 = off; 1-9 = deflate level
+    }
+}
