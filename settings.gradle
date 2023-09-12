@@ -33,6 +33,9 @@ project(':http-lanes').projectDir = file('http_lanes')
 include 'ingress-bridges'
 project(':ingress-bridges').projectDir = file('ingress_bridges')
 
+include 'introspection'
+project(':introspection').projectDir = file('introspection')
+
 include 'join-map-lanes'
 project(':join-map-lanes').projectDir = file('join_map_lanes')
 
