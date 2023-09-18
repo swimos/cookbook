@@ -10,17 +10,20 @@ import swim.structure.Value;
 
 public class RecencyWindowAgent extends AbstractAgent {
 
+  public RecencyWindowAgent() {
+  }
+
   private static final long MAX_HISTORY_TIME_MS = 30000L;
 
   private TimerRef timer;
 
   @SwimLane("addEvent")
-  public CommandLane<Value> addEvent = this.<Value>commandLane()
+  private CommandLane<Value> addEvent = this.<Value>commandLane()
       .onCommand(v -> this.history.put(System.currentTimeMillis(), v));
 
   @SwimLane("history")
-  public MapLane<Long, Value> history = this.<Long, Value>mapLane()
-      .didUpdate((k,n,o) -> rescheduleNextTrim());
+  private MapLane<Long, Value> history = this.<Long, Value>mapLane()
+      .didUpdate((k, n, o) -> rescheduleNextTrim());
 
   private void trimHistory() {
     final long oldestAllowedTimestamp = System.currentTimeMillis() - MAX_HISTORY_TIME_MS;

@@ -17,6 +17,9 @@ package swim.basic;
 import swim.api.agent.AbstractAgent;
 
 public class UnitAgent extends AbstractAgent {
+  
+  public UnitAgent() {
+  }
 
   @Override
   public void didStart() {

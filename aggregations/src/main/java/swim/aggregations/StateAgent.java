@@ -25,8 +25,11 @@ import swim.uri.Uri;
 
 public class StateAgent extends AbstractAgent {
 
+  public StateAgent() {
+  }
+
   @SwimLane("addVehicle")
-  public CommandLane<Uri> addVehicle = this.<Uri>commandLane()
+  private CommandLane<Uri> addVehicle = this.<Uri>commandLane()
       .onCommand(v ->
           this.vehicles
               .downlink(v)
@@ -35,17 +38,17 @@ public class StateAgent extends AbstractAgent {
               .open());
 
   @SwimLane("removeVehicle")
-  public CommandLane<Uri> removeVehicle = this.<Uri>commandLane()
+  private CommandLane<Uri> removeVehicle = this.<Uri>commandLane()
       .onCommand(v ->
           this.vehicles
               .remove(v));
 
   @SwimLane("vehicles")
-  public JoinValueLane<Uri, Value> vehicles = this.<Uri, Value>joinValueLane()
+  private JoinValueLane<Uri, Value> vehicles = this.<Uri, Value>joinValueLane()
       .didUpdate((k, nv, ov) -> computeStatus());
 
   @SwimLane("status")
-  public ValueLane<Value> status = this.<Value>valueLane();
+  private ValueLane<Value> status = this.<Value>valueLane();
 
   private void computeStatus() {
 

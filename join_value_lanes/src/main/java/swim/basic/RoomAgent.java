@@ -22,6 +22,9 @@ import swim.structure.Value;
 
 public class RoomAgent extends AbstractAgent {
 
+  public RoomAgent() {
+  }
+
   @SwimLane("lights")
   ValueLane<Boolean> lights = this.valueLane();
 

@@ -7,6 +7,8 @@ import swim.api.lane.ValueLane;
 import swim.structure.Value;
 
 public class UnitAgent extends AbstractAgent {
+  public UnitAgent() {
+  }
 
   // ValueLane<FooType> foo, whose didSet(newValue, oldValue) callback prints newValue
   @SwimLane("foo")

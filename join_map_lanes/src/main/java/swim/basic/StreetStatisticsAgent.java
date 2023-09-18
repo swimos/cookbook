@@ -6,6 +6,9 @@ import swim.api.lane.MapLane;
 
 class StreetStatisticsAgent extends AbstractAgent {
 
+  StreetStatisticsAgent() {
+  }
+    
   /*
       - Key: Street name
       - Value: Street population

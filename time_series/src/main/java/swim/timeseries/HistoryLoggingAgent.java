@@ -9,29 +9,40 @@ import swim.structure.Value;
 
 public class HistoryLoggingAgent extends AbstractAgent {
 
+  public HistoryLoggingAgent() {
+  }
+
   @SwimLane("history")
-  public MapLane<Long, Value> history = this.<Long, Value>mapLane()
+  private MapLane<Long, Value> history = this.<Long, Value>mapLane()
       .didRemove(this::logRemoval)
       .didDrop(this::logDrop);
 
   private void logRemoval(final long key, final Value oldValue) {
     info(
-        new Timestamp(System.currentTimeMillis()) + " " +
-            nodeUri().toString() + ": " +
-            "Removed record: " +
-            "{ " + new Timestamp(key) + ": " + Recon.toString(oldValue) + " }"
+        new Timestamp(System.currentTimeMillis())
+            + " "
+            + nodeUri().toString()
+            + ": "
+            + "Removed record: "
+            + "{ "
+            + new Timestamp(key)
+            + ": "
+            + Recon.toString(oldValue)
+            + " }"
     );
   }
 
   private void logDrop(final int lower) {
     info(
-        new Timestamp(System.currentTimeMillis()) + " " +
-            nodeUri().toString() + ": " +
-            "Dropped records: " + lower +
-            " , new record count: " + this.history.size()
+        new Timestamp(System.currentTimeMillis())
+            + " "
+            + nodeUri().toString()
+            + ": "
+            + "Dropped records: "
+            + lower
+            + " , new record count: "
+            + this.history.size()
     );
   }
-
-
 
 }

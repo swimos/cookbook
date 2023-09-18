@@ -21,6 +21,9 @@ import swim.api.lane.ValueLane;
 
 public class UnitAgent extends AbstractAgent {
 
+  public UnitAgent() {
+  }
+
   @SwimLane("info")
   ValueLane<String> info = this.<String>valueLane();
 

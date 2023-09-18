@@ -21,6 +21,9 @@ import swim.api.lane.MapLane;
 
 public class UnitAgent extends AbstractAgent {
 
+  public UnitAgent() {
+  }
+
   @SwimLane("shoppingCart")
   MapLane<String, Integer> shoppingCart = this.<String, Integer>mapLane()
       .didUpdate((key, newValue, oldValue) -> {

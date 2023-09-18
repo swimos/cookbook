@@ -8,6 +8,9 @@ import swim.api.lane.ValueLane;
 
 public class WarehouseAgent extends AbstractAgent {
 
+  public WarehouseAgent() {
+  }
+
   @SwimLane("stock")
   MapLane<String, Integer> stock = this.<String, Integer>mapLane();
 

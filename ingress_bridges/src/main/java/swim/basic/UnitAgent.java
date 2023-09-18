@@ -23,6 +23,9 @@ import swim.structure.Form;
 
 public class UnitAgent extends AbstractAgent {
 
+  public UnitAgent() {
+  }
+
   @SwimLane("history")
   MapLane<Long, String> history = this.<Long, String>mapLane()
       .didUpdate((k, n, o) -> {

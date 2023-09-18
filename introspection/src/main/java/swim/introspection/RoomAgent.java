@@ -22,6 +22,9 @@ import swim.uri.Uri;
 
 public class RoomAgent extends AbstractAgent {
 
+  public RoomAgent() {
+  }
+    
   @SwimLane("info")
   ValueLane<Value> info = this.<Value>valueLane();
 

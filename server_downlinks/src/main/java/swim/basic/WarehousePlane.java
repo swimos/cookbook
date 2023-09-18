@@ -15,6 +15,9 @@ import swim.structure.Value;
  */
 public class WarehousePlane extends AbstractPlane {
 
+  public WarehousePlane() {
+  }
+
   public static void main(String[] args) {
     System.setProperty("swim.config", "warehouse.recon");
 

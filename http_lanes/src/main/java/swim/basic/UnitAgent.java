@@ -15,6 +15,9 @@ import swim.structure.Value;
 
 public class UnitAgent extends AbstractAgent {
 
+  public UnitAgent() {
+  }
+
   @SwimLane("state")
   ValueLane<Value> state = this.<Value>valueLane()
       .didSet((newValue, oldValue) -> {

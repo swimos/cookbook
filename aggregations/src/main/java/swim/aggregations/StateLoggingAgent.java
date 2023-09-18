@@ -24,16 +24,19 @@ import swim.uri.Uri;
 
 public class StateLoggingAgent extends AbstractAgent {
 
+  public StateLoggingAgent() {
+  }
+
   @SwimLane("status")
-  public ValueLane<Value> status = this.<Value>valueLane()
+  private ValueLane<Value> status = this.<Value>valueLane()
       .didSet((nv, ov) -> info(nodeUri() + ": new status: " + Recon.toString(nv)));
 
   @SwimLane("addVehicle")
-  public CommandLane<Uri> addVehicle = this.<Uri>commandLane()
+  private CommandLane<Uri> addVehicle = this.<Uri>commandLane()
       .onCommand(v -> info(nodeUri() + ": vehicle entering state: " + v));
 
   @SwimLane("removeVehicle")
-  public CommandLane<Uri> removeVehicle = this.<Uri>commandLane()
+  private CommandLane<Uri> removeVehicle = this.<Uri>commandLane()
       .onCommand(v -> info(nodeUri() + ": vehicle leaving state: " + v));
 
 }

@@ -9,6 +9,9 @@ import swim.api.lane.MapLane;
 
 public class UnitAgent extends AbstractAgent {
 
+  public UnitAgent() {
+  }
+    
   @SwimLane("raw")
   protected MapLane<String, String> raw = this.<String, String>mapLane()
           .didUpdate((key, newValue, oldValue) -> this.data.cue(key));

@@ -18,6 +18,9 @@ import swim.structure.Value;
  */
 public class SupplierPlane extends AbstractPlane {
 
+  public SupplierPlane() {
+  }
+
   public static final String WAREHOUSE_HOST_URI = "warp://localhost:9001";
 
   public static void main(String[] args) {

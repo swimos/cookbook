@@ -26,6 +26,9 @@ import swim.structure.Value;
 
 public class GradePlane extends AbstractPlane {
 
+  public GradePlane() {
+  }
+
   public static void main(String[] args)
           throws ClassNotFoundException, SQLException {
 

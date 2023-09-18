@@ -7,6 +7,9 @@ import swim.warp.Envelope;
 
 public class BasicPolicy extends AbstractPolicy {
 
+  public BasicPolicy() {
+  }
+
   private static final String ADMIN_TOKEN = "abc123";
   private static final String USER_TOKEN = "abc";
 

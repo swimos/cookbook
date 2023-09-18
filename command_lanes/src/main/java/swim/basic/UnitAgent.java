@@ -24,6 +24,9 @@ import swim.uri.Uri;
 
 public class UnitAgent extends AbstractAgent {
 
+  public UnitAgent() {
+  }
+
   @SwimLane("publish")
   CommandLane<Integer> publish = this.<Integer>commandLane()
       .onCommand((Integer msg) -> {

@@ -8,15 +8,18 @@ import swim.structure.Value;
 
 public class CountWindowAgent extends AbstractAgent {
 
-  private final static int MAX_HISTORY_SIZE = 10;
+  public CountWindowAgent() {
+  }
+
+  private static final int MAX_HISTORY_SIZE = 10;
 
   @SwimLane("addEvent")
-  public CommandLane<Value> addEvent = this.<Value>commandLane()
+  private CommandLane<Value> addEvent = this.<Value>commandLane()
       .onCommand(v -> this.history.put(System.currentTimeMillis(), v));
 
   @SwimLane("history")
-  public MapLane<Long, Value> history = this.<Long, Value>mapLane()
-      .didUpdate((k,n,o) -> trimHistory());
+  private MapLane<Long, Value> history = this.<Long, Value>mapLane()
+      .didUpdate((k, n, o) -> trimHistory());
 
   private void trimHistory() {
     final int dropCount = this.history.size() - MAX_HISTORY_SIZE;

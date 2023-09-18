@@ -10,6 +10,9 @@ import swim.structure.Text;
 
 public class CustomerAgent extends AbstractAgent {
 
+  public CustomerAgent() {
+  }
+    
   private TimerRef timer;
 
   @SwimLane("register")
