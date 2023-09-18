@@ -9,15 +9,18 @@ import swim.structure.Value;
 
 public class TimeWindowAgent extends AbstractAgent {
 
+  public TimeWindowAgent() {
+  }
+
   private static final long TIME_INTERVAL_MS = 30000L;
 
   @SwimLane("addEvent")
-  public CommandLane<Value> addEvent = this.<Value>commandLane()
+  private CommandLane<Value> addEvent = this.<Value>commandLane()
       .onCommand(v -> this.history.put(System.currentTimeMillis(), v));
 
   @SwimLane("history")
-  public MapLane<Long, Value> history = this.<Long, Value>mapLane()
-      .didUpdate((k,n,o) -> trimHistory());
+  private MapLane<Long, Value> history = this.<Long, Value>mapLane()
+      .didUpdate((k, n, o) -> trimHistory());
 
   private void trimHistory() {
     final long oldestAllowedTimestamp = this.history.lastKey() - TIME_INTERVAL_MS;

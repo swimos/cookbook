@@ -22,6 +22,9 @@ import swim.structure.Value;
 
 public class EgressAgent extends AbstractAgent {
 
+  public EgressAgent() {
+  }
+
   @SwimLane("write")
   CommandLane<Value> write = this.<Value>commandLane()
       .onCommand(v -> {

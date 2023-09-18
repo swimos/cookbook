@@ -9,6 +9,9 @@ import swim.api.warp.WarpUplink;
 
 public class UnitAgent extends AbstractAgent {
 
+  public UnitAgent() {
+  }
+
   @SwimLane("raw")
   ValueLane<String> raw = this.<String>valueLane().didSet((n, o) -> this.data.cue());
 

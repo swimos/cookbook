@@ -22,6 +22,9 @@ import swim.structure.Value;
 
 public class BuildingAgent extends AbstractAgent {
 
+  public BuildingAgent() {
+  }
+
   @SwimLane("lights")
   JoinValueLane<Integer, Boolean> lights = this.<Integer, Boolean>joinValueLane()
       .didUpdate((Integer key, Boolean newValue, Boolean oldValue) -> {

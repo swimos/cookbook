@@ -23,6 +23,9 @@ import swim.uri.Uri;
 
 public class BuildingAgent extends AbstractAgent {
 
+  public BuildingAgent() {
+  }
+    
   @SwimLane("rooms")
   JoinValueLane<String, Value> rooms = this.<String, Value>joinValueLane();
 

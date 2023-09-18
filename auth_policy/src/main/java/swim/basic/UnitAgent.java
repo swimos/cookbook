@@ -8,6 +8,9 @@ import swim.structure.Value;
 
 public class UnitAgent extends AbstractAgent {
 
+  public UnitAgent() {
+  }
+    
   @SwimLane("info")
   ValueLane<Value> info = this.<Value>valueLane()
           .didSet((newValue, oldValue) -> logMessage("info changed from " + oldValue + " to " + newValue));

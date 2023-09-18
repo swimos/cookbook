@@ -23,12 +23,15 @@ import swim.structure.Value;
 
 public class VehicleSimulatorAgent extends AbstractAgent {
 
+  public VehicleSimulatorAgent() {
+  }
+
   private static final String[] STATES = {"California", "Oregon"};
   private static final int MAX_SPEED = 100;
   private static final long UPDATE_INTERVAL = 10000L;
 
   @SwimLane("status")
-  public ValueLane<Value> status = this.<Value>valueLane();
+  private ValueLane<Value> status = this.<Value>valueLane();
 
   private Value randomVehicleStatus() {
 

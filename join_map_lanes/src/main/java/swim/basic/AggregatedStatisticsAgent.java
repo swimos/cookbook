@@ -6,6 +6,9 @@ import swim.api.lane.JoinMapLane;
 
 class AggregatedStatisticsAgent extends AbstractAgent {
 
+  AggregatedStatisticsAgent() {
+  }
+
   // Aggregated statistics of US states
   @SwimLane("join")
   JoinMapLane<String, String, Integer> stateStreetStats = this.joinMapLane();

@@ -7,6 +7,9 @@ import swim.structure.Value;
 
 public class ControlAgent extends AbstractAgent {
 
+  public ControlAgent() {
+  }
+
   @SwimLane("command")
   CommandLane<Value> command = this.<Value>commandLane()
           .onCommand(value -> logMessage("command: " + value.toString()));

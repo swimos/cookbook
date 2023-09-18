@@ -27,6 +27,9 @@ import swim.structure.Value;
 
 public class ListenerAgent extends AbstractAgent {
 
+  public ListenerAgent() {
+  }
+
   // Shopping cart data for *all* UnitAgents, aggregated into a single ListenerAgent
   @SwimLane("shoppingCarts")
   MapLane<String, Value> shoppingCarts = this.<String, Value>mapLane()

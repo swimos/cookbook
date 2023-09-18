@@ -22,6 +22,9 @@ import swim.structure.Value;
 
 public class BasicPlane extends AbstractPlane {
 
+  public BasicPlane() {
+  }
+
   public static void main(String[] args) throws InterruptedException {
     final Kernel kernel = ServerLoader.loadServer();
     final ActorSpace space = (ActorSpace) kernel.getSpace("aggregations");

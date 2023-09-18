@@ -8,6 +8,9 @@ import swim.structure.Text;
 
 public class SupplierAgent extends AbstractAgent {
 
+  public SupplierAgent() {
+  }
+    
   private static final int RESUPPLY_THRESHOLD = 3;
 
   @SwimLane("register")

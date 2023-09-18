@@ -26,6 +26,9 @@ import swim.structure.Value;
 
 public class StudentAgent extends AbstractAgent {
 
+  public StudentAgent() {
+  }
+
   private int id() {
     return getProp("id").intValue();
   }

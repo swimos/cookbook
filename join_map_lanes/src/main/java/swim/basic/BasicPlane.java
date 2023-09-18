@@ -18,6 +18,9 @@ import swim.server.ServerLoader;
  */
 public class BasicPlane extends AbstractPlane {
 
+  public BasicPlane() {
+  }
+
   static final String HOST_URI = "warp://localhost:9001";
 
   /**

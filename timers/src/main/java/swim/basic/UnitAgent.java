@@ -23,6 +23,9 @@ import swim.structure.Value;
 
 public class UnitAgent extends AbstractAgent {
 
+  public UnitAgent() {
+  }
+    
   @SwimLane("minutesSincePublish")
   ValueLane<Integer> minutes = this.<Integer>valueLane()
           .didSet((n, o) -> {

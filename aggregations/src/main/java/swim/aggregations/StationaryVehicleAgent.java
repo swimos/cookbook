@@ -13,12 +13,15 @@ import swim.uri.Uri;
  */
 public class StationaryVehicleAgent extends AbstractAgent {
 
+  public StationaryVehicleAgent() {
+  }
+
   @SwimLane("addEvent")
-  public CommandLane<Value> addEvent = this.<Value>commandLane()
+  private CommandLane<Value> addEvent = this.<Value>commandLane()
       .onCommand(v -> this.status.set(v));
 
   @SwimLane("status")
-  public ValueLane<Value> status = this.<Value>valueLane();
+  private ValueLane<Value> status = this.<Value>valueLane();
 
   private void joinState(final String state) {
     command(

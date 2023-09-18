@@ -8,6 +8,9 @@ import swim.structure.Value;
 
 public class BasicPlane extends AbstractPlane {
 
+  public BasicPlane() {
+  }
+
   public static void pojoTransformations() {
     // FooType instance fooType
     final FooType fooType = new FooType(7, "cat");

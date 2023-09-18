@@ -23,6 +23,9 @@ import swim.structure.Value;
 
 public class RoomSimulatorAgent extends AbstractAgent {
 
+  public RoomSimulatorAgent() {
+  }
+
   private static final long SIMULATE_INTERVAL = 10000L;
 
   @SwimLane("info")
@@ -54,7 +57,7 @@ public class RoomSimulatorAgent extends AbstractAgent {
 
   private void changeTemperature() {
     final int currentTemp = this.temperature.get();
-    int tempChange;
+    final int tempChange;
     if (currentTemp >= 26) {
       tempChange = -1;
     } else if (currentTemp <= 15) {

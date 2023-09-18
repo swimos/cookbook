@@ -7,8 +7,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.zip.GZIPInputStream;
 import swim.codec.Utf8;
-import swim.xml.Xml;
 import swim.structure.Value;
+import swim.xml.Xml;
 
 public final class NextBusApi {
 

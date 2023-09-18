@@ -22,6 +22,9 @@ import swim.structure.Value;
 
 public class LiquidPlane extends AbstractPlane {
 
+  public LiquidPlane() {
+  }
+
   public static void main(String[] args) throws InterruptedException {
     final Kernel kernel = ServerLoader.loadServer();
     final ActorSpace space = (ActorSpace) kernel.getSpace("liquid");
