@@ -7,6 +7,7 @@ import swim.api.lane.ValueLane;
 import swim.structure.Value;
 
 public class UnitAgent extends AbstractAgent {
+
   public UnitAgent() {
   }
 
