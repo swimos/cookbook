@@ -7,5 +7,5 @@ mainClassName = 'swim.basic.BasicPlane'
 task runClient(type: JavaExec) {
     group = "application"
     classpath sourceSets.main.runtimeClasspath
-    main = "swim.basic.CustomClient"
+    mainClass = "swim.basic.CustomClient"
 }

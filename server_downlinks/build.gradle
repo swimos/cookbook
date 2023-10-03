@@ -7,5 +7,5 @@ mainClassName = 'swim.basic.WarehousePlane'
 task runServer(type: JavaExec) {
     group = "application"
     classpath sourceSets.main.runtimeClasspath
-    main = "swim.basic.SupplierPlane"
+    mainClass = "swim.basic.SupplierPlane"
 }

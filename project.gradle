@@ -39,7 +39,7 @@ checkstyle {
 
 afterEvaluate {
     sourceSets {
-        main.output.resourcesDir = main.java.outputDir
+        main.output.resourcesDir = main.java.classesDirectory
     }
 
     compileJava {

@@ -16,11 +16,11 @@ dependencies {
 task runSim(type: JavaExec) {
     group = "application"
     classpath sourceSets.main.runtimeClasspath
-    main = "swim.grade.Sim"
+    mainClass = "swim.grade.Sim"
 }
 
 task runDb(type: JavaExec) {
     group = "application"
     classpath sourceSets.main.runtimeClasspath
-    main = "swim.grade.db.Database"
+    mainClass = "swim.grade.db.Database"
 }
