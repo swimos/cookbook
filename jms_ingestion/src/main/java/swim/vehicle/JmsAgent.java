@@ -15,7 +15,7 @@ public class JmsAgent extends AbstractAgent {
   private void subscribe() {
     try {
       // Create a connection
-      final Connection connection = Assets.connectionFactory().createConnection();
+      final Connection connection = Assets.getOrCreateConnection();
       connection.start();
 
       // Create a session
