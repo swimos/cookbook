@@ -48,6 +48,9 @@ project(':kafka-ingestion').projectDir = file('kafka_ingestion')
 include 'map-lanes'
 project(':map-lanes').projectDir = file('map_lanes')
 
+include 'mongodb-ingestion'
+project(':mongodb-ingestion').projectDir = file('mongodb_ingestion')
+
 include 'planes'
 project(':planes').projectDir = file('planes')
 
