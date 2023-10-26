@@ -10,10 +10,10 @@ public class VehicleAgent extends AbstractAgent {
 
   @SwimLane("addMessage")
   CommandLane<Value> addMessage = this.<Value>commandLane()
-      .onCommand(v -> this.vehicles.put(v.get("id").longValue(), v));
+      .onCommand(v -> this.history.put(v.get("timestamp").longValue(), v));
 
-  @SwimLane("vehicles")
-  MapLane<Long, Value> vehicles = this.<Long, Value>mapLane()
+  @SwimLane("history")
+  MapLane<Long, Value> history = this.<Long, Value>mapLane()
       .didUpdate((k, n, o) -> System.out.println(nodeUri() + ": received " + n));
 
 }
