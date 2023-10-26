@@ -36,6 +36,9 @@ project(':ingress-bridges').projectDir = file('ingress_bridges')
 include 'introspection'
 project(':introspection').projectDir = file('introspection')
 
+include 'jms-ingestion'
+project(':jms-ingestion').projectDir = file('jms_ingestion')
+
 include 'join-map-lanes'
 project(':join-map-lanes').projectDir = file('join_map_lanes')
 
