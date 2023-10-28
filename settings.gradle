@@ -57,6 +57,9 @@ project(':mongodb-ingestion').projectDir = file('mongodb_ingestion')
 include 'planes'
 project(':planes').projectDir = file('planes')
 
+include 'pulsar-ingestion'
+project(':pulsar-ingestion').projectDir = file('pulsar_ingestion')
+
 include 'server-downlinks'
 project(':server-downlinks').projectDir = file('server_downlinks')
 

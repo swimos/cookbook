@@ -1,0 +1,13 @@
+apply from: '../project.gradle'
+
+description = 'Code corresponding to the Pulsar Ingestion guide'
+ext.moduleName = 'swim.vehicle'
+mainClassName = 'swim.vehicle.Main'
+
+repositories {
+    maven { url 'https://packages.confluent.io/maven/' }
+}
+
+dependencies {
+    api group: 'org.apache.pulsar', name: 'pulsar-client', version: '3.1.1'
+}
