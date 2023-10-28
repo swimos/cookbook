@@ -1,0 +1,9 @@
+apply from: '../project.gradle'
+
+description = 'Code corresponding to the MongoDB Ingestion guide'
+ext.moduleName = 'swim.vehicle'
+mainClassName = 'swim.vehicle.Main'
+
+dependencies {
+  api group: 'org.mongodb', name: 'mongodb-driver-sync', version: '4.11.0'
+}
